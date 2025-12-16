@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'ArgueDemo';
+  src: url('/all-images/fonts/ArgueDEMO.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Jost';
+  src: url('/all-images/fonts/Jost-Regular.woff') format('woff');
+  font-display: swap;
+}
+
+h1, h2, h3, h4, h5, h6, .title {
+  font-family: 'ArgueDemo', sans-serif;
+}
+
+html,
+body {
+  font-family:'Jost', sans-serif;
+}
+
+
+body:has(.home-slider), body:has(.sign-in) {
+  overflow: hidden;
+}
+
