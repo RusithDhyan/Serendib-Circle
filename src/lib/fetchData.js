@@ -1,60 +1,88 @@
 // src/lib/fetchData.js
-export async function fetchAllData() {
+import crypto from "crypto";
 
-  async function generateChecksum(timestamp) {
-  const Key = process.env.API_KEY;
-  const text = timestamp + Key;
+/* -------------------------------------------------
+   Build-time protection
+-------------------------------------------------- */
+const IS_BUILD =
+  process.env.NEXT_PHASE === "phase-production-build";
 
-  const encoder = new TextEncoder();
-  const data = encoder.encode(text);
+/* -------------------------------------------------
+   Checksum (runtime only)
+-------------------------------------------------- */
+async function generateChecksum(timestamp) {
+  const key = process.env.NEXT_PUBLIC_KEY;
 
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  if (!key) {
+    console.error("NEXT_PUBLIC_KEY is missing");
+    return null;
+  }
 
-  return hashHex;
+  return crypto
+    .createHash("sha256")
+    .update(timestamp + key)
+    .digest("hex");
 }
 
-  const t = Date.now().toString();
-  const cs = await generateChecksum(t);
+/* -------------------------------------------------
+   Secure fetch helper
+-------------------------------------------------- */
+async function fetchSecure(endpoint, params = {}) {
+  // ❌ NEVER call protected APIs during build
+  if (IS_BUILD) {
+    console.warn(`⏭ Skipping ${endpoint} during build`);
+    return null;
+  }
 
-  const fetchSecure = async (endpoint) => {
   try {
+    const t = Date.now().toString();
+    const cs = await generateChecksum(t);
 
-    const ApiURL =
-        process.env.NODE_ENV === "development"
-          ? `http://localhost:3001/api/${endpoint}?t=${t}&cs=${cs}`
-          : `https://serendib.serendibhotels.mw/api/${endpoint}?t=${t}&cs=${cs}`;
+    if (!cs) return null;
 
-    const res = await fetch(ApiURL);
+    const query = new URLSearchParams({
+      ...params,
+      t,
+      cs,
+    }).toString();
+
+    const baseURL =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3001"
+        : "https://serendib.serendibhotels.mw";
+
+    const res = await fetch(`${baseURL}/api/${endpoint}?${query}`, {
+      cache: "no-store",
+    });
 
     if (!res.ok) {
-      console.error(`Fetch failed for ${endpoint}: ${res.status} ${res.statusText}`);
+      console.error(`Fetch failed for ${endpoint}: ${res.status}`);
       return null;
     }
 
-    const text = await res.text();
-
-    if (!text) {
-      console.warn(`Empty response for ${endpoint}`);
+    const contentType = res.headers.get("content-type");
+    if (!contentType?.includes("application/json")) {
+      console.error(`Non-JSON response from ${endpoint}`);
       return null;
     }
 
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (err) {
-      console.error(`Invalid JSON for ${endpoint}:`, text);
-      return null;
-    }
-
+    const data = await res.json();
     return data.success ? data.data : null;
   } catch (err) {
     console.error(`Error fetching ${endpoint}:`, err);
     return null;
   }
-};
+}
 
+/* -------------------------------------------------
+   Public exports
+-------------------------------------------------- */
+export async function fetchGalleryByHotel(hotelId) {
+  if (!hotelId) return null;
+  return fetchSecure("all-gallery", { hotelId });
+}
+
+export async function fetchAllData() {
   const [
     hotels, users,currentUser, experiences, blogs, galleries, offers,
     aboutContent, aboutMiddle, aboutBottom, contactContent,

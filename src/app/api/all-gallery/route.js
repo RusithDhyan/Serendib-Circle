@@ -32,7 +32,7 @@ export async function OPTIONS(req) {
 export async function GET(req) {
   const origin = req.headers.get("origin");
   const url = new URL(req.url);
-  const hotelId = url.searchParams.get("hotelId");
+  const hotelId = req.nextUrl.searchParams.get("hotelId");
 
   // --- 1. Read query parameters ---
       const t = req.nextUrl.searchParams.get("t");
@@ -54,9 +54,12 @@ export async function GET(req) {
         .createHash("sha256")
         .update(t + process.env.API_KEY)
         .digest("hex");
-    
-        // console.log("Backend API Key:", process.env.API_KEY);
-    
+        
+        console.log("API_KEY exists:", !!process.env.API_KEY);
+        console.log("BE t :",t);
+        console.log("BE Gallery cs :",serverChecksum);
+        console.log("FE Gallery cs :",cs);
+
     
       if (serverChecksum !== cs) {
         let res = NextResponse.json({ success: false, error: "Invalid checksum" }, { status: 401 });

@@ -1,4 +1,6 @@
 // src/app/layout.js
+export const revalidate = 0;
+
 import "./globals.css";
 import Navbar from "./(components)/Navbar";
 import { DataProvider } from "./context/DataContext";
