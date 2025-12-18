@@ -133,7 +133,7 @@ export async function POST(req) {
 
   const service_type = formData.getAll("service_type");
 
-  try {
+  try { 
     await connectDB();
 
     const services = await Service.create({

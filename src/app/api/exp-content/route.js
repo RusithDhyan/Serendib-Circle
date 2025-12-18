@@ -126,7 +126,6 @@ const origin = req.headers.get("origin");
 
     // console.log("Backend API Key:", process.env.API_KEY);
 
-
   if (serverChecksum !== cs) {
     let res = NextResponse.json({ success: false, error: "Invalid checksum" }, { status: 401 });
     return setCorsHeaders(res, origin);

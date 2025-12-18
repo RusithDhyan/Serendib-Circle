@@ -1,10 +1,14 @@
 import { connectDB } from "@/lib/mongodb";
 import Accommodation from "@/models/Accommodation";
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import fs from "fs";
 import crypto from "crypto";
+
+/* =======================
+   CONFIG
+======================= */
 
 const ALLOWED_ORIGINS = [
   "https://www.serendibhotels.mw",
@@ -14,29 +18,113 @@ const ALLOWED_ORIGINS = [
   "http://localhost:3000",
 ];
 
-const EXPIRY_LIMIT = 5 * 60 * 1000; // 3 minutes
+const EXPIRY_LIMIT = 5 * 60 * 1000; // 5 minutes
+
+/* =======================
+   CORS HELPER
+======================= */
 
 function setCorsHeaders(response, origin) {
-  if (ALLOWED_ORIGINS.includes(origin)) {
-    response.headers.set("Access-Control-Allow-Origin", origin);
-    response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    response.headers.set("Access-Control-Allow-Headers", "Content-Type");
-  }
+  response.headers.set(
+    "Access-Control-Allow-Origin",
+    ALLOWED_ORIGINS.includes(origin) ? origin : "*"
+  );
+  response.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
   return response;
 }
 
+/* =======================
+   OPTIONS (Preflight)
+======================= */
+
 export async function OPTIONS(req) {
   const origin = req.headers.get("origin");
-  let res = new NextResponse(null, { status: 204 });
+  const res = new NextResponse(null, { status: 204 });
   return setCorsHeaders(res, origin);
 }
 
-export async function PUT(request, { params }) {
-  const { id } = params;
-  const formData = await request.formData();
+/* =======================
+   GET — Single Room
+======================= */
+
+export async function GET(req, { params }) {
+  const origin = req.headers.get("origin");
+
+  try {
+    const t = req.nextUrl.searchParams.get("t");
+    const cs = req.nextUrl.searchParams.get("cs");
+
+    if (!t || !cs) {
+      const res = NextResponse.json(
+        { success: false, error: "Missing parameters" },
+        { status: 400 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+
+    if (Math.abs(Date.now() - Number(t)) > EXPIRY_LIMIT) {
+      const res = NextResponse.json(
+        { success: false, error: "Expired request" },
+        { status: 401 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+
+    const serverChecksum = crypto
+      .createHash("sha256")
+      .update(t + process.env.API_KEY)
+      .digest("hex");
+
+    if (serverChecksum !== cs) {
+      const res = NextResponse.json(
+        { success: false, error: "Invalid checksum" },
+        { status: 401 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+
+    await connectDB();
+
+    const room = await Accommodation.findById(params.id).lean();
+
+    if (!room) {
+      const res = NextResponse.json(
+        { success: false, error: "Room not found" },
+        { status: 404 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+
+    const res = NextResponse.json({ success: true, data: room });
+    return setCorsHeaders(res, origin);
+
+  } catch (error) {
+    console.error("GET Room Error:", error);
+    const res = NextResponse.json(
+      { success: false, error: "Server error" },
+      { status: 500 }
+    );
+    return setCorsHeaders(res, origin);
+  }
+}
+
+/* =======================
+   PUT — Update Room
+======================= */
+
+export async function PUT(req, { params }) {
+  const origin = req.headers.get("origin");
 
   try {
     await connectDB();
+    const formData = await req.formData();
 
     const updates = {
       room_type: formData.get("room_type"),
@@ -51,144 +139,84 @@ export async function PUT(request, { params }) {
       await mkdir(uploadDir, { recursive: true });
     }
 
-    async function handleImage(imageFile, fieldName) {
-      if (imageFile && typeof imageFile === "object" && imageFile.size > 0) {
-        const buffer = Buffer.from(await imageFile.arrayBuffer());
-        const filename = `${Date.now()}-${imageFile.name}`;
-        const filePath = path.join(uploadDir, filename);
-        await writeFile(filePath, buffer);
-
-        // ✅ Use API route for serving
-        updates[
-          fieldName
-        ] = `https://serendib.serendibhotels.mw/api/uploads/${filename}`;
-      }
+    async function saveImage(file) {
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const filename = `${Date.now()}-${file.name}`;
+      const filePath = path.join(uploadDir, filename);
+      await writeFile(filePath, buffer);
+      return `https://serendib.serendibhotels.mw/api/uploads/${filename}`;
     }
 
-    await handleImage(formData.get("image"), "image");
+    const mainImage = formData.get("image");
+    if (mainImage?.size) {
+      updates.image = await saveImage(mainImage);
+    }
 
-    const acc_images = formData.getAll("images"); // getAll returns an array of files
-        if (acc_images.length > 0) {
-          const uploadedImages = [];
-    
-          for (const imageFile of acc_images) {
-            if (imageFile && typeof imageFile === "object" && imageFile.size > 0) {
-              const buffer = Buffer.from(await imageFile.arrayBuffer());
-              const filename = `${Date.now()}-${imageFile.name}`;
-              const filePath = path.join(uploadDir, filename);
-              await writeFile(filePath, buffer);
-    
-              uploadedImages.push(`https://serendib.serendibhotels.mw/api/uploads/${filename}`);
-            }
-          }
-    
-          updates.images = uploadedImages; // store array of URLs
-        }
+    const images = formData.getAll("images");
+    if (images.length > 0) {
+      const uploaded = [];
+      for (const img of images) {
+        if (img?.size) uploaded.push(await saveImage(img));
+      }
+      updates.images = uploaded;
+    }
 
-    const updatedAccommodation = await Accommodation.findByIdAndUpdate(
-      id,
+    const updated = await Accommodation.findByIdAndUpdate(
+      params.id,
       updates,
-      {
-        new: true,
-      }
+      { new: true }
     ).lean();
 
-    if (!updatedAccommodation) {
-      return NextResponse.json(
-        { message: "Accommodation not found" },
+    if (!updated) {
+      const res = NextResponse.json(
+        { success: false, error: "Accommodation not found" },
         { status: 404 }
       );
+      return setCorsHeaders(res, origin);
     }
 
-    return NextResponse.json(
-      { success: true, accommodation: updatedAccommodation },
-      { status: 200 }
-    );
+    const res = NextResponse.json({ success: true, data: updated });
+    return setCorsHeaders(res, origin);
+
   } catch (error) {
-    return NextResponse.json(
-      { message: "Failed to update accommodation", error: error.message },
+    console.error("PUT Error:", error);
+    const res = NextResponse.json(
+      { success: false, error: "Failed to update accommodation" },
       { status: 500 }
     );
+    return setCorsHeaders(res, origin);
   }
 }
 
-export async function DELETE(request, { params }) {
-  const { id } = params;
+/* =======================
+   DELETE — Remove Room
+======================= */
 
-  try {
-    await connectDB();
-    const deletedAccommodation = await Accommodation.findByIdAndDelete(
-      id
-    ).lean();
-    if (!deletedAccommodation) {
-      return NextResponse.json(
-        { message: "Accommodation not found" },
-        { status: 404 }
-      );
-    }
-    return NextResponse.json(
-      { message: "Accommodation deleted" },
-      { status: 200 }
-    );
-  } catch (error) {
-    return NextResponse.json(
-      { message: "Failed to delete Accommodation", error },
-      { status: 500 }
-    );
-  }
-}
-
-export async function GET(req, { params }) {
+export async function DELETE(req, { params }) {
   const origin = req.headers.get("origin");
 
-  // --- 1. Read query parameters ---
-        const t = req.nextUrl.searchParams.get("t");
-        const cs = req.nextUrl.searchParams.get("cs");
-      
-        if (!t || !cs) {
-          let res = NextResponse.json({ success: false, error: "Missing parameters" }, { status: 400 });
-          return setCorsHeaders(res, origin);
-        }
-      
-        // --- 2. Validate timestamp ---
-        if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
-          let res = NextResponse.json({ success: false, error: "Expired request" }, { status: 401 });
-          return setCorsHeaders(res, origin);
-        }
-      
-        // --- 3. Validate checksum ---
-        const serverChecksum = crypto
-          .createHash("sha256")
-          .update(t + process.env.API_KEY)
-          .digest("hex");
-      
-          // console.log("Backend API Key:", process.env.API_KEY);
-      
-      
-        if (serverChecksum !== cs) {
-          let res = NextResponse.json({ success: false, error: "Invalid checksum" }, { status: 401 });
-          return setCorsHeaders(res, origin);
-        }
-
   try {
     await connectDB();
-    const room = await Accommodation.findById(params.id).lean();
 
-    if (!room) {
-      return NextResponse.json(
-        { success: false, error: "Room not found" },
+    const deleted = await Accommodation.findByIdAndDelete(params.id).lean();
+
+    if (!deleted) {
+      const res = NextResponse.json(
+        { success: false, error: "Accommodation not found" },
         { status: 404 }
       );
+      return setCorsHeaders(res, origin);
     }
 
-    const response = NextResponse.json({ success: true, data: room });
-    return setCorsHeaders(response, origin);
+    const res = NextResponse.json({ success: true, message: "Deleted" });
+    return setCorsHeaders(res, origin);
 
   } catch (error) {
-    console.error("Error fetching room:", error);
-    return NextResponse.json(
-      { success: false, error: "Server error" },
+    console.error("DELETE Error:", error);
+    const res = NextResponse.json(
+      { success: false, error: "Failed to delete accommodation" },
       { status: 500 }
     );
+    return setCorsHeaders(res, origin);
   }
 }
