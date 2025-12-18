@@ -128,6 +128,8 @@ const origin = req.headers.get("origin");
     // --- 1. Read query parameters ---
     const t = req.nextUrl.searchParams.get("t");
     const cs = req.nextUrl.searchParams.get("cs");
+
+    console.log("FE Hotel Inner CS :",cs);
   
     if (!t || !cs) {
       let res = NextResponse.json({ success: false, error: "Missing parameters" }, { status: 400 });
@@ -147,7 +149,7 @@ const origin = req.headers.get("origin");
       .digest("hex");
   
       console.log("Backend API Key:", process.env.API_KEY);
-  
+      console.log("BE Hotel Inner CS :",serverChecksum);  
   
     if (serverChecksum !== cs) {
       let res = NextResponse.json({ success: false, error: "Invalid checksum" }, { status: 401 });

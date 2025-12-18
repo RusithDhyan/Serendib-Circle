@@ -15,7 +15,7 @@ const ALLOWED_ORIGINS = [
   "http://localhost:3000",
 ];
 
-const EXPIRY_LIMIT = 3 * 60 * 1000; // 3 minutes
+const EXPIRY_LIMIT = 5 * 60 * 1000; // 5 minutes
 
 function setCorsHeaders(response, origin) {
   if (ALLOWED_ORIGINS.includes(origin)) {
@@ -39,8 +39,8 @@ export async function GET(req) {
   const t = req.nextUrl.searchParams.get("t");
   const cs = req.nextUrl.searchParams.get("cs");
 
-  console.log("recieved timestamp",t);
-  console.log("received checksum",cs);
+  // console.log("recieved timestamp",t);
+  // console.log("received checksum",cs);
 
 
   if (!t || !cs) {
@@ -65,7 +65,7 @@ export async function GET(req) {
     .update(t + process.env.API_KEY)
     .digest("hex");
       
-    console.log("generated cs",serverChecksum);
+    // console.log("generated cs",serverChecksum);
 
   // console.log("Backend API Key:", process.env.API_KEY);
 
