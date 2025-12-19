@@ -5,6 +5,7 @@ import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import fs from "fs";
 import crypto from "crypto";
+import mongoose from "mongoose";
 
 /* =======================
    CONFIG
@@ -25,18 +26,11 @@ const EXPIRY_LIMIT = 5 * 60 * 1000; // 5 minutes
 ======================= */
 
 function setCorsHeaders(response, origin) {
-  response.headers.set(
-    "Access-Control-Allow-Origin",
-    ALLOWED_ORIGINS.includes(origin) ? origin : "*"
-  );
-  response.headers.set(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-  response.headers.set(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  );
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    response.headers.set("Access-Control-Allow-Origin", origin);
+    response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    response.headers.set("Access-Control-Allow-Headers", "Content-Type");
+  }
   return response;
 }
 
@@ -55,6 +49,8 @@ export async function OPTIONS(req) {
 ======================= */
 
 export async function GET(req, { params }) {
+  const {id} = await params;
+  console.log("params", params);
   const origin = req.headers.get("origin");
 
   try {
@@ -91,8 +87,14 @@ export async function GET(req, { params }) {
     }
 
     await connectDB();
+    console.log("params.id :", id);
+    console.log("Invalid Object :", mongoose.Types.ObjectId.isValid(id));
 
-    const room = await Accommodation.findById(params.id).lean();
+    if (!id) {
+    return NextResponse.json({ success: false, error: "Missing room ID" }, { status: 400 });
+  }
+
+    const room = await Accommodation.findById(id).lean();
 
     if (!room) {
       const res = NextResponse.json(

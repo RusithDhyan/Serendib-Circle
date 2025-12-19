@@ -60,7 +60,6 @@ export async function GET(req) {
     
         // console.log("Backend API Key:", process.env.API_KEY);
     
-    
       if (serverChecksum !== cs) {
         let res = NextResponse.json({ success: false, error: "Invalid checksum" }, { status: 401 });
         return setCorsHeaders(res, origin);
@@ -93,7 +92,7 @@ export async function POST(req) {
     
       if (!t || !cs) {
         let res = NextResponse.json(
-          { success: false, error: "Missing security parameters" },
+          { success: false, error: "Missing security parameters"},
           { status: 400 }
         );
         return setCorsHeaders(res, origin);

@@ -55,11 +55,6 @@ export async function GET(req) {
         .update(t + process.env.API_KEY)
         .digest("hex");
         
-        console.log("API_KEY exists:", !!process.env.API_KEY);
-        console.log("BE t :",t);
-        console.log("BE Gallery cs :",serverChecksum);
-        console.log("FE Gallery cs :",cs);
-
     
       if (serverChecksum !== cs) {
         let res = NextResponse.json({ success: false, error: "Invalid checksum" }, { status: 401 });
