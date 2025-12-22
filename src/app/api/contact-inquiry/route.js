@@ -60,7 +60,7 @@ export async function GET(req) {
         .update(t + process.env.API_KEY)
         .digest("hex");
     
-        console.log("Backend API Key:", process.env.API_KEY);
+        // console.log("Backend API Key:", process.env.API_KEY);
     
     
       if (serverChecksum !== cs) {

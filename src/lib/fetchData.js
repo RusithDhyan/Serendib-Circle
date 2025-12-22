@@ -1,20 +1,14 @@
 // src/lib/fetchData.js
 import crypto from "crypto";
 
-/* -------------------------------------------------
-   Build-time protection
--------------------------------------------------- */
 const IS_BUILD =
   process.env.NEXT_PHASE === "phase-production-build";
 
-/* -------------------------------------------------
-   Checksum (runtime only)
--------------------------------------------------- */
 async function generateChecksum(timestamp) {
-  const key = process.env.NEXT_PUBLIC_KEY;
+  const key = process.env.API_KEY;
 
   if (!key) {
-    console.error("NEXT_PUBLIC_KEY is missing");
+    console.error("API_KEY is missing");
     return null;
   }
 
@@ -24,9 +18,6 @@ async function generateChecksum(timestamp) {
     .digest("hex");
 }
 
-/* -------------------------------------------------
-   Secure fetch helper
--------------------------------------------------- */
 async function fetchSecure(endpoint, params = {}) {
   // ❌ NEVER call protected APIs during build
   if (IS_BUILD) {
