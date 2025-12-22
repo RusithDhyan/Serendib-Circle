@@ -84,11 +84,11 @@ export default function HomeContent() {
             </div>
           )}
 
-          {!currentUser?.permissions?.canReadHomeSlider ? (
+          {/* {!currentUser?.permissions?.canReadHomeSlider ? (
             <div className="p-6 text-center text-gray-500">
               You do not have permission to view home-slider content.
             </div>
-          ) : (
+          ) : ( */}
             <div className="flex justify-between p-3 mt-4">
               {Array.isArray(homeSlider[0]?.home_slider_image) &&
                 homeSlider[0].home_slider_image.map((img, idx) => (
@@ -110,7 +110,7 @@ export default function HomeContent() {
                   </div>
                 ))}
             </div>
-          )}
+          {/* )} */}
           <div className="space-x-2 flex items-center justify-end px-3 gap-2">
             {currentUser?.permissions?.canUpdateHomeSlider && (
               <button

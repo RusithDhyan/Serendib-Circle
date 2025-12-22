@@ -10,7 +10,7 @@ import Image from "next/image";
 import ProtectedRoute from "../(components)/ProtectedRoute";
 
 export default function BlogPage() {
-  const { blogs, setBlogs, currentUser} = useData();
+  const { blogs, currentUser} = useData();
   const [showPopup, setShowPopup] = useState(false);
   const [editingBlog, setEditingBlog] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -22,19 +22,13 @@ export default function BlogPage() {
 
   const currentBlogs = filteredBlogs.slice();
 
-  const fetchBlog = async () => {
-    const res = await fetch("/api/blogs");
-    const data = await res.json();
-    if (data.success) setBlogs(data.data);
-  };
-
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this Blog?")) return;
 
     const res = await fetch(`/api/blogs/${id}`, { method: "DELETE" });
     const result = await res.json();
     if (result.success || result.message === "Blog deleted") {
-      fetchBlog();
+      // fetchBlog();
     } else {
       alert("Delete failed.");
     }

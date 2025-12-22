@@ -1,24 +1,10 @@
 "use client";
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect } from "react";
 import crypto from "crypto";
 
 const DataContext = createContext({}); // default empty object
 
 export const DataProvider = ({ children, initialData = {} }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [hotels, setHotels] = useState(initialData.hotels || []);
-  const [homeSlider] = useState(initialData.homeSlider || []);
-  const [homeExp] = useState(initialData.homeExp || []);
-  const [homeTop] = useState(initialData.homeTop || []);
-  const [homeMiddle] = useState(initialData.homeMiddle || []);
-  const [homeBottom] = useState(initialData.homeBottom || []);
-  const [offers] = useState(initialData.offers || []);
-  const [experiences] = useState(initialData.experiences || []);
-  const [blogs] = useState(initialData.blogs || []);
-  const [aboutMiddle] = useState(initialData.aboutMiddle || []);
-  const [aboutContent] = useState(initialData.aboutContent || []);
-  const [aboutBottom] = useState(initialData.aboutBottom || []);
-  const [contactContent] = useState(initialData.contactContent || []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -51,25 +37,7 @@ export const DataProvider = ({ children, initialData = {} }) => {
   }, []);
 
   return (
-    <DataContext.Provider
-      value={{
-        currentUser,
-        hotels,
-        setHotels,
-        homeSlider,
-        homeTop,
-        homeMiddle,
-        homeBottom,
-        homeExp,
-        offers,
-        experiences,
-        blogs,
-        aboutMiddle,
-        aboutContent,
-        aboutBottom,
-        contactContent,
-      }}
-    >
+    <DataContext.Provider value={initialData}>
       {children}
     </DataContext.Provider>
   );

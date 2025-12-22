@@ -10,7 +10,7 @@ import Image from "next/image";
 import ProtectedRoute from "../(components)/ProtectedRoute";
 
 export default function ExperiencePage() {
-  const { experiences, setExperiences, currentUser } = useData();
+  const { experiences, currentUser } = useData();
   const [showPopup, setShowPopup] = useState(false);
   const [editingExperience, setEditingExperience] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -25,18 +25,18 @@ export default function ExperiencePage() {
 
   const expTypes = [...new Set(homeExp.map((exp) => exp.type))];
 
-  const fetchExperience = async () => {
-    const res = await fetch("/api/experience");
-    const data = await res.json();
-    if (data.success) setExperiences(data.data);
-  };
+  // const fetchExperience = async () => {
+  //   const res = await fetch("/api/experience");
+  //   const data = await res.json();
+  //   if (data.success) setExperiences(data.data);
+  // };
 
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this Experience?")) return;
     const res = await fetch(`/api/experience/${id}`, { method: "DELETE" });
     const result = await res.json();
     if (result.success || result.message === "Experience deleted") {
-      fetchExperience();
+      // fetchExperience();
     } else {
       alert("Delete failed.");
     }

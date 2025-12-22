@@ -18,10 +18,11 @@ import AddService from "@/app/(components)/(hotels)/(forms)/AddService";
 import Services from "@/app/(components)/(hotels)/Services";
 import Image from "next/image";
 import { useData } from "@/app/context/DataContext";
+import { fetchHotelById } from "@/lib/fetchData";
 
 export default function HotelInnerPage() {
   const {currentUser} = useData();
-  const [hotel, setHotel] = useState(null);
+  const [hotel, setHotel] = useState({});
   const { id } = useParams();
   const [showAccPopup, setShowAccPopup] = useState(false);
   const [showExpPopup, setShowExpPopup] = useState(false);
@@ -40,13 +41,15 @@ export default function HotelInnerPage() {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const [swiperReady, setSwiperReady] = useState(false);
+  console.log("ID",id);
 
   useEffect(() => {
     const fetchHotel = async () => {
-      const res = await fetch(`/api/hotels/${id}`);
-      const data = await res.json();
+      // const res = await fetch(`/api/hotels/${id}`);
+      // const data = await res.json();
+      const data = await fetchHotelById(id);
       console.log("hotel",data);
-      setHotel(data.data);
+      setHotel(data);
     };
     if (id) fetchHotel();
   }, [id]);

@@ -12,18 +12,14 @@ import ProtectedRoute from "../(components)/ProtectedRoute";
 
 export default function OurCollection() {
   const {currentUser} = useData();
-  const { hotels, setHotels } = useData();
+  const { hotels } = useData();
   const [showPopup, setShowPopup] = useState(false);
   const [showMetaPopup, setShowMetaPopup] = useState(false);
   const [editingHotel, setEditingHotel] = useState(null);
   const [editingMetaData, setEditingMetaData] = useState(null);
 
   const [isHovered, setIsHovered] = useState(false);
-  // const fetchHotel = async () => {
-  //   const res = await fetch("/api/hotels");
-  //   const data = await res.json();
-  //   if (data.success) setHotels(data.data);
-  // };
+  
 
 const handleDelete = async (id) => {
   if (!confirm("Are you sure you want to delete this Hotel?")) return;
@@ -55,7 +51,6 @@ const handleDelete = async (id) => {
     alert("Something went wrong while deleting the hotel.");
   }
 };
-
 
   return (
     <ProtectedRoute>
