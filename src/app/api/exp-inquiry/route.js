@@ -30,10 +30,12 @@ export async function OPTIONS(req) {
   let res = new NextResponse(null, { status: 204 });
   return setCorsHeaders(res, origin);
 }
+
+
 export async function POST(req) {
   const origin = req.headers.get("origin");
-  try {
-    const formData = await req.formData();
+
+  const formData = await req.formData();
 
     const t = formData.get("t");
     const cs = formData.get("cs");
@@ -66,6 +68,8 @@ export async function POST(req) {
       );
       return setCorsHeaders(res, origin);
     }
+
+  try {
 
     // --- reCAPTCHA ---
     const recaptchaToken = formData.get("g-recaptcha-response");
@@ -111,6 +115,7 @@ export async function POST(req) {
     await connectDB();
 
     const existingInquiry = await ExperienceInquiry.findOne({ expId, message });
+    
     if (existingInquiry) {
       let res = NextResponse.json(
         { success: false, error: "You have already submitted this inquiry." },
