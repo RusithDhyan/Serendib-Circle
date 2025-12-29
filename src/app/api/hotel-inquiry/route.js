@@ -188,7 +188,7 @@ const origin = req.headers.get("origin");
               success: false,
               error: "You have already submitted this inquiry.",
             }),
-            { status: 400, headers }
+            { status: 400 }
           );
         }
     const submittedAt = new Date();
@@ -231,7 +231,7 @@ const origin = req.headers.get("origin");
   } catch (error) {
     
     let res = NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: error.message},
       { status: 500 }
     );
     return setCorsHeaders(res, origin);
