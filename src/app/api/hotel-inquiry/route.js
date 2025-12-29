@@ -101,6 +101,9 @@ const origin = req.headers.get("origin");
     // --- 1. Security fields ---
     const t = formData.get("t");
     const cs = formData.get("cs");
+    console.log("frontend time : ",t);
+    console.log("frontend cs : ",cs);
+
   
     if (!t || !cs) {
       let res = NextResponse.json(
