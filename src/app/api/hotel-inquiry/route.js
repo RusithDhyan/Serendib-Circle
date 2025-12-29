@@ -173,11 +173,10 @@ const origin = req.headers.get("origin");
     await connectDB();
     const existingInquiry = await HotelInquiry.findOne({
           $or: [
-        { hotelId },
         { name },
         { email },
         { phone },
-        { hotel },
+        // { hotel },
         { message }
       ]
         });
