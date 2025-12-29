@@ -33,42 +33,42 @@ export async function OPTIONS(req) {
 
 export async function POST(req) {
   const origin = req.headers.get("origin");
-    const formData = await req.formData();
-  
-    // --- 1. Security fields ---
-    const t = formData.get("t");
-    const cs = formData.get("cs");
-  
-    if (!t || !cs) {
-      let res = NextResponse.json(
-        { success: false, error: "Missing security parameters" },
-        { status: 400 }
-      );
-      return setCorsHeaders(res, origin);
-    }
-  
-    // --- 2. Validate timestamp ---
-    if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
-      let res = NextResponse.json(
-        { success: false, error: "Expired request" },
-        { status: 401 }
-      );
-      return setCorsHeaders(res, origin);
-    }
-  
-    // --- 3. Validate checksum ---
-    const serverChecksum = crypto
-      .createHash("sha256")
-      .update(t + process.env.API_KEY) // Private key (secure)
-      .digest("hex");
-  
-    if (serverChecksum !== cs) {
-      let res = NextResponse.json(
-        { success: false, error: "Invalid checksum" },
-        { status: 401 }
-      );
-      return setCorsHeaders(res, origin);
-    }
+  const formData = await req.formData();
+
+  // --- 1. Security fields ---
+  const t = formData.get("t");
+  const cs = formData.get("cs");
+
+  if (!t || !cs) {
+    let res = NextResponse.json(
+      { success: false, error: "Missing security parameters" },
+      { status: 400 }
+    );
+    return setCorsHeaders(res, origin);
+  }
+
+  // --- 2. Validate timestamp ---
+  if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
+    let res = NextResponse.json(
+      { success: false, error: "Expired request" },
+      { status: 401 }
+    );
+    return setCorsHeaders(res, origin);
+  }
+
+  // --- 3. Validate checksum ---
+  const serverChecksum = crypto
+    .createHash("sha256")
+    .update(t + process.env.API_KEY) // Private key (secure)
+    .digest("hex");
+
+  if (serverChecksum !== cs) {
+    let res = NextResponse.json(
+      { success: false, error: "Invalid checksum" },
+      { status: 401 }
+    );
+    return setCorsHeaders(res, origin);
+  }
 
   try {
     const recaptchaToken = formData.get("g-recaptcha-response");
@@ -111,17 +111,13 @@ export async function POST(req) {
 
     const existingInquiry = await ExperienceInquiry.findOne({
       expId,
-    message
-    
+      message,
     });
 
     if (existingInquiry) {
-      return new NextResponse(
-        JSON.stringify({
-          success: false,
-          error: "You have already submitted this inquiry.",
-        }),
-        { status: 400, headers }
+      let res = NextResponse.json(
+        { success: false, error: "You have already submitted this inquiry." },
+        { status: 400 }
       );
     }
 
@@ -150,41 +146,42 @@ export async function POST(req) {
       submitted_at: submittedAt,
     });
 
-    const response = NextResponse.json({ success: true, data: newInquiry });
-    if (ALLOWED_ORIGINS.includes(origin)) {
-      response.headers.set("Access-Control-Allow-Origin", origin);
-      response.headers.set(
-        "Access-Control-Allow-Methods",
-        "GET, POST, OPTIONS"
-      );
-    }
-
-    return response;
+    let res = NextResponse.json(
+      { success: true, data: newInquiry },
+      { status: 200 }
+    );
+    return setCorsHeaders(res, origin);
   } catch (error) {
-    console.error("Experience inquiry POST error:", error);
-    return new NextResponse(
-      JSON.stringify({ success: false, error: error.message }),
+    let res = NextResponse.json(
+      { success: false, error: error.message },
       { status: 500 }
     );
+    return setCorsHeaders(res, origin);
   }
 }
 
 // ✅ GET handler
 export async function GET(req) {
-const origin = req.headers.get("origin");
+  const origin = req.headers.get("origin");
 
   // --- 1. Read query parameters ---
   const t = req.nextUrl.searchParams.get("t");
   const cs = req.nextUrl.searchParams.get("cs");
 
   if (!t || !cs) {
-    let res = NextResponse.json({ success: false, error: "Missing parameters" }, { status: 400 });
+    let res = NextResponse.json(
+      { success: false, error: "Missing parameters" },
+      { status: 400 }
+    );
     return setCorsHeaders(res, origin);
   }
 
   // --- 2. Validate timestamp ---
   if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
-    let res = NextResponse.json({ success: false, error: "Expired request" }, { status: 401 });
+    let res = NextResponse.json(
+      { success: false, error: "Expired request" },
+      { status: 401 }
+    );
     return setCorsHeaders(res, origin);
   }
 
@@ -194,11 +191,13 @@ const origin = req.headers.get("origin");
     .update(t + process.env.API_KEY)
     .digest("hex");
 
-    // console.log("Backend API Key:", process.env.API_KEY);
-
+  // console.log("Backend API Key:", process.env.API_KEY);
 
   if (serverChecksum !== cs) {
-    let res = NextResponse.json({ success: false, error: "Invalid checksum" }, { status: 401 });
+    let res = NextResponse.json(
+      { success: false, error: "Invalid checksum" },
+      { status: 401 }
+    );
     return setCorsHeaders(res, origin);
   }
   try {
@@ -208,8 +207,8 @@ const origin = req.headers.get("origin");
     const response = new NextResponse(
       JSON.stringify({ success: true, data: experience })
     );
-    
-  return setCorsHeaders(response, origin);
+
+    return setCorsHeaders(response, origin);
   } catch (error) {
     const response = NextResponse.json(
       { success: false, error: error.message },
