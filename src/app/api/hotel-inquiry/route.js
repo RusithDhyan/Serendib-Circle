@@ -147,11 +147,13 @@ const origin = req.headers.get("origin");
     const verifyData = await verifyRes.json();
 
     if (!verifyData.success) {
-      return new NextResponse(
-        JSON.stringify({ success: false, error: "Failed reCAPTCHA verification" }),
-        { status: 400, headers }
-      );
-    }
+  let res = NextResponse.json(
+    { success: false, error: "Failed reCAPTCHA verification" },
+    { status: 400 }
+  );
+  return setCorsHeaders(res, origin);
+}
+
 
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
