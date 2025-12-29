@@ -30,49 +30,53 @@ export async function OPTIONS(req) {
   let res = new NextResponse(null, { status: 204 });
   return setCorsHeaders(res, origin);
 }
-
 export async function POST(req) {
   const origin = req.headers.get("origin");
-  const formData = await req.formData();
-
-  // --- 1. Security fields ---
-  const t = formData.get("t");
-  const cs = formData.get("cs");
-
-  if (!t || !cs) {
-    let res = NextResponse.json(
-      { success: false, error: "Missing security parameters" },
-      { status: 400 }
-    );
-    return setCorsHeaders(res, origin);
-  }
-
-  // --- 2. Validate timestamp ---
-  if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
-    let res = NextResponse.json(
-      { success: false, error: "Expired request" },
-      { status: 401 }
-    );
-    return setCorsHeaders(res, origin);
-  }
-
-  // --- 3. Validate checksum ---
-  const serverChecksum = crypto
-    .createHash("sha256")
-    .update(t + process.env.API_KEY) // Private key (secure)
-    .digest("hex");
-
-  if (serverChecksum !== cs) {
-    let res = NextResponse.json(
-      { success: false, error: "Invalid checksum" },
-      { status: 401 }
-    );
-    return setCorsHeaders(res, origin);
-  }
-
   try {
+    const formData = await req.formData();
+
+    const t = formData.get("t");
+    const cs = formData.get("cs");
+
+    if (!t || !cs) {
+      let res = NextResponse.json(
+        { success: false, error: "Missing security parameters" },
+        { status: 400 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+
+    if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
+      let res = NextResponse.json(
+        { success: false, error: "Expired request" },
+        { status: 401 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+
+    const serverChecksum = crypto
+      .createHash("sha256")
+      .update(t + process.env.API_KEY)
+      .digest("hex");
+
+    if (serverChecksum !== cs) {
+      let res = NextResponse.json(
+        { success: false, error: "Invalid checksum" },
+        { status: 401 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+
+    // --- reCAPTCHA ---
     const recaptchaToken = formData.get("g-recaptcha-response");
-    // Verify reCAPTCHA
+    if (!recaptchaToken) {
+      let res = NextResponse.json(
+        { success: false, error: "Missing reCAPTCHA token" },
+        { status: 400 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+
     const verifyRes = await fetch(
       "https://www.google.com/recaptcha/api/siteverify",
       {
@@ -84,18 +88,16 @@ export async function POST(req) {
     const verifyData = await verifyRes.json();
 
     if (!verifyData.success) {
-  let res = NextResponse.json(
-    { success: false, error: "Failed reCAPTCHA verification" },
-    { status: 400 }
-  );
-  return setCorsHeaders(res, origin);
-}
-
+      let res = NextResponse.json(
+        { success: false, error: "Failed reCAPTCHA verification" },
+        { status: 400 }
+      );
+      return setCorsHeaders(res, origin);
+    }
 
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
       req.headers.get("x-real-ip") ||
-      req.ip ||
       "IP not found";
 
     const expId = formData.get("selectedExpId");
@@ -108,11 +110,7 @@ export async function POST(req) {
 
     await connectDB();
 
-    const existingInquiry = await ExperienceInquiry.findOne({
-      expId,
-      message,
-    });
-
+    const existingInquiry = await ExperienceInquiry.findOne({ expId, message });
     if (existingInquiry) {
       let res = NextResponse.json(
         { success: false, error: "You have already submitted this inquiry." },
@@ -120,8 +118,6 @@ export async function POST(req) {
       );
       return setCorsHeaders(res, origin);
     }
-
-    const submittedAt = new Date();
 
     const newInquiry = await ExperienceInquiry.create({
       expId,
@@ -132,7 +128,7 @@ export async function POST(req) {
       title,
       message,
       ip_address: ip,
-      submitted_at: submittedAt,
+      submitted_at: new Date(),
     });
 
     await sendExperienceInquiry({
@@ -143,22 +139,17 @@ export async function POST(req) {
       title,
       message,
       ip_address: ip,
-      submitted_at: submittedAt,
+      submitted_at: new Date(),
     });
 
-    let res = NextResponse.json(
-      { success: true, data: newInquiry },
-      { status: 200 }
-    );
+    let res = NextResponse.json({ success: true, data: newInquiry }, { status: 200 });
     return setCorsHeaders(res, origin);
   } catch (error) {
-    let res = NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    );
+    let res = NextResponse.json({ success: false, error: error.message }, { status: 500 });
     return setCorsHeaders(res, origin);
   }
 }
+
 
 // ✅ GET handler
 export async function GET(req) {
