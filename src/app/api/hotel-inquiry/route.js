@@ -6,7 +6,6 @@ import crypto from "crypto";
 
 const RECAPTCHA_SECRET_KEY = "6LfhKG4rAAAAACR9zJQe49CBsfObE_Uu4qFrDHkz";
 
-
 const ALLOWED_ORIGINS = [
   "https://www.serendibhotels.mw",
   "https://serendibhotels.mw",
@@ -223,8 +222,19 @@ const origin = req.headers.get("origin");
       submitted_at: submittedAt,
     });
 
-    return new NextResponse(JSON.stringify({ success: true, data: newInquiry }), { headers });
+    // return new NextResponse(JSON.stringify({ success: true, data: newInquiry }), { headers });
+     let res = NextResponse.json(
+      { success: true, data: newInquiry },
+      { status: 200 }
+    );
+    return setCorsHeaders(res, origin);
   } catch (error) {
-    return new NextResponse(JSON.stringify({ success: false, error: error.message }), { status: 500, headers });
+    
+    let res = NextResponse.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    );
+    return setCorsHeaders(res, origin);
   }
+    // return new NextResponse(JSON.stringify({ success: false, error: error.message }), { status: 500, headers });
 }
