@@ -34,7 +34,7 @@ export async function OPTIONS(req) {
 
 export async function POST(req) {
   const origin = req.headers.get("origin");
-
+  
   const t = req.nextUrl.searchParams.get("t");
   const cs = req.nextUrl.searchParams.get("cs");
 
@@ -83,7 +83,7 @@ export async function POST(req) {
     if (!file || typeof file !== "object") return "";
     const buffer = Buffer.from(await file.arrayBuffer());
     const filename = `${Date.now()}-${file.name}`;
-    const filepath = path.join(process.cwd(), "api/uploads", filename);
+    const filepath = path.join(process.cwd(), "uploads", filename);
     await writeFile(filepath, buffer);
     return `https://serendib.serendibhotels.mw/api/uploads/${filename}`;
   };
