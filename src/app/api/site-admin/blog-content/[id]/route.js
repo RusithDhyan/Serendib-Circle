@@ -7,6 +7,40 @@ import fs from "fs";
 
 export async function PUT(request, context) {
   const { id } = await context.params;
+
+  const t = request.nextUrl.searchParams.get("t");
+  const cs = request.nextUrl.searchParams.get("cs");
+  
+    if (!t || !cs) {
+      let res = NextResponse.json(
+        { success: false, error: "Missing security parameters" },
+        { status: 400 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+    // --- 2. Validate timestamp ---
+    if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
+      let res = NextResponse.json(
+        { success: false, error: "Expired request" },
+        { status: 401 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+  
+    // --- 3. Validate checksum ---
+    const serverChecksum = crypto
+      .createHash("sha256")
+      .update(t + process.env.API_KEY) // Private key (secure)
+      .digest("hex");
+  
+    if (serverChecksum !== cs) {
+      let res = NextResponse.json(
+        { success: false, error: "Invalid checksum" },
+        { status: 401 }
+      );
+      return setCorsHeaders(res, origin);
+    }
+  
   try {
     const formData = await request.formData();
     const fields = {
@@ -53,8 +87,8 @@ export async function PUT(request, context) {
     return NextResponse.json({ message: "Failed to update blog", error }, { status: 500 });
   }
 }
-export async function DELETE(request, {params}) {
-  const { id } = await params;
+export async function DELETE(request, context) {
+  const { id } = await context.params;
 
   try {
     await connectDB();

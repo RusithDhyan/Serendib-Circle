@@ -1,4 +1,5 @@
 "use client";
+import { generateChecksum } from "@/lib/fetchData";
 import { UploadCloud } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
@@ -64,22 +65,11 @@ useEffect(() => {
     setForm({ ...form, bulletPoints: newBullets });
   };
 
-   async function generateChecksum(timestamp) {
-  const API_KEY = process.env.NEXT_PUBLIC_KEY;
-  const text = timestamp + API_KEY;
-
-  const encoder = new TextEncoder();
-  const data = encoder.encode(text);
-
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-}
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const timestamp = Date.now().toString();
-    const checksum = await generateChecksum(timestamp);
+    const t = Date.now().toString();
+    const cs = await generateChecksum(t);
 
     const formData = new FormData();
     console.log("bullet data",formData);
@@ -93,17 +83,14 @@ useEffect(() => {
     formData.append("bullet_title", form.bullet_title);
     formData.append("bulletPoints", JSON.stringify(form.bulletPoints));
 
-    formData.append("t", timestamp);
-    formData.append("cs", checksum);
-
     let res;
     if (editingBlogContentId) {
-      res = await fetch(`/api/site-admin/blog-content?t=${timestamp}&cs=${checksum}/${editingBlogContentId}`, {
+      res = await fetch(`/api/site-admin/blog-content?t=${t}&cs=${cs}/${editingBlogContentId}`, {
         method: "PUT",
         body: formData,
       });
     } else {
-      res = await fetch(`/api/site-admin/blog-content?t=${timestamp}&cs=${checksum}`, {
+      res = await fetch(`/api/site-admin/blog-content?t=${t}&cs=${cs}`, {
         method: "POST",
         body: formData,
       });

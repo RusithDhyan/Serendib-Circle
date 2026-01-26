@@ -34,42 +34,42 @@ export async function OPTIONS(req) {
 
 export async function POST(req) {
   const origin = req.headers.get("origin");
-      const formData = await req.formData();
-    
-      // --- 1. Security fields ---
-      const t = formData.get("t");
-      const cs = formData.get("cs");
-    
-      if (!t || !cs) {
-        let res = NextResponse.json(
-          { success: false, error: "Missing security parameters" },
-          { status: 400 }
-        );
-        return setCorsHeaders(res, origin);
-      }
-    
-      // --- 2. Validate timestamp ---
-      if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
-        let res = NextResponse.json(
-          { success: false, error: "Expired request" },
-          { status: 401 }
-        );
-        return setCorsHeaders(res, origin);
-      }
-    
-      // --- 3. Validate checksum ---
-      const serverChecksum = crypto
-        .createHash("sha256")
-        .update(t + process.env.API_KEY) // Private key (secure)
-        .digest("hex");
-    
-      if (serverChecksum !== cs) {
-        let res = NextResponse.json(
-          { success: false, error: "Invalid checksum" },
-          { status: 401 }
-        );
-        return setCorsHeaders(res, origin);
-      }
+  
+  const t = req.nextUrl.searchParams.get("t");
+  const cs = req.nextUrl.searchParams.get("cs");
+
+  const formData = await req.formData();
+
+  if (!t || !cs) {
+    let res = NextResponse.json(
+      { success: false, error: "Missing security parameters" },
+      { status: 400 }
+    );
+    return setCorsHeaders(res, origin);
+  }
+
+  // --- 2. Validate timestamp ---
+  if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
+    let res = NextResponse.json(
+      { success: false, error: "Expired request" },
+      { status: 401 }
+    );
+    return setCorsHeaders(res, origin);
+  }
+
+  // --- 3. Validate checksum ---
+  const serverChecksum = crypto
+    .createHash("sha256")
+    .update(t + process.env.API_KEY) // Private key (secure)
+    .digest("hex");
+
+  if (serverChecksum !== cs) {
+    let res = NextResponse.json(
+      { success: false, error: "Invalid checksum" },
+      { status: 401 }
+    );
+    return setCorsHeaders(res, origin);
+  }
 
   const blogId = formData.get("blogId");
   const title = formData.get("title");
@@ -79,20 +79,20 @@ export async function POST(req) {
   const bulletPointsRaw = formData.get("bulletPoints");
   const bulletPoints = bulletPointsRaw ? JSON.parse(bulletPointsRaw) : [];
 
- const saveImage = async (file) => {
-     if (!file || typeof file !== "object") return "";
-     const buffer = Buffer.from(await file.arrayBuffer());
-     const filename = `${Date.now()}-${file.name}`;
-     const filepath = path.join(process.cwd(), "uploads", filename);
-     await writeFile(filepath, buffer);
-     return `https://serendib.serendibhotels.mw/api/uploads/${filename}`;
-   };
- 
-   const imageUrl = await saveImage(image);
+  const saveImage = async (file) => {
+    if (!file || typeof file !== "object") return "";
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const filename = `${Date.now()}-${file.name}`;
+    const filepath = path.join(process.cwd(), "uploads", filename);
+    await writeFile(filepath, buffer);
+    return `https://serendib.serendibhotels.mw/api/uploads/${filename}`;
+  };
+
+  const imageUrl = await saveImage(image);
   try {
     await connectDB();
     const newBlog = await BlogContent.create({
-      blogId, 
+      blogId,
       title,
       description,
       bullet_title,
@@ -100,7 +100,7 @@ export async function POST(req) {
       image: imageUrl,
     });
     const response = NextResponse.json({ success: true, data: newBlog });
-    console.log("bullet response",response);
+    console.log("bullet response", response);
 
     response.headers.set(
       "Access-Control-Allow-Origin",
@@ -177,7 +177,6 @@ export async function GET(req) {
 
     let response = NextResponse.json({ success: true, data: blog });
     return setCorsHeaders(response, origin);
-
   } catch (error) {
     console.error("Error fetching blog:", error);
     let res = NextResponse.json(
@@ -187,4 +186,3 @@ export async function GET(req) {
     return setCorsHeaders(res, origin);
   }
 }
-
