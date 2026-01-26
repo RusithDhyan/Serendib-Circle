@@ -50,3 +50,4 @@ ecosystem.config.js
 
 /uploads
 /public/api/
+/public/uploads
