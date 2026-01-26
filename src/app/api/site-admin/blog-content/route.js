@@ -85,7 +85,7 @@ export async function POST(req) {
     const filename = `${Date.now()}-${file.name}`;
     const filepath = path.join(process.cwd(), "uploads", filename);
     await writeFile(filepath, buffer);
-    return `https://serendib.serendibhotels.mw/api/uploads/${filename}`;
+    return `https://serendib.serendibhotels.mw/api/uploads/${filename}`
   };
 
   const imageUrl = await saveImage(image);
