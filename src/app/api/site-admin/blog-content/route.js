@@ -15,7 +15,7 @@ const ALLOWED_ORIGINS = [
   "http://localhost:3000",
 ];
 
-const EXPIRY_LIMIT = 3 * 60 * 1000; // 3 minutes
+const EXPIRY_LIMIT = 5 * 60 * 1000; // 3 minutes
 
 function setCorsHeaders(response, origin) {
   if (ALLOWED_ORIGINS.includes(origin)) {
@@ -48,7 +48,6 @@ export async function POST(req) {
     return setCorsHeaders(res, origin);
   }
 
-  // --- 2. Validate timestamp ---
   if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
     let res = NextResponse.json(
       { success: false, error: "Expired request" },
@@ -57,10 +56,9 @@ export async function POST(req) {
     return setCorsHeaders(res, origin);
   }
 
-  // --- 3. Validate checksum ---
   const serverChecksum = crypto
     .createHash("sha256")
-    .update(t + process.env.API_KEY) // Private key (secure)
+    .update(t + process.env.API_KEY)
     .digest("hex");
 
   if (serverChecksum !== cs) {
@@ -85,7 +83,7 @@ export async function POST(req) {
     const filename = `${Date.now()}-${file.name}`;
     const filepath = path.join(process.cwd(), "uploads", filename);
     await writeFile(filepath, buffer);
-    return `https://serendib.serendibhotels.mw/api/uploads/${filename}`
+    return `https://serendib.serendibhotels.mw/api/uploads/${filename}`;
   };
 
   const imageUrl = await saveImage(image);
