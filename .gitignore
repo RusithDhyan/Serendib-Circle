@@ -49,3 +49,4 @@ ecosystem.config.js
 !/public/all-images/uploads/.gitkeep
 
 /uploads
+/public/api/
