@@ -24,7 +24,7 @@ export default function AddBlogContent({
     const t = Date.now().toString();
     const cs = await generateChecksum(t);
     
-  const res = await fetch(`/api/blog-content?blogId=${blogId}`);
+  const res = await fetch(`/api/site-admin/blog-content?blogId=${blogId}`);
   const data = await res.json();
   console.log("Fetched BlogContent:", data.data);
 
@@ -94,16 +94,16 @@ useEffect(() => {
     formData.append("bulletPoints", JSON.stringify(form.bulletPoints));
 
     formData.append("t", timestamp);
-  formData.append("cs", checksum);
+    formData.append("cs", checksum);
 
     let res;
     if (editingBlogContentId) {
-      res = await fetch(`/api/blog-content?t=${timestamp}&cs=${checksum}/${editingBlogContentId}`, {
+      res = await fetch(`/api/site-admin/blog-content?t=${timestamp}&cs=${checksum}/${editingBlogContentId}`, {
         method: "PUT",
         body: formData,
       });
     } else {
-      res = await fetch(`/api/blog-content?t=${timestamp}&cs=${checksum}`, {
+      res = await fetch(`/api/site-admin/blog-content?t=${timestamp}&cs=${checksum}`, {
         method: "POST",
         body: formData,
       });
