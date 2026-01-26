@@ -1,43 +1,52 @@
 "use client";
-import { createContext, useContext, useEffect } from "react";
-import crypto from "crypto";
+import { createContext, useContext, useState } from "react";
 
-const DataContext = createContext({}); // default empty object
+const DataContext = createContext({});
 
 export const DataProvider = ({ children, initialData = {} }) => {
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    const fetchUser = async () => {
-      try {
-        const t = Date.now().toString();
-        const cs = crypto
-          .createHash("sha256")
-          .update(t + process.env.API_KEY)
-          .digest("hex");
-
-        const ApiURL =
-          process.env.NODE_ENV === "development"
-            ? `http://localhost:3001/api/current-user?t=${t}&cs=${cs}`
-            : `https://serendib.serendibhotels.mw/api/current-user?t=${t}&cs=${cs}`;
-
-        const res = await fetch(ApiURL, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        if (data.success) setCurrentUser(data.data);
-      } catch (err) {
-        console.error("Failed to fetch user:", err);
-      }
-    };
-
-    fetchUser();
-  }, []);
+  const [hotels] = useState(initialData.hotels || []);
+  const [homeSlider] = useState(initialData.homeSlider || []);
+  const [homeExp] = useState(initialData.homeExp || []);
+  const [homeTop] = useState(initialData.homeTop || []);
+  const [homeMiddle] = useState(initialData.homeMiddle || []);
+  const [homeBottom] = useState(initialData.homeBottom || []);
+  const [offers] = useState(initialData.offers || []);
+  const [experiences] = useState(initialData.experiences || []);
+  const [blogs] = useState(initialData.blogs || []);
+  const [aboutMiddle] = useState(initialData.aboutMiddle || []);
+  const [aboutContent] = useState(initialData.aboutContent || []);
+  const [aboutBottom] = useState(initialData.aboutBottom || []);
+  const [contactContent] = useState(initialData.contactContent || []);
+  const [users] = useState(initialData.users || []);
+  const [hotelInquiry] = useState(initialData.hotelInquiry || []);
+  const [expInquiry] = useState(initialData.expInquiry || []);
+  const [contactInquiry] = useState(initialData.contactInquiry || []);
+  const [newsLetter] = useState(initialData.newsLetter || []);
 
   return (
-    <DataContext.Provider value={initialData}>
+    <DataContext.Provider
+      value={{
+        hotels,
+        homeSlider,
+        homeTop,
+        homeMiddle,
+        homeBottom,
+        homeExp,
+        offers,
+        experiences,
+        blogs,
+        aboutMiddle,
+        aboutContent,
+        aboutBottom,
+        contactContent,
+        users,
+        hotelInquiry,
+        expInquiry,
+        contactInquiry,
+        newsLetter,
+      }}
+    >
+      {/* <DataContext.Provider value={initialData}> */}
       {children}
     </DataContext.Provider>
   );

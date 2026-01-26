@@ -1,4 +1,4 @@
-import Home from "./home/page";
+import Home from "./site-admin/home/page";
 
 export default function Main() {
   return (

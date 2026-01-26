@@ -10,7 +10,7 @@ const IS_BUILD =
 /* -------------------------------------------------
    Checksum (runtime only)
 -------------------------------------------------- */
-async function generateChecksum(timestamp) {
+export async function generateChecksum(timestamp) {
   const key = process.env.NEXT_PUBLIC_KEY;
 
   if (!key) {
@@ -24,7 +24,7 @@ async function generateChecksum(timestamp) {
     .digest("hex");
 }
 
-async function fetchSecure(endpoint, params = {}) {
+export async function fetchSecure(endpoint, params = {}) {
   // ❌ NEVER call protected APIs during build
   // if (IS_BUILD) {
   //   console.warn(`⏭ Skipping ${endpoint} during build`);
@@ -48,7 +48,7 @@ async function fetchSecure(endpoint, params = {}) {
         ? "http://localhost:3001"
         : "https://serendib.serendibhotels.mw";
 
-    const res = await fetch(`${baseURL}/api/${endpoint}?${query}`, {
+    const res = await fetch(`${baseURL}/api/site-admin/${endpoint}?${query}`, {
       cache: "no-store",
     });
 
@@ -87,7 +87,7 @@ async function fetchSecureById(endpoint, id) {
         : "https://serendib.serendibhotels.mw";
 
   const res = await fetch(
-    `${baseURL}/api/${endpoint}/${id}?t=${t}&cs=${cs}`,
+    `${baseURL}/api/site-admin/${endpoint}/${id}?t=${t}&cs=${cs}`,
     { cache: "no-store" }
   );
 
@@ -188,6 +188,11 @@ export async function fetchAllData() {
     homeMiddle,
     homeBottom,
     homeExp,
+    users,
+    hotelInquiry,
+    expInquiry,
+    contactInquiry,
+    newsLetter
   ] = await Promise.all([
     fetchSecure("hotels"),
     fetchSecure("experience"),
@@ -203,6 +208,12 @@ export async function fetchAllData() {
     fetchSecure("home-middle"),
     fetchSecure("home-bottom"),
     fetchSecure("home-exp"),
+    fetchSecure("users"),
+    fetchSecure("hotel-inquiry"),
+    fetchSecure("exp-inquiry"),
+    fetchSecure("contact-inquiry"),
+    fetchSecure("news-letter")
+
   ]);
 
   return {
@@ -220,5 +231,11 @@ export async function fetchAllData() {
     homeMiddle,
     homeBottom,
     homeExp,
+    users,
+    hotelInquiry,
+    expInquiry,
+    contactInquiry,
+    newsLetter
+
   };
 }

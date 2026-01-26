@@ -1,5 +1,33 @@
 @import "tailwindcss";
 
+/* 1️⃣ Brand variables */
+:root {
+  --serendib-primary: #0A4D68;
+  --serendib-secondary: #088395;
+  --serendib-accent: #1aa5bb;
+  --serendib-light: #00FFCA;
+  --serendib-gold: #D4AF37;
+  --serendib-bronze: #CD7F32;
+  --serendib-silver: #C0C0C0;
+}
+
+/* 2️⃣ Tailwind v4 theme mapping */
+@theme {
+  --color-serendib-primary: var(--serendib-primary);
+  --color-serendib-secondary: var(--serendib-secondary);
+  --color-serendib-accent: var(--serendib-accent);
+  --color-serendib-light: var(--serendib-light);
+  --color-serendib-gold: var(--serendib-gold);
+  --color-serendib-bronze: var(--serendib-bronze);
+  --color-serendib-silver: var(--serendib-silver);
+}
+
+/* 3️⃣ Tailwind layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 4️⃣ Your existing styles */
 @font-face {
   font-family: 'ArgueDemo';
   src: url('/all-images/fonts/ArgueDEMO.woff2') format('woff2');
@@ -18,11 +46,36 @@ h1, h2, h3, h4, h5, h6, .title {
 
 html,
 body {
-  font-family:'Jost', sans-serif;
+  font-family: 'Jost', sans-serif;
 }
-
 
 body:has(.home-slider), body:has(.sign-in) {
   overflow: hidden;
+}
+
+
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-serendib-primary hover:bg-serendib-secondary text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-lg transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-md p-6;
+  }
+  
+  .tier-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold;
+  }
 }
 

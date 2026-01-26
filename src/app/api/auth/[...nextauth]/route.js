@@ -1,0 +1,129 @@
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { connectDB } from '@/lib/mongodb';
+import User from '@/models/User';
+
+export const authOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials) {
+        try {
+          await connectDB();
+          
+          const user = await User.findOne({ email: credentials.email });
+          console.log("user...",credentials);
+          
+          if (!user) {
+            throw new Error('No user found with this email');
+          }
+          
+          if (!user.password) {
+            throw new Error('Please sign in with Google');
+          }
+          
+          const isValid = await user.comparePassword(credentials.password);
+          
+          if (!isValid) {
+            throw new Error('Invalid password');
+          }
+          
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            name: user.name,
+            image: user.image,
+            role: user.role,
+            phone: user.phone
+          };
+        } catch (error) {
+          console.error('Auth error:', error);
+          throw new Error(error.message);
+        }
+      }
+    })
+  ],
+  callbacks: {
+  async signIn({ user, account }) {
+    try {
+      await connectDB();
+
+      const existingUser = await User.findOne({ email: user.email });
+
+      if (!existingUser && account.provider === 'google') {
+        await User.create({
+          email: user.email,
+          name: user.name,
+          image: user.image,
+          googleId: account.providerAccountId,
+        });
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error signing in:', error);
+      return false;
+    }
+  },
+
+  // Store role in jwt
+  async jwt({ token, user }) {
+    if (user) {
+      // Credentials login: user.role exists
+      token.role = user.role || token.role;
+    }
+
+    // Google login: fetch role from DB if missing
+    if (!token.role && user?.email) {
+      await connectDB();
+      const dbUser = await User.findOne({ email: user.email });
+      if (dbUser) token.role = dbUser.role || "guest";
+    }
+
+    console.log("JWT token:", token); // ✅ verify role here
+    return token;
+  },
+
+  // Expose role to session
+  async session({ session, token }) {
+    if (session.user) {
+      session.user.role = token.role || "guest"; // always have a fallback
+    }
+
+    // Optional: add other DB-based fields
+    await connectDB();
+    const dbUser = await User.findOne({ email: session.user.email });
+    if (dbUser) {
+      session.user.id = dbUser._id.toString();
+      session.user.tier = dbUser.tier;
+      session.user.points = dbUser.points;
+      session.user.image = dbUser.image;
+      session.user.phone = dbUser.phone;
+      session.user.updatedAt = dbUser.updatedAt;
+      session.user.permissions = dbUser.permissions;
+    }
+
+    console.log("Session object:", session); // ✅ verify role here too
+    return session;
+  },
+
+ 
+},
+  pages: {
+    signIn: '/auth/signin',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };

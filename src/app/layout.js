@@ -2,9 +2,10 @@
 export const revalidate = 0;
 
 import "./globals.css";
-import Navbar from "./(components)/Navbar";
+import Navbar from "./site-admin/(components)/Navbar";
 import { DataProvider } from "./context/DataContext";
 import { fetchAllData } from "@/lib/fetchData";
+import SessionProvider from "./components/SessionProvider";
 
 export const metadata = {
   title: "HMS_Serendib",
@@ -13,7 +14,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   // ✅ Fetch all data server-side
-  const initialData = await fetchAllData();
+  // const initialData = await fetchAllData();
 
   return (
     <html lang="en" className="">
@@ -21,13 +22,13 @@ export default async function RootLayout({ children }) {
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className="transition-colors duration-300 bg-white text-black">
-        {/* Pass the preloaded data to client context */}
-        <DataProvider initialData={initialData}>
+        {/* <DataProvider initialData={initialData}>
           <div className="flex flex-col">
             <Navbar />
             <main className="flex-grow">{children}</main>
           </div>
-        </DataProvider>
+        </DataProvider> */}
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );
