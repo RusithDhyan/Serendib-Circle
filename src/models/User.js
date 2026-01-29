@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 // const mongoose = require("mongoose");
 
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -37,18 +37,45 @@ const userSchema = new mongoose.Schema(
     },
     tier: {
       type: String,
-      enum: ['Explorer', 'Adventurer', 'Voyager', 'The Circle'],
-      default: 'Explorer',
+      enum: ["Explorer", "Adventurer", "Voyager", "The Circle"],
+      default: "Explorer",
+    },
+    tierHistory: {
+      type: [
+        {
+          tier: String,
+          date: Date,
+        },
+      ],
+      default: () => [{ tier: "Explorer", date: new Date() }],
+    },
+    tierUpdatedAt: {
+      type: Date,
+    },
+    previousTier: {
+      type: String,
     },
     role: {
       type: String,
-      enum: ['guest','moderator','supervisor','manager', 'admin', 'superadmin','owner'],
-      default: 'guest',
+      enum: [
+        "guest",
+        "moderator",
+        "supervisor",
+        "manager",
+        "admin",
+        "superadmin",
+        "owner",
+      ],
+      default: "guest",
     },
     phone: {
       type: String,
       default: "",
-  },
+    },
+    explorePreferences: {
+      type: [String],
+      default: [],
+    },
     dietaryPreferences: {
       type: [String],
       default: [],
@@ -57,11 +84,11 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-   addedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: false,
-   },
+    addedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
     permissions: {
       canCreateHotel: { type: Boolean, default: false },
       canReadHotel: { type: Boolean, default: false },
@@ -656,42 +683,51 @@ userSchema.pre("save", function (next) {
 });
 
 // Method to compare passwords
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   if (!this.password) {
     return false;
   }
   try {
     return await bcrypt.compare(candidatePassword, this.password);
   } catch (error) {
-    console.error('Password comparison error:', error);
+    console.error("Password comparison error:", error);
     return false;
   }
 };
 
 // Method to calculate tier based on stays and spend
-userSchema.methods.updateTier = function() {
+userSchema.methods.updateTier = function () {
   const stays = this.totalStays;
   const spend = this.totalSpend;
 
+  let newTier = "Explorer";
+
   if (stays >= 11 || spend >= 3500) {
-    this.tier = 'The Circle';
+    newTier = "The Circle";
   } else if (stays >= 5 || spend >= 2000) {
-    this.tier = 'Voyager';
+    newTier = "Voyager";
   } else if (stays >= 2 || spend >= 1000) {
-    this.tier = 'Adventurer';
-  } else {
-    this.tier = 'Explorer';
+    newTier = "Adventurer";
+  }
+
+  // ✅ Only update date if tier actually changes
+  if (this.tier !== newTier) {
+    this.tier = newTier;
+    this.tierHistory.push({
+      tier: newTier,
+      date: new Date(),
+    });
   }
 };
 
 // Method to get tier multiplier
-userSchema.methods.getTierMultiplier = function() {
+userSchema.methods.getTierMultiplier = function () {
   switch (this.tier) {
-    case 'The Circle':
+    case "The Circle":
       return 2.0; // 100% bonus
-    case 'Voyager':
+    case "Voyager":
       return 1.5; // 50% bonus
-    case 'Adventurer':
+    case "Adventurer":
       return 1.25; // 25% bonus
     default:
       return 1.0; // No bonus
@@ -699,16 +735,16 @@ userSchema.methods.getTierMultiplier = function() {
 };
 
 // Method to add points from spending
-userSchema.methods.addSpend = function(amountUSD) {
+userSchema.methods.addSpend = function (amountUSD) {
   const basePoints = amountUSD * 10; // 10 points per dollar
   const multiplier = this.getTierMultiplier();
   const earnedPoints = Math.floor(basePoints * multiplier);
-  
+
   this.points += earnedPoints;
   this.totalSpend += amountUSD;
   this.updateTier();
-  
+
   return earnedPoints;
 };
 
-export default mongoose.models.User || mongoose.model('User', userSchema);
+export default mongoose.models.User || mongoose.model("User", userSchema);

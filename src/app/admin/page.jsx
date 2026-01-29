@@ -99,16 +99,16 @@ export default function AdminDashboard() {
         </div>
 
         <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Transactions by Type</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-4">Redemptions by Type</h2>
           <div className="space-y-3">
-            {analytics?.transactions?.byType?.map((trans) => (
-              <div key={trans._id} className="p-3 bg-gray-50 rounded-lg">
+            {analytics?.redemptions?.byType?.map((redeem) => (
+              <div key={redeem._id} className="p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-semibold capitalize">{trans._id}</span>
-                  <span className="text-lg font-bold">{trans.count}</span>
+                  <span className="font-semibold capitalize">{redeem._id}</span>
+                  <span className="text-lg font-bold">{redeem.count}</span>
                 </div>
                 <div className="text-sm text-gray-600">
-                  Total: ${trans.totalAmount?.toFixed(2) || 0}
+                  Total: ${redeem.totalValue?.toFixed(2) || 0}
                 </div>
               </div>
             ))}

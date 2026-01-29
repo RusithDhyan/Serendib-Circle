@@ -40,11 +40,11 @@ export default function BalanceCard({ user }) {
       </div>
 
       <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/20">
-        <div>
+        {/* <div>
           <div className="text-sm opacity-90 mb-1">USD Value</div>
           <div className="text-2xl font-bold">${pointsValue}</div>
           <div className="text-xs opacity-75">100 pts = $1 USD</div>
-        </div>
+        </div> */}
         <div>
           <div className="text-sm opacity-90 mb-1">Total Spend</div>
           <div className="text-2xl font-bold">${user.totalSpend.toLocaleString()}</div>
@@ -52,12 +52,12 @@ export default function BalanceCard({ user }) {
         </div>
       </div>
 
-      <div className="mt-6 bg-white/10 backdrop-blur-sm rounded-lg p-4">
+      {/* <div className="mt-6 bg-white/10 backdrop-blur-sm rounded-lg p-4">
         <div className="flex items-center gap-2 text-sm">
           <TrendingUp size={16} />
           <span>Every $1 spent earns {multiplier === '1.0x' ? '10' : multiplier === '1.25x' ? '12-13' : multiplier === '1.5x' ? '15' : '20'} points</span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

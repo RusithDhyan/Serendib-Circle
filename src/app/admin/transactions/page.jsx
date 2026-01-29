@@ -61,18 +61,18 @@ export default function AdminTransactions() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <div className="bg-white rounded-xl shadow-md p-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        {/* <div className="bg-white rounded-xl shadow-md p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-600">Total Transactions</span>
             <Calendar className="text-serendib-primary" size={20} />
           </div>
           <div className="text-3xl font-bold text-gray-900">{transactions.length}</div>
-        </div>
+        </div> */}
 
         <div className="bg-white rounded-xl shadow-md p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Points Earned</span>
+            <span className="text-sm text-gray-600">Total Points</span>
             <TrendingUp className="text-green-600" size={20} />
           </div>
           <div className="text-3xl font-bold text-green-600">
@@ -83,7 +83,7 @@ export default function AdminTransactions() {
 
         <div className="bg-white rounded-xl shadow-md p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Points Redeemed</span>
+            <span className="text-sm text-gray-600">Total Redemptions</span>
             <TrendingDown className="text-red-600" size={20} />
           </div>
           <div className="text-3xl font-bold text-red-600">
@@ -94,7 +94,7 @@ export default function AdminTransactions() {
 
         <div className="bg-white rounded-xl shadow-md p-6">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Total Revenue</span>
+            <span className="text-sm text-gray-600">Total Spend</span>
             <TrendingUp className="text-serendib-primary" size={20} />
           </div>
           <div className="text-3xl font-bold text-serendib-primary">
@@ -205,7 +205,7 @@ export default function AdminTransactions() {
       </div>
 
       {/* Summary Footer */}
-      {transactions.length > 0 && (
+      {/* {transactions.length > 0 && (
         <div className="mt-6 bg-gradient-to-r from-serendib-primary to-serendib-secondary text-white rounded-xl p-6">
           <div className="grid md:grid-cols-3 gap-6">
             <div>
@@ -228,7 +228,7 @@ export default function AdminTransactions() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

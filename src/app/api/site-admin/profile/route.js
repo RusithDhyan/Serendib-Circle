@@ -72,11 +72,10 @@ export async function PUT(req) {
 
         const filename = `${Date.now()}-${image.name.replace(/\s/g, '-')}`;
         const filepath = path.join(uploadsDir, filename);
-
         await writeFile(filepath, buffer);
 
         // Save relative path to database
-        user.image = `https://serendib.serendibhotels.mw/public/uploads/profiles/${filename}`;
+        user.image = `https://serendib.serendibhotels.mw/uploads/profiles/${filename}`;
       } catch (uploadError) {
         console.error("Image upload error:", uploadError);
         return NextResponse.json(

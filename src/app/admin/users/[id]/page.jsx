@@ -204,6 +204,8 @@ export default function UserDetail() {
                   required
                 >
                   <option value="earn">Purchase</option>
+                  <option value="dining">Dining</option>
+                  <option value="experience">Experience</option>
                   <option value="stay">Hotel Stay</option>
                 </select>
               </div>

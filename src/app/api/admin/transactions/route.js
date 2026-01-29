@@ -59,7 +59,7 @@ export async function POST(req) {
 
     let points = 0;
 
-    if (type === 'earn' || type === 'stay') {
+    if (type === 'earn' || type === 'stay' || type === 'dining' || type === 'experience') {
       points = user.addSpend(amount);
       
       if (type === 'stay') {

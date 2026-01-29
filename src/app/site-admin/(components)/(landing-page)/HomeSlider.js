@@ -1,134 +1,3 @@
-// "use client";
-// import { useEffect, useState } from "react";
-// import Image from "next/image";
-// import Link from "next/link";
-
-// export default function HomeSlider() {
-//   const [currentIndex, setCurrentIndex] = useState(0);
-
-//   const homeSlider = [
-//     { url: "/all-images/images/cover-image1-new.jpg" },
-//     { url: "/all-images/images/cover-image2.jpg" },
-//     { url: "/all-images/images/cover-image3.jpg" },
-//     { url: "/all-images/images/cover-img4.jpg"}
-//   ];
-
-//   // Auto change image every 5s
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setCurrentIndex((prev) => (prev + 1) % homeSlider.length);
-//     }, 5000);
-//     return () => clearInterval(interval);
-//   }, [homeSlider.length]);
-
-//   return (
-//     <div>
-//     <div className="home_slider relative w-full h-screen">
-//       {/* Overlay content */}
-//       <div className="absolute inset-0 z-10 flex justify-left items-center sm:px-10 pointer-events-none">
-//         <div className="flex flex-col">
-//           <h1 className="text-2xl md:text-3xl lg:text-6xl 2xl:text-8xl text-white font-bold px-2 text-left drop-shadow-md">
-//             Serendib Hotel <br />
-//             Management System
-//           </h1>
-//           <p className="px-2 text-white">
-//             Situated along the N265 in Liwonde, Waters Edge Hotel offers a
-//             peaceful retreat with scenic surroundings <br /> and sweeping views
-//             of the natural landscape...
-//           </p>
-//         </div>
-//       </div>
-
-//       {/* Slideshow images */}
-//       <div className="absolute inset-0">
-//         {homeSlider.map((slide, index) => (
-//           <div
-//             key={index}
-//             className={`absolute inset-0 transition-opacity duration-1000 ${
-//               index === currentIndex ? "opacity-100" : "opacity-0"
-//             }`}
-//           >
-//             <Image
-//               src={slide.url}
-//               alt={`slide-${index}`}
-//               fill
-//               className="object-cover"
-//               priority={index === 0}
-//             />
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//      <div className="min-h-screen bg-orange-100 from-serendib-primary via-serendib-secondary to-serendib-accent">
-//       <div className="container mx-auto px-4 py-16">
-//         <div className="max-w-4xl mx-auto text-center">
-//           <h1 className="text-6xl font-bold mb-6">Serendib Circle</h1>
-//           <p className="text-2xl mb-4">Your Gateway to Exclusive Rewards</p>
-//           <p className="text-xl mb-12 opacity-90">
-//             Earn 10 points per dollar. Unlock elite tiers. Redeem with USD-pegged stability.
-//           </p>
-
-//           <div className="grid md:grid-cols-3 gap-8 mb-16">
-//             <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6">
-//               <div className="text-4xl mb-4">💎</div>
-//               <h3 className="text-xl font-bold mb-2">4 Elite Tiers</h3>
-//               <p className="opacity-90">From Explorer to The Circle</p>
-//             </div>
-//             <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6">
-//               <div className="text-4xl mb-4">⚡</div>
-//               <h3 className="text-xl font-bold mb-2">Accelerated Earning</h3>
-//               <p className="opacity-90">Up to 100% point bonus</p>
-//             </div>
-//             <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6">
-//               <div className="text-4xl mb-4">💰</div>
-//               <h3 className="text-xl font-bold mb-2">USD-Pegged Value</h3>
-//               <p className="opacity-90">100 points = $1 USD</p>
-//             </div>
-//           </div>
-
-//           <div className="flex gap-4 justify-center">
-//             <Link
-//               href="/auth/register"
-//               className="inline-block bg-white text-serendib-primary font-bold text-lg px-12 py-4 rounded-lg hover:bg-gray-100 transition-colors duration-200 shadow-xl"
-//             >
-//               Create Account
-//             </Link>
-//             <Link
-//               href="/auth/signin"
-//               className="inline-block bg-transparent border-2 border-black font-bold text-lg px-12 py-4 rounded-lg hover:bg-black/10 transition-colors duration-200"
-//             >
-//               Sign In
-//             </Link>
-//           </div>
-
-//           <div className="mt-16 bg-white/5 backdrop-blur-sm rounded-xl p-8">
-//             <h2 className="text-3xl font-bold mb-8">Tier Benefits</h2>
-//             <div className="grid md:grid-cols-4 gap-6 text-left">
-//               <div>
-//                 <h4 className="font-bold text-lg mb-2">🌟 Explorer</h4>
-//                 <p className="text-sm opacity-90">Entry level • Base points</p>
-//               </div>
-//               <div>
-//                 <h4 className="font-bold text-lg mb-2">🗺️ Adventurer</h4>
-//                 <p className="text-sm opacity-90">2+ stays • 25% bonus</p>
-//               </div>
-//               <div>
-//                 <h4 className="font-bold text-lg mb-2">⛵ Voyager</h4>
-//                 <p className="text-sm opacity-90">5+ stays • 50% bonus</p>
-//               </div>
-//               <div>
-//                 <h4 className="font-bold text-lg mb-2">👑 The Circle</h4>
-//                 <p className="text-sm opacity-90">11+ stays • 100% bonus</p>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//     </div>
-//   );
-// }
-
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -140,10 +9,10 @@ export default function LandingPage() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-yellow-600 to-gray-200 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">S</span>
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-gray-300 bg-clip-text text-transparent">
                 Serendib Circle
               </span>
             </div>
@@ -151,13 +20,13 @@ export default function LandingPage() {
             <div className="flex items-center gap-4">
               <Link
                 href="/auth/signin"
-                className="px-6 py-2.5 text-gray-700 font-semibold hover:text-blue-600 transition-colors"
+                className="px-6 py-2.5 text-gray-700 font-semibold hover:text-yellow-600 transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/auth/register"
-                className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
+                className="px-6 py-2.5 bg-gradient-to-r from-yellow-600 to-gray-300 text-white font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
               >
                 Get Started
               </Link>
@@ -167,10 +36,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="container mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
+      <section className="flex flex-col items-center justify-center items-center pt-32 pb-20 px-6 text-center">
             <div className="space-y-8">
               <div className="inline-block">
                 <span className="px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
@@ -180,7 +46,7 @@ export default function LandingPage() {
               
               <h1 className="text-5xl md:text-6xl font-bold leading-tight">
                 Welcome to
-                <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-yellow-600 to-gray-200 bg-clip-text text-transparent">
                   Serendib Circle
                 </span>
               </h1>
@@ -190,23 +56,23 @@ export default function LandingPage() {
                 Redeem for free nights, upgrades, and unforgettable experiences.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/auth/register"
-                  className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center"
+                  className="px-8 py-4 bg-gradient-to-r from-yellow-600 to-gray-300 text-white font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center"
                 >
                   Join Free Today
                 </Link>
                 <Link
                   href="/auth/signin"
-                  className="px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 font-bold rounded-full hover:border-blue-600 hover:text-blue-600 transition-all duration-300 text-center"
+                  className="px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 font-bold rounded-full hover:border-yellow-600 hover:text-yellow-600 transition-all duration-300 text-center"
                 >
                   Sign In
                 </Link>
               </div>
 
               {/* Stats */}
-              <div className="flex gap-8 pt-8">
+              <div className="flex justify-center gap-8 pt-8">
                 <div>
                   <div className="text-3xl font-bold text-blue-600">10K+</div>
                   <div className="text-sm text-gray-600">Active Members</div>
@@ -215,88 +81,8 @@ export default function LandingPage() {
                   <div className="text-3xl font-bold text-purple-600">50M+</div>
                   <div className="text-sm text-gray-600">Points Earned</div>
                 </div>
-                <div>
-                  <div className="text-3xl font-bold text-green-600">4.9★</div>
-                  <div className="text-sm text-gray-600">Member Rating</div>
-                </div>
               </div>
             </div>
-
-            {/* Right Image/Card */}
-            <div className="relative">
-              {/* Decorative Elements */}
-              <div className="absolute top-0 right-0 w-72 h-72 bg-blue-200 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
-              <div className="absolute bottom-0 left-0 w-72 h-72 bg-purple-200 rounded-full filter blur-3xl opacity-30 animate-pulse delay-1000"></div>
-              
-              {/* Main Card */}
-              <div className="relative bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
-                <div className="space-y-6">
-                  {/* Card Header */}
-                  <div className="flex items-center justify-between pb-4 border-b">
-                    <div>
-                      <h3 className="text-2xl font-bold">Loyalty Card</h3>
-                      <p className="text-sm text-gray-500">Member Benefits</p>
-                    </div>
-                    <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Points Display */}
-                  <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6">
-                    <div className="text-sm text-gray-600 mb-2">Your Points Balance</div>
-                    <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      12,450
-                    </div>
-                    <div className="text-sm text-gray-500 mt-1">≈ $124.50 USD</div>
-                  </div>
-
-                  {/* Tier Badges */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200">
-                      <div className="text-xs text-gray-500 mb-1">Current Tier</div>
-                      <div className="font-bold text-gray-800">Voyager</div>
-                    </div>
-                    <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-4 border-2 border-yellow-200">
-                      <div className="text-xs text-orange-600 mb-1">Next Tier</div>
-                      <div className="font-bold text-orange-700">The Circle</div>
-                    </div>
-                  </div>
-
-                  {/* Benefits List */}
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-sm">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                        <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                      <span className="text-gray-700">50% Bonus Points on Stays</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                        <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                      <span className="text-gray-700">Free Room Upgrades</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                        <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                      <span className="text-gray-700">Early Check-in Access</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Features Section */}
@@ -345,7 +131,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-br from-blue-600 to-purple-600">
+      <section className="py-20 px-6 bg-gradient-to-br from-yellow-600 to-gray-200">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Start Earning?
@@ -355,7 +141,7 @@ export default function LandingPage() {
           </p>
           <Link
             href="/auth/register"
-            className="inline-block px-12 py-4 bg-white text-blue-600 font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300"
+            className="inline-block px-12 py-4 bg-white text-yellow-600 font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300"
           >
             Create Free Account
           </Link>
@@ -363,10 +149,10 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 bg-gray-900 text-gray-400">
+      <footer className="py-2 px-6 bg-black text-gray-400">
         <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="w-10 h-10 bg-gradient-to-br from-yellow-600 to-gray-200 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">S</span>
             </div>
             <span className="text-2xl font-bold text-white">Serendib Circle</span>

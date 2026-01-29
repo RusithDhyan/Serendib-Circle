@@ -35,7 +35,7 @@ export async function PUT(req) {
     }
 
     const body = await req.json();
-    const { dietaryPreferences, roomPreferences } = body;
+    const { dietaryPreferences, roomPreferences, explorePreferences } = body;
 
     await connectDB();
     const user = await User.findOneAndUpdate(
@@ -44,6 +44,7 @@ export async function PUT(req) {
         $set: {
           dietaryPreferences: dietaryPreferences || [],
           roomPreferences: roomPreferences || [],
+          explorePreferences: explorePreferences || []
         },
       },
       { new: true }

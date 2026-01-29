@@ -251,7 +251,7 @@ console.log("edfer",redemptions);
 
       {/* Redemption Breakdown */}
       {redemptions.length > 0 && (
-        <div className="mt-6 grid md:grid-cols-3 gap-6">
+        <div className="mt-6 grid md:grid-cols-2 gap-6">
           <div className="bg-white rounded-xl shadow-md p-6">
             <h3 className="text-lg font-bold text-gray-900 mb-4">By Type</h3>
             <div className="space-y-3">
@@ -274,7 +274,7 @@ console.log("edfer",redemptions);
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6">
+          {/* <div className="bg-white rounded-xl shadow-md p-6">
             <h3 className="text-lg font-bold text-gray-900 mb-4">By Status</h3>
             <div className="space-y-3">
               {['active', 'used', 'expired'].map(status => {
@@ -297,7 +297,7 @@ console.log("edfer",redemptions);
                 );
               })}
             </div>
-          </div>
+          </div> */}
 
           <div className="bg-gradient-to-br from-serendib-primary to-serendib-secondary text-white rounded-xl shadow-md p-6">
             <h3 className="text-lg font-bold mb-4">Summary</h3>
