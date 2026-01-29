@@ -29,7 +29,7 @@ export default function BlogContent({ blogId }) {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this Experience?")) return;
 
-    const res = await fetch(`/api/blog-content/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/site-admin/blog-content/${id}`, { method: "DELETE" });
     const result = await res.json();
     if (result.success || result.message === "Experience deleted") {
       fetchContent();

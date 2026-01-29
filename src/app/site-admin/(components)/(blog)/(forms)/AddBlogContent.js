@@ -85,7 +85,7 @@ useEffect(() => {
 
     let res;
     if (editingBlogContentId) {
-      res = await fetch(`/api/site-admin/blog-content?t=${t}&cs=${cs}/${editingBlogContentId}`, {
+      res = await fetch(`/api/site-admin/blog-content/${editingBlogContentId}?t=${t}&cs=${cs}`, {
         method: "PUT",
         body: formData,
       });
