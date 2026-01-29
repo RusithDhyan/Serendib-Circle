@@ -125,7 +125,7 @@ export async function GET(req) {
         const key = `from ${from.tier.replaceAll(" ", "")}_to_${to.tier.replaceAll(
           " ",
           ""
-        )}`;
+        )} :`;
 
         const days =
           (new Date(to.date) - new Date(from.date)) / (1000 * 60 * 60 * 24);

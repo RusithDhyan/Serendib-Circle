@@ -267,7 +267,7 @@ export default function AdminAnalytics() {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
               <div>
-                <div className="text-sm text-gray-600 mb-1">No. Of Logins</div>
+                <div className="text-sm text-gray-600 mb-1 font-semibold">No. Of Logins</div>
                 <div className="text-2xl font-bold text-green-600">
                   {currentMonthUsers}
                 </div>
@@ -278,7 +278,7 @@ export default function AdminAnalytics() {
 
             <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
               <div>
-                <div className="text-sm text-gray-600 mb-1">
+                <div className="text-sm text-gray-600 mb-1 font-semibold">
                   Average Buy Rate
                 </div>
                 <div className="text-2xl font-bold text-blue-600">
@@ -292,12 +292,12 @@ export default function AdminAnalytics() {
                 </div>
                 <div className="text-xs text-gray-500">of members</div>
               </div>
-              <Award size={32} className="text-blue-600" />
+              <DollarSign size={32} className="text-blue-600" />
             </div>
 
             <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
               <div>
-                <div className="text-sm text-gray-600 mb-1">
+                <div className="text-sm text-gray-600 font-semibold mb-1">
                   Average Days to Tier Upgrade
                 </div>
                 {analytics.users?.avgTierUpgradeDays &&
@@ -305,10 +305,10 @@ export default function AdminAnalytics() {
                     ([key, value]) => (
                       <div
                         key={key}
-                        className="flex justify-between text-sm text-gray-400 mb-1"
+                        className="flex justify-between text-sm text-gray-500 mb-2"
                       >
                         <span>{key.replaceAll("_", " ")}</span>
-                        <span className="font-semibold text-purple-600">
+                        <span className="font-semibold text-purple-600 ">
                           {value} days
                         </span>
                       </div>
@@ -316,7 +316,7 @@ export default function AdminAnalytics() {
                   )}
                 {/* <div className="text-xs text-gray-500">per transaction</div> */}
               </div>
-              <DollarSign size={32} className="text-purple-600" />
+              <Award size={32} className="text-purple-600" />
             </div>
           </div>
         </div>
