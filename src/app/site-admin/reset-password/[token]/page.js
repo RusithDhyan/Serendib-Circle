@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -10,23 +10,6 @@ export default function ResetPasswordPage() {
 
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [currentImage, setCurrentImage] = useState(0);
-
-  const images = [
-    "/all-images/sign-in/auth1.png",
-    "/all-images/sign-in/auth2.png",
-    "/all-images/sign-in/auth3-new.png",
-    "/all-images/sign-in/auth4.png",
-    "/all-images/sign-in/auth5.png",
-  ];
-
-  // Auto-slide every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [images.length]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +25,7 @@ export default function ResetPasswordPage() {
 
     if (res.ok) {
       setTimeout(() => {
-        router.push("/sign-up");
+        router.push("/signin");
       }, 2000);
     }
   };
@@ -55,21 +38,6 @@ export default function ResetPasswordPage() {
           <p className="font-bold text-start text-xl 2xl:text-2xl mb-5">
             Welcome To Serendib Hotel Management System
           </p>
-
-          {/* 👇 Image Slider */}
-          <div className="relative w-75 h-full overflow-hidden ">
-            {images.map((src, idx) => (
-              <Image
-                key={idx}
-                src={src}
-                fill
-                alt={`slide-${idx}`}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-2000 ${
-                  idx === currentImage ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            ))}
-          </div>
         </div>
 
         {/* RIGHT SIDE (Sign-in Form) */}

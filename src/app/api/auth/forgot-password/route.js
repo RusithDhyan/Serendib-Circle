@@ -25,7 +25,7 @@ export async function POST(req) {
     user.resetPasswordExpire = Date.now() + 1000 * 60 * 15;
     await user.save();
 
-    const resetUrl = `http://serendib.serendibhotels.mw/reset-password/${resetToken}`;
+    const resetUrl = `http://serendib.serendibhotels.mw/site-admin/reset-password/${resetToken}`;
 
     // Send email with Resend
     const resend = new Resend(process.env.RESEND_API_KEY);
