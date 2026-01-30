@@ -10,7 +10,9 @@ export default function HomeExp({ onEdit }) {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this content?")) return;
 
-    const res = await fetch(`/api/site-admin/home-exp/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/site-admin/home-exp/${id}`, {
+      method: "DELETE",
+    });
     const result = await res.json();
   };
 
@@ -33,7 +35,10 @@ export default function HomeExp({ onEdit }) {
             {/* Title */}
             <h2 className="sm:text-lg 2xl:text-xl font-bold">
               Title :{" "}
-              <span className="text-lg text-gray-700">{exp.card_title}-<span className="text-[#dfb98d]">{exp.type}</span></span>
+              <span className="text-lg text-gray-700">
+                {exp.card_title}-
+                <span className="text-[#dfb98d]">{exp.type}</span>
+              </span>
             </h2>
 
             {/* Description */}
@@ -59,25 +64,25 @@ export default function HomeExp({ onEdit }) {
             {/* Buttons */}
             <div className="flex gap-3 mt-3">
               {currentUser?.permissions?.canUpdateHomeExp && (
-              <button
-                onClick={() => onEdit(exp)}
-                className="flex items-center gap-1 px-3 py-1 text-sm bg-green-600 text-white rounded-md hover:bg-green-700"
-              >
-                <Pencil size={16} strokeWidth={1.7} /> Edit
-              </button>
+                <button
+                  onClick={() => onEdit(exp)}
+                  className="flex items-center gap-1 px-3 py-1 text-sm bg-green-600 text-white rounded-md hover:bg-green-700"
+                >
+                  <Pencil size={16} strokeWidth={1.7} /> Edit
+                </button>
               )}
               {currentUser?.permissions?.canDeleteHomeExp && (
-              <button
-                onClick={() => handleDelete(exp._id)}
-                className="group flex items-center gap-1 px-3 py-1 text-sm border border-red text-red-500 rounded-md hover:bg-red-500 hover:text-white font-bold"
-              >
-                <Trash2
-                  size={16}
-                  strokeWidth={1.4}
-                  className="text-red-500 group-hover:text-white"
-                />
-                Delete
-              </button>
+                <button
+                  onClick={() => handleDelete(exp._id)}
+                  className="group flex items-center gap-1 px-3 py-1 text-sm border border-red text-red-500 rounded-md hover:bg-red-500 hover:text-white font-bold"
+                >
+                  <Trash2
+                    size={16}
+                    strokeWidth={1.4}
+                    className="text-red-500 group-hover:text-white"
+                  />
+                  Delete
+                </button>
               )}
             </div>
           </div>

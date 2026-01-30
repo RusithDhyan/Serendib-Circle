@@ -120,7 +120,9 @@ export default function InquiryForm() {
                 <option value="Booking">Booking</option>
                 <option value="General">General</option>
                 <option value="Group Request">Group Request</option>
-                <option value="Special Requirements">Special Requirements</option>
+                <option value="Special Requirements">
+                  Special Requirements
+                </option>
               </select>
               <select
                 name="hotel"

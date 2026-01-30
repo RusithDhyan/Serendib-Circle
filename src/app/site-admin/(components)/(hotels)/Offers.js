@@ -14,7 +14,7 @@ export default function OfferSlider({ hotelId }) {
   const [offers, setOffers] = useState([]);
 
   const fetchOffer = useCallback(async () => {
-const offers = await fetchOfferByHotel(hotelId);
+    const offers = await fetchOfferByHotel(hotelId);
     if (offers) setOffers(offers);
   }, [hotelId]);
 
@@ -25,7 +25,9 @@ const offers = await fetchOfferByHotel(hotelId);
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this Offer?")) return;
 
-    const res = await fetch(`/api/site-admin/offer/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/site-admin/offer/${id}`, {
+      method: "DELETE",
+    });
     const result = await res.json();
     if (result.success || result.message === "Offer deleted") {
       fetchOffer();
@@ -48,56 +50,55 @@ const offers = await fetchOfferByHotel(hotelId);
         </div>
       ) : (
         <div>
-
-      {offers.map((offer) => (
-        <div
-          key={offer._id}
-          className="border-b border-gray-300 last:border-none pb-4 flex items-center gap-4"
-        >
-          {offer.image && (
-            <Image
-              src={offer.image}
-              alt="offer-img"
-              width={1000}
-              height={100}
-              className="w-25 h-25 object-cover rounded-md"
-            />
-          )}
-
-          <div className="flex-1">
-            <Link href={`/offers/${offer._id}`}>
-              <p className="hover:underline">{offer.offer_type}</p>
-            </Link>
-            <div>
-              <h2 className="text-sm">{offer.description}</h2>
-            </div>
-
-            <div className="space-x-2 mt-2">
-              {session?.user?.permissions?.canUpdateOffer && (
-              <button
-                onClick={() => {
-                  setEditingOffer(offer);
-                  setShowPopup(true);
-                }}
-                className="bg-green-500 text-white px-3 py-1 rounded"
-              >
-                Edit
-              </button>
+          {offers.map((offer) => (
+            <div
+              key={offer._id}
+              className="border-b border-gray-300 last:border-none pb-4 flex items-center gap-4"
+            >
+              {offer.image && (
+                <Image
+                  src={offer.image}
+                  alt="offer-img"
+                  width={1000}
+                  height={100}
+                  className="w-25 h-25 object-cover rounded-md"
+                />
               )}
 
-              {session?.user?.permissions?.canDeleteOffer && (
-              <button
-                onClick={() => handleDelete(offer._id)}
-                className="bg-red-500 text-white px-3 py-1 rounded"
-              >
-                Delete
-              </button>
-              )}
+              <div className="flex-1">
+                <Link href={`/offers/${offer._id}`}>
+                  <p className="hover:underline">{offer.offer_type}</p>
+                </Link>
+                <div>
+                  <h2 className="text-sm">{offer.description}</h2>
+                </div>
+
+                <div className="space-x-2 mt-2">
+                  {session?.user?.permissions?.canUpdateOffer && (
+                    <button
+                      onClick={() => {
+                        setEditingOffer(offer);
+                        setShowPopup(true);
+                      }}
+                      className="bg-green-500 text-white px-3 py-1 rounded"
+                    >
+                      Edit
+                    </button>
+                  )}
+
+                  {session?.user?.permissions?.canDeleteOffer && (
+                    <button
+                      onClick={() => handleDelete(offer._id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded"
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
-      ))}
-      </div>
       )}
       {showPopup && (
         <AddOffer

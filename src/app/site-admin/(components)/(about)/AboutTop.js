@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useData } from "@/app/context/DataContext";
 import { Pencil, Trash2 } from "lucide-react";
 import React, { useState } from "react";
@@ -8,15 +8,16 @@ import Image from "next/image";
 export default function AboutTop() {
   const { aboutContent } = useData();
   const [showAboutContentPopup, setShowAboutContentPopup] = useState(false);
-    const [editingAboutContent, setEditingAboutContent] = useState(null);
+  const [editingAboutContent, setEditingAboutContent] = useState(null);
   // console.log("about-content",aboutContent);
 
-   const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this content?")) return;
 
-    const res = await fetch(`/api/site-admin/about-top/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/site-admin/about-top/${id}`, {
+      method: "DELETE",
+    });
     const result = await res.json();
-   
   };
 
   return (
@@ -26,9 +27,17 @@ export default function AboutTop() {
           {/* Left Side: Text Info */}
           <div className="md:w-1/2 space-y-2 p-4">
             <h2 className="sm:text-lg 2xl:text-xl font-bold">
-              Title : <span className="text-lg text-gray-700">{aboutContent.title}</span>
+              Title :{" "}
+              <span className="text-lg text-gray-700">
+                {aboutContent.title}
+              </span>
             </h2>
-            <p className="sm:text-lg 2xl:text-xl font-bold">Description : <span className="text-sm text-gray-700">{aboutContent.description}</span></p>
+            <p className="sm:text-lg 2xl:text-xl font-bold">
+              Description :{" "}
+              <span className="text-sm text-gray-700">
+                {aboutContent.description}
+              </span>
+            </p>
             <div className="flex gap-3 mt-5">
               <button
                 onClick={() => {
@@ -37,7 +46,7 @@ export default function AboutTop() {
                 }}
                 className="flex items-center gap-1 px-3 py-1 text-sm bg-green-600 text-white rounded-md hover:bg-green-700"
               >
-                <Pencil size={16} strokeWidth={1.7}/> Edit
+                <Pencil size={16} strokeWidth={1.7} /> Edit
               </button>
 
               <button
@@ -92,14 +101,14 @@ export default function AboutTop() {
         </div>
       )}
       {showAboutContentPopup && (
-                <AddAboutContent
-                  onClose={() => {
-                    setShowAboutContentPopup(false);
-                    setEditingAboutContent(null);
-                  }}
-                  editingAboutContent={editingAboutContent}
-                />
-              )}
+        <AddAboutContent
+          onClose={() => {
+            setShowAboutContentPopup(false);
+            setEditingAboutContent(null);
+          }}
+          editingAboutContent={editingAboutContent}
+        />
+      )}
     </div>
   );
 }

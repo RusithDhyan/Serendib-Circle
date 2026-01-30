@@ -72,8 +72,7 @@ export default function OfferInnerPage() {
 
         return (
           <div key={offer._id} className="flex px-3">
-           
-              <Sidebar/>
+            <Sidebar />
             <div
               className={`
           flex-1 transition-all duration-300
@@ -92,9 +91,15 @@ export default function OfferInnerPage() {
                 {/* Left Side: Text Info */}
                 <div className="md:w-1/2 space-y-2 p-4">
                   <h2 className="sm:text-lg 2xl:text-xl font-bold">
-                    Card Title : <span className="text-gray-700 text-lg">{offer.title}</span>
+                    Card Title :{" "}
+                    <span className="text-gray-700 text-lg">{offer.title}</span>
                   </h2>
-                  <p className="sm:text-lg 2xl:text-xl font-bold">Card Description : <span className="text-gray-700 text-sm">{offer.description}</span></p>
+                  <p className="sm:text-lg 2xl:text-xl font-bold">
+                    Card Description :{" "}
+                    <span className="text-gray-700 text-sm">
+                      {offer.description}
+                    </span>
+                  </p>
 
                   {offer?.bulletPoints && offer?.bulletPoints.length > 0 && (
                     <>
@@ -174,12 +179,18 @@ export default function OfferInnerPage() {
               </div>
 
               <div className="flex items-center justify-center gap-3 px-2 mt-10  border-b sm:w-65 2xl:w-70">
-                <h1 className="sm:text-xl 2xl:text-2xl font-bold">Add offer Content</h1>
+                <h1 className="sm:text-xl 2xl:text-2xl font-bold">
+                  Add offer Content
+                </h1>
                 <button
                   onClick={() => setShowOfferContentPopup(true)}
                   className="text-sm text-blue-500 rounded-md transition"
                 >
-                  <BadgePlus size={25} strokeWidth={1.4} className="text-green-500" />
+                  <BadgePlus
+                    size={25}
+                    strokeWidth={1.4}
+                    className="text-green-500"
+                  />
                 </button>
               </div>
               <OfferContent offerId={offer._id} />

@@ -27,7 +27,12 @@ function ReportPageContent() {
     const sample = reportData[0];
     if ("hotel" in sample) return "Hotel Inquiry";
     if ("title" in sample) return "Experience Inquiry";
-    if ("inquiry_type" in sample && !("hotel" in sample) && !("title" in sample)) return "Contact";
+    if (
+      "inquiry_type" in sample &&
+      !("hotel" in sample) &&
+      !("title" in sample)
+    )
+      return "Contact";
     if ("createdAt" in sample && "email" in sample) return "Newsletter";
 
     return null;

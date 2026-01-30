@@ -22,10 +22,11 @@ export default function Accommodation({ hotelId }) {
   }, [fetchAccommodation]);
 
   const handleDelete = async (id) => {
-
     if (!confirm("Are you sure you want to delete this Accommodation?")) return;
 
-    const res = await fetch(`/api/site-admin/accommodation/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/site-admin/accommodation/${id}`, {
+      method: "DELETE",
+    });
     const result = await res.json();
     if (result.success || result.message === "Accommodation deleted") {
       fetchAccommodation();

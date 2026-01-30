@@ -36,7 +36,11 @@ export default function AdminLayout({ children }) {
           const response = await fetch("/api/user");
           const userData = await response.json();
 
-          if (userData.role !== "admin" && userData.role !== "superadmin" && userData.role !== "owner") {
+          if (
+            userData.role !== "admin" &&
+            userData.role !== "superadmin" &&
+            userData.role !== "owner"
+          ) {
             redirect("/dashboard");
           } else {
             setIsAdmin(true);
@@ -71,7 +75,7 @@ export default function AdminLayout({ children }) {
     { name: "Transactions", href: "/admin/transactions", icon: Receipt },
     { name: "Redemptions", href: "/admin/redemptions", icon: Gift },
     { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-    { name: "Profile", href: "/admin/profile", icon: User}
+    { name: "Profile", href: "/admin/profile", icon: User },
   ];
 
   return (
@@ -93,7 +97,7 @@ export default function AdminLayout({ children }) {
                 Guest View
               </Link>
               <span className="text-sm opacity-90">{session?.user?.email}</span>
-              
+
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
                 className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg transition-colors"

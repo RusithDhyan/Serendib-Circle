@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import { redirect } from 'next/navigation';
-import Navbar from '../components/Navbar';
-import TierTracker from '../components/TierTracker';
-import RecentTransactions from '../components/RecentTransactions';
-import RedemptionCenter from '../components/RedemptionCenter';
-import ControlCenter from '../components/ControlCenter';
-import BalanceCard from '../components/BalanceCard';
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { redirect } from "next/navigation";
+import Navbar from "../components/Navbar";
+import TierTracker from "../components/TierTracker";
+import RecentTransactions from "../components/RecentTransactions";
+import RedemptionCenter from "../components/RedemptionCenter";
+import ControlCenter from "../components/ControlCenter";
+import BalanceCard from "../components/BalanceCard";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -17,13 +17,13 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      redirect('/auth/signin');
+    if (status === "unauthenticated") {
+      redirect("/auth/signin");
     }
   }, [status]);
 
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (status === "authenticated") {
       fetchUserData();
       fetchTransactions();
     }
@@ -31,11 +31,11 @@ export default function Dashboard() {
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch('/api/user');
+      const response = await fetch("/api/user");
       const data = await response.json();
       setUserData(data);
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error("Error fetching user data:", error);
     } finally {
       setLoading(false);
     }
@@ -43,11 +43,11 @@ export default function Dashboard() {
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch('/api/transactions');
+      const response = await fetch("/api/transactions");
       const data = await response.json();
       setTransactions(data);
     } catch (error) {
-      console.error('Error fetching transactions:', error);
+      console.error("Error fetching transactions:", error);
     }
   };
 
@@ -56,7 +56,7 @@ export default function Dashboard() {
     fetchTransactions();
   };
 
-  if (status === 'loading' || loading) {
+  if (status === "loading" || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-serendib-primary"></div>
@@ -71,13 +71,15 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar user={userData} />
-      
+
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Welcome back, {userData.name}!
           </h1>
-          <p className="text-gray-600">Manage your rewards and track your progress</p>
+          <p className="text-gray-600">
+            Manage your rewards and track your progress
+          </p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6 mb-8">

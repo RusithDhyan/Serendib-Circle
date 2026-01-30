@@ -43,7 +43,14 @@ export default function AdminLayoutClient({ children }) {
           const response = await fetch("/api/user");
           const userData = await response.json();
 
-          if (userData.role !== "moderator" && userData.role !== "supervisor" && userData.role !== "manager" && userData.role !== "admin" && userData.role !== "superadmin" && userData.role !== "owner") {
+          if (
+            userData.role !== "moderator" &&
+            userData.role !== "supervisor" &&
+            userData.role !== "manager" &&
+            userData.role !== "admin" &&
+            userData.role !== "superadmin" &&
+            userData.role !== "owner"
+          ) {
             redirect("/dashboard");
           } else {
             setIsAdmin(true);

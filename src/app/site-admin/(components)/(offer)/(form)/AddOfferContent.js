@@ -19,13 +19,13 @@ export default function AddOfferContent({
   });
   const [editingOfferContentId, setEditingOfferContentId] = useState(null);
 
-  const fetchOfferContent =useCallback(async () => {
+  const fetchOfferContent = useCallback(async () => {
     const res = await fetch(`/api/offer-content?OfferId=${offerId}`);
     const data = await res.json();
     console.log("Fetched OfferContent:", data.data); // <- add this
 
     if (data.success) setOfferContent(data.data);
-  },[offerId])
+  }, [offerId]);
 
   useEffect(() => {
     fetchOfferContent();
@@ -122,57 +122,56 @@ export default function AddOfferContent({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label>Title</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Title"
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="w-full p-2 border rounded-md"
-              required
-            />
+              <input
+                type="text"
+                name="title"
+                placeholder="Title"
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                className="w-full p-2 border rounded-md"
+                required
+              />
             </div>
             <div>
               <label>Subtitle</label>
-            <input
-              type="text"
-              name="subtitle"
-              placeholder="Subtitle"
-              value={form.subtitle}
-              onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
-              className="w-full p-2 border rounded-md"
-              required
-            />
-            </div>            
+              <input
+                type="text"
+                name="subtitle"
+                placeholder="Subtitle"
+                value={form.subtitle}
+                onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
+                className="w-full p-2 border rounded-md"
+                required
+              />
+            </div>
             <div>
               <label>Price</label>
-            <input
-              type="number"
-              name="price"
-              placeholder="Price"
-              value={form.price}
-              onChange={(e) => setForm({ ...form, price: e.target.value })}
-              className="w-full p-2 border rounded-md"
-              required
-            />
+              <input
+                type="number"
+                name="price"
+                placeholder="Price"
+                value={form.price}
+                onChange={(e) => setForm({ ...form, price: e.target.value })}
+                className="w-full p-2 border rounded-md"
+                required
+              />
             </div>
-           
+
             <div>
               <label>Validity</label>
-            <input
-              type="text"
-              name="validity"
-              placeholder="validity"
-              value={form.validity}
-              onChange={(e) => setForm({ ...form, validity: e.target.value })}
-              className="w-full p-2 border rounded-md"
-              // required
-            />
+              <input
+                type="text"
+                name="validity"
+                placeholder="validity"
+                value={form.validity}
+                onChange={(e) => setForm({ ...form, validity: e.target.value })}
+                className="w-full p-2 border rounded-md"
+                // required
+              />
             </div>
-             
           </div>
           <div>
-              <label>Description</label>
+            <label>Description</label>
             <textarea
               type="text"
               name="description"
@@ -184,7 +183,7 @@ export default function AddOfferContent({
               className="w-full p-2 border rounded-md"
               required
             />
-            </div>
+          </div>
           <div className="space-y-2 flex flex-col">
             <label className="font-semibold">Bullet Points</label>
             {form.bulletPoints.map((point, index) => (

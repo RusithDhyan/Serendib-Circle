@@ -11,7 +11,7 @@ export default function HotelTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const hotelsPerPage = 4;
   const filteredHotels = hotels.filter((hotel) =>
-  hotel.hotel_name.toLowerCase().includes(search.toLowerCase())
+    hotel.hotel_name.toLowerCase().includes(search.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredHotels.length / hotelsPerPage);
@@ -26,7 +26,9 @@ export default function HotelTable() {
   return (
     <div className="p-6 bg-white rounded-lg shadow-sm">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="pr-6 mt-2 sm:text-xl 2xl:text-2xl font-bold">All Serendib Hotels</h1>
+        <h1 className="pr-6 mt-2 sm:text-xl 2xl:text-2xl font-bold">
+          All Serendib Hotels
+        </h1>
         <input
           type="text"
           placeholder="Search by hotel name"

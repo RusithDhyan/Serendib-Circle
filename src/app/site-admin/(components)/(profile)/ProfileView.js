@@ -13,8 +13,7 @@ export default function ProfileView({ admin }) {
   const [image, setImage] = useState(null);
 
   const handleLogout = () => {
-    document.cookie =
-      "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     router.push("/");
   };
 
@@ -78,7 +77,6 @@ export default function ProfileView({ admin }) {
         {showEditModal && (
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg w-[90%] max-w-lg relative">
-
               <button
                 className="absolute top-3 right-3"
                 onClick={() => setShowEditModal(false)}
@@ -122,7 +120,6 @@ export default function ProfileView({ admin }) {
                   Save
                 </button>
               </form>
-
             </div>
           </div>
         )}

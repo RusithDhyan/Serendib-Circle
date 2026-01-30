@@ -9,11 +9,11 @@ export default function OfferContent({ offerId }) {
 
   const [contents, setContent] = useState([]);
 
-  const fetchContent =useCallback(async () => {
+  const fetchContent = useCallback(async () => {
     const res = await fetch(`/api/offer-content?offerId=${offerId}`);
     const data = await res.json();
     if (data.success) setContent(data.data);
-  },[offerId])
+  }, [offerId]);
 
   useEffect(() => {
     fetchContent();
@@ -39,21 +39,23 @@ export default function OfferContent({ offerId }) {
         </p>
       )}
       {contents?.map((content) => (
-        <div
-          key={content._id}
-          className="pb-4"
-        >
+        <div key={content._id} className="pb-4">
           <p className="text-lg font-semibold mt-2">{content.title}</p>
-          <p className="text-orange-500">MWK {Number(content.price).toLocaleString()}</p>
+          <p className="text-orange-500">
+            MWK {Number(content.price).toLocaleString()}
+          </p>
           <p className="text-sm">{content.validity}</p>
-          <div className="flex gap-4">      
-              
-             <p className="text-sm mt-2 text-gray-500">{content.description}</p>
+          <div className="flex gap-4">
+            <p className="text-sm mt-2 text-gray-500">{content.description}</p>
           </div>
           <div className="space-y-2 mt-2">
             {content.bulletPoints.map((point, index) => (
               <div key={index} className="flex items-start gap-2">
-                <CheckCircle size={18} strokeWidth={1.4} className="text-green-600 mt-1" />
+                <CheckCircle
+                  size={18}
+                  strokeWidth={1.4}
+                  className="text-green-600 mt-1"
+                />
                 <span className="text-gray-700">{point}</span>
               </div>
             ))}

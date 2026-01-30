@@ -2,11 +2,7 @@
 import { generateChecksum } from "@/lib/fetchData";
 import { useCallback, useEffect, useState } from "react";
 
-export default function AddExpContent({
-  onClose,
-  editingExpContent,
-  expId,
-}) {
+export default function AddExpContent({ onClose, editingExpContent, expId }) {
   const [contents, setExpContent] = useState([]);
 
   const [form, setForm] = useState({
@@ -69,10 +65,13 @@ export default function AddExpContent({
 
     let res;
     if (editingExpContentId) {
-      res = await fetch(`/api/site-admin/exp-content/${editingExpContentId}?t=${t}&cs=${cs}`, {
-        method: "PUT",
-        body: formData,
-      });
+      res = await fetch(
+        `/api/site-admin/exp-content/${editingExpContentId}?t=${t}&cs=${cs}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
     } else {
       res = await fetch(`/api/site-admin/exp-content?t=${t}&cs=${cs}`, {
         method: "POST",
@@ -98,29 +97,26 @@ export default function AddExpContent({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-4xl">
         <h1 className="text-2xl text-center font-bold mb-4">
-          {editingExpContentId
-            ? "Edit Exp Content"
-            : "Add New Exp Content"}
+          {editingExpContentId ? "Edit Exp Content" : "Add New Exp Content"}
         </h1>
 
         <form onSubmit={handleSubmit} className="2xl:space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label>Title</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Title"
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="w-full p-2 border rounded-md"
-              // required
-            />
+              <input
+                type="text"
+                name="title"
+                placeholder="Title"
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                className="w-full p-2 border rounded-md"
+                // required
+              />
             </div>
-             
           </div>
           <div>
-              <label>Description</label>
+            <label>Description</label>
             <textarea
               type="text"
               name="description"
@@ -132,7 +128,7 @@ export default function AddExpContent({
               className="w-full p-2 border rounded-md"
               // required
             />
-            </div>
+          </div>
           <div className="space-y-2 flex flex-col">
             <label className="font-semibold">Bullet Points</label>
             {form.bulletPoints.map((point, index) => (

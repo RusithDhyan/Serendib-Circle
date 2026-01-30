@@ -8,8 +8,9 @@ import { Sidebar } from "lucide-react";
 
 export default function InquiriesClient() {
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState("hotel"); 
-  const { hotelInquiries, expInquiries, contactInquiries, newsLetter } = useData();
+  const [activeTab, setActiveTab] = useState("hotel");
+  const { hotelInquiries, expInquiries, contactInquiries, newsLetter } =
+    useData();
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {

@@ -149,7 +149,10 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="flex items-center">
-              <Link href="/" className="text-md bg-[#dfb98d] hover:bg-[#D9C6B1] py-2 px-4 rounded-md shadow-md">
+              <Link
+                href="/"
+                className="text-md bg-[#dfb98d] hover:bg-[#D9C6B1] py-2 px-4 rounded-md shadow-md"
+              >
                 Sign In
               </Link>
             </div>

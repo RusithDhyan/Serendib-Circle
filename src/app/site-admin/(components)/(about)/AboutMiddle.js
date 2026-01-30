@@ -8,17 +8,18 @@ export default function AboutMiddle() {
   const [showAboutMiddlePopup, setShowAboutMiddlePopup] = useState(false);
   const [editingAboutMiddle, setEditingAboutMiddle] = useState(null);
 
-  const {aboutMiddle} = useData();
-  const {aboutContent} = useData();
+  const { aboutMiddle } = useData();
+  const { aboutContent } = useData();
 
-  console.log("middle-about",aboutMiddle)
+  console.log("middle-about", aboutMiddle);
 
-   const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this Content?")) return;
 
-    const res = await fetch(`/api/site-admin/about-middle/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/site-admin/about-middle/${id}`, {
+      method: "DELETE",
+    });
     const result = await res.json();
-    
   };
 
   return (
@@ -32,9 +33,9 @@ export default function AboutMiddle() {
               </p>
             )}
             {aboutContent && (
-            <h1 className="sm:text-lg 2xl:text-xl font-bold text-blue-700">
-              Vision-Title : {aboutContent.vision_title}
-            </h1>
+              <h1 className="sm:text-lg 2xl:text-xl font-bold text-blue-700">
+                Vision-Title : {aboutContent.vision_title}
+              </h1>
             )}
             {aboutMiddle?.map((choose) => (
               <div
@@ -54,8 +55,12 @@ export default function AboutMiddle() {
                 </div>
 
                 <div className="flex-1">
-                  <p className="font-bold sm:text-lg 2xl:text-xl">{choose.card_title}</p>
-                  <h2 className="sm:text-sm 2xl:text-lg">{choose.card_description}</h2>
+                  <p className="font-bold sm:text-lg 2xl:text-xl">
+                    {choose.card_title}
+                  </p>
+                  <h2 className="sm:text-sm 2xl:text-lg">
+                    {choose.card_description}
+                  </h2>
 
                   <div className="space-x-2 pt-2 flex items-center justify-end gap-2">
                     <button

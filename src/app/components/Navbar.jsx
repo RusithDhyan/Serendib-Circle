@@ -19,9 +19,7 @@ export default function Navbar({ user }) {
     }
   };
 
-  const isAdmin =
-    user.role === "admin" ||
-    user.role === "owner";
+  const isAdmin = user.role === "admin" || user.role === "owner";
   const isSiteAdmin =
     user.role === "moderator" ||
     user.role === "supervisor" ||

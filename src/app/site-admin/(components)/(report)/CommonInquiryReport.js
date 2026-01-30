@@ -1,19 +1,20 @@
+"use client";
+import React from "react";
 
-'use client'
-import React from 'react'
-
-export default function CommonInquiryReport({ data,type, columns }) {
-
+export default function CommonInquiryReport({ data, type, columns }) {
   return (
     <div className="bg-white flex-1 rounded shadow p-4">
-     <div>
+      <div>
         <h2 className="text-4xl text-center font-bold mb-6">{type} Report</h2>
 
         <table className="w-full border">
           <thead>
             <tr>
               {columns.map((col, idx) => (
-                <th key={idx} className="px-4 py-2 font-bold text-center  bg-orange-100">
+                <th
+                  key={idx}
+                  className="px-4 py-2 font-bold text-center  bg-orange-100"
+                >
                   {col.header}
                 </th>
               ))}
@@ -22,7 +23,10 @@ export default function CommonInquiryReport({ data,type, columns }) {
           <tbody>
             {data.length === 0 ? (
               <tr>
-                <td colSpan={columns.length} className="text-center py-4 text-gray-500">
+                <td
+                  colSpan={columns.length}
+                  className="text-center py-4 text-gray-500"
+                >
                   No results found.
                 </td>
               </tr>
@@ -47,7 +51,6 @@ export default function CommonInquiryReport({ data,type, columns }) {
           Print Report
         </button>
       </div>
-
     </div>
-  )
+  );
 }

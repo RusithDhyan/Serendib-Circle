@@ -19,15 +19,15 @@ import {
 import React from "react";
 
 const breadcrumbMap = {
-  dashboard: { label: "", icon: LayoutDashboard},
+  dashboard: { label: "", icon: LayoutDashboard },
   hotels: { label: "Our Collection", icon: Building2 },
   experiences: { label: "Experiences", icon: MountainSnow },
   blogs: { label: "Blogs", icon: FileText },
   about: { label: "About Us", icon: Lightbulb },
   offers: { label: "Offers", icon: Tag },
-  homeContent: { label: "Home Content", icon: Home},
-  contact: { label: "Contact", icon: MessageCircle},
-  addUsers: {label: "Add User", icon: UserPlus},
+  homeContent: { label: "Home Content", icon: Home },
+  contact: { label: "Contact", icon: MessageCircle },
+  addUsers: { label: "Add User", icon: UserPlus },
   profile: { label: "Profile", icon: User },
 };
 
@@ -69,8 +69,14 @@ const Breadcrumbs = () => {
               className="flex items-center justify-center hover:text-[#dfb98d] transition duration-200"
             >
               {icon &&
-                React.createElement(icon, { size: 18,strokeWidth: 2, className: "mr-1 items-center text-[#0A4D68]" })}
-              {label && <span className="text-[#0A4D68] font-bold">{label}</span>}
+                React.createElement(icon, {
+                  size: 18,
+                  strokeWidth: 2,
+                  className: "mr-1 items-center text-[#0A4D68]",
+                })}
+              {label && (
+                <span className="text-[#0A4D68] font-bold">{label}</span>
+              )}
             </Link>
           </span>
         );

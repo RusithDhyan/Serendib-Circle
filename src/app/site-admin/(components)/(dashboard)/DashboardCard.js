@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function DashboardCard() {
-  const {hotelInquiry,expInquiry,contactInquiry,newsLetter} = useData();
+  const { hotelInquiry, expInquiry, contactInquiry, newsLetter } = useData();
   console.log(expInquiry);
 
   const cards = [

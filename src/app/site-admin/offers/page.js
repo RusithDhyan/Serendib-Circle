@@ -41,9 +41,7 @@ export default function Offers() {
 
   return (
     <div className="flex-1 mt-12 ml-64">
-      <div
-        
-      >
+      <div>
         <Breadcrumbs />
         <div className="flex items-center justify-between px-2 py-2 my-5 border-b border-gray-300 mx-4">
           <h1 className="sm:text-xl 2xl:text-2xl font-bold">All-Site offers</h1>

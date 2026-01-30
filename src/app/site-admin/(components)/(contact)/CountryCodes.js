@@ -190,5 +190,5 @@ export const countries = [
   { name: "Vietnam", code: "+84" },
   { name: "Yemen", code: "+967" },
   { name: "Zambia", code: "+260" },
-  { name: "Zimbabwe", code: "+263" }
+  { name: "Zimbabwe", code: "+263" },
 ];

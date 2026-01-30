@@ -26,7 +26,7 @@ export default function AdminTransactions() {
 
   const fetchTransactions = async () => {
     const t = Date.now().toString();
-        const cs = await generateChecksum(t);
+    const cs = await generateChecksum(t);
     try {
       let url = `/api/admin/transactions?limit=100&t=${t}&cs=${cs}`;
       if (filterType) url += `&type=${filterType}`;

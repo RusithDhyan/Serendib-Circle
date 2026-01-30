@@ -1,16 +1,20 @@
-'use client';
+"use client";
 
-import { Wallet, TrendingUp } from 'lucide-react';
+import { Wallet, TrendingUp } from "lucide-react";
 
 export default function BalanceCard({ user }) {
   const pointsValue = (user.points / 100).toFixed(2);
-  
+
   const getMultiplier = (tier) => {
     switch (tier) {
-      case 'The Circle': return '2.0x';
-      case 'Voyager': return '1.5x';
-      case 'Adventurer': return '1.25x';
-      default: return '1.0x';
+      case "The Circle":
+        return "2.0x";
+      case "Voyager":
+        return "1.5x";
+      case "Adventurer":
+        return "1.25x";
+      default:
+        return "1.0x";
     }
   };
 
@@ -47,7 +51,9 @@ export default function BalanceCard({ user }) {
         </div> */}
         <div>
           <div className="text-sm opacity-90 mb-1">Total Spend</div>
-          <div className="text-2xl font-bold">${user.totalSpend.toLocaleString()}</div>
+          <div className="text-2xl font-bold">
+            ${user.totalSpend.toLocaleString()}
+          </div>
           <div className="text-xs opacity-75">{user.totalStays} stays</div>
         </div>
       </div>

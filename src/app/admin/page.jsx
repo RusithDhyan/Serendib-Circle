@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Users, DollarSign, TrendingUp, Gift } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { Users, DollarSign, TrendingUp, Gift } from "lucide-react";
 
 export default function AdminDashboard() {
   const [analytics, setAnalytics] = useState(null);
@@ -13,11 +13,11 @@ export default function AdminDashboard() {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch('/api/admin/analytics');
+      const response = await fetch("/api/admin/analytics");
       const data = await response.json();
       setAnalytics(data);
     } catch (error) {
-      console.error('Error fetching analytics:', error);
+      console.error("Error fetching analytics:", error);
     } finally {
       setLoading(false);
     }
@@ -33,35 +33,37 @@ export default function AdminDashboard() {
 
   const stats = [
     {
-      name: 'Total Users',
+      name: "Total Users",
       value: analytics?.users?.total || 0,
       icon: Users,
-      color: 'bg-blue-500',
+      color: "bg-blue-500",
     },
     {
-      name: 'Total Spending',
+      name: "Total Spending",
       value: `$${(analytics?.points?.totalSpending || 0).toLocaleString()}`,
       icon: DollarSign,
-      color: 'bg-green-500',
+      color: "bg-green-500",
     },
     {
-      name: 'Points Issued',
+      name: "Points Issued",
       value: (analytics?.points?.totalPointsIssued || 0).toLocaleString(),
       icon: TrendingUp,
-      color: 'bg-serendib-primary',
+      color: "bg-serendib-primary",
     },
     {
-      name: 'Redemptions',
+      name: "Redemptions",
       value: analytics?.redemptions?.total || 0,
       icon: Gift,
-      color: 'bg-purple-500',
+      color: "bg-purple-500",
     },
   ];
 
   return (
-    <div className='flex-1 ml-64 mt-10'>
+    <div className="flex-1 ml-64 mt-10">
       <div className="mb-8 ">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          Admin Dashboard
+        </h1>
         <p className="text-gray-600">Overview of your loyalty program</p>
       </div>
 
@@ -85,10 +87,15 @@ export default function AdminDashboard() {
       {/* Users by Tier */}
       <div className="grid lg:grid-cols-2 gap-6 mb-8">
         <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Users by Tier</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
+            Users by Tier
+          </h2>
           <div className="space-y-3">
             {analytics?.users?.byTier?.map((tier) => (
-              <div key={tier._id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div
+                key={tier._id}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+              >
                 <span className="font-semibold">{tier._id}</span>
                 <span className="text-2xl font-bold text-serendib-primary">
                   {tier.count}
@@ -99,7 +106,9 @@ export default function AdminDashboard() {
         </div>
 
         <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Redemptions by Type</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
+            Redemptions by Type
+          </h2>
           <div className="space-y-3">
             {analytics?.redemptions?.byType?.map((redeem) => (
               <div key={redeem._id} className="p-3 bg-gray-50 rounded-lg">

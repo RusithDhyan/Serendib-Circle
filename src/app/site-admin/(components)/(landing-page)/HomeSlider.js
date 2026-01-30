@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import Image from 'next/image';
+import Link from "next/link";
+import Image from "next/image";
 
 export default function LandingPage() {
   return (
@@ -16,7 +16,7 @@ export default function LandingPage() {
                 Serendib Circle
               </span>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <Link
                 href="/auth/signin"
@@ -37,94 +37,137 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center items-center pt-32 pb-20 px-6 text-center">
-            <div className="space-y-8">
-              <div className="inline-block">
-                <span className="px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
-                  ✨ Earn Rewards • Save More • Travel Better
-                </span>
-              </div>
-              
-              <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                Welcome to
-                <span className="block bg-gradient-to-r from-yellow-600 to-gray-200 bg-clip-text text-transparent">
-                  Serendib Circle
-                </span>
-              </h1>
-              
-              <p className="text-xl text-gray-600 leading-relaxed">
-                Join our exclusive loyalty program and earn points with every stay. 
-                Redeem for free nights, upgrades, and unforgettable experiences.
-              </p>
+        <div className="space-y-8">
+          <div className="inline-block">
+            <span className="px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
+              ✨ Earn Rewards • Save More • Travel Better
+            </span>
+          </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="/auth/register"
-                  className="px-8 py-4 bg-gradient-to-r from-yellow-600 to-gray-300 text-white font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center"
-                >
-                  Join Free Today
-                </Link>
-                <Link
-                  href="/auth/signin"
-                  className="px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 font-bold rounded-full hover:border-yellow-600 hover:text-yellow-600 transition-all duration-300 text-center"
-                >
-                  Sign In
-                </Link>
-              </div>
+          <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+            Welcome to
+            <span className="block bg-gradient-to-r from-yellow-600 to-gray-200 bg-clip-text text-transparent">
+              Serendib Circle
+            </span>
+          </h1>
 
-              {/* Stats */}
-              <div className="flex justify-center gap-8 pt-8">
-                <div>
-                  <div className="text-3xl font-bold text-blue-600">10K+</div>
-                  <div className="text-sm text-gray-600">Active Members</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-purple-600">50M+</div>
-                  <div className="text-sm text-gray-600">Points Earned</div>
-                </div>
-              </div>
+          <p className="text-xl text-gray-600 leading-relaxed">
+            Join our exclusive loyalty program and earn points with every stay.
+            Redeem for free nights, upgrades, and unforgettable experiences.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/auth/register"
+              className="px-8 py-4 bg-gradient-to-r from-yellow-600 to-gray-300 text-white font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center"
+            >
+              Join Free Today
+            </Link>
+            <Link
+              href="/auth/signin"
+              className="px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 font-bold rounded-full hover:border-yellow-600 hover:text-yellow-600 transition-all duration-300 text-center"
+            >
+              Sign In
+            </Link>
+          </div>
+
+          {/* Stats */}
+          <div className="flex justify-center gap-8 pt-8">
+            <div>
+              <div className="text-3xl font-bold text-blue-600">10K+</div>
+              <div className="text-sm text-gray-600">Active Members</div>
             </div>
+            <div>
+              <div className="text-3xl font-bold text-purple-600">50M+</div>
+              <div className="text-sm text-gray-600">Points Earned</div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Features Section */}
       <section className="py-20 px-6 bg-white">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Why Join Serendib Circle?</h2>
-            <p className="text-xl text-gray-600">Unlock exclusive benefits and rewards</p>
+            <h2 className="text-4xl font-bold mb-4">
+              Why Join Serendib Circle?
+            </h2>
+            <p className="text-xl text-gray-600">
+              Unlock exclusive benefits and rewards
+            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {/* Feature 1 */}
             <div className="group p-8 bg-gradient-to-br from-blue-50 to-white rounded-2xl border border-blue-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold mb-3">Earn Points</h3>
-              <p className="text-gray-600">Get 10 points per dollar spent. Tier members earn up to 2x bonus points on every purchase.</p>
+              <p className="text-gray-600">
+                Get 10 points per dollar spent. Tier members earn up to 2x bonus
+                points on every purchase.
+              </p>
             </div>
 
             {/* Feature 2 */}
             <div className="group p-8 bg-gradient-to-br from-purple-50 to-white rounded-2xl border border-purple-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                  />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold mb-3">Tier Benefits</h3>
-              <p className="text-gray-600">Progress through 4 exclusive tiers and unlock premium perks, upgrades, and VIP treatment.</p>
+              <p className="text-gray-600">
+                Progress through 4 exclusive tiers and unlock premium perks,
+                upgrades, and VIP treatment.
+              </p>
             </div>
 
             {/* Feature 3 */}
             <div className="group p-8 bg-gradient-to-br from-green-50 to-white rounded-2xl border border-green-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-green-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                  />
                 </svg>
               </div>
               <h3 className="text-2xl font-bold mb-3">Redeem Rewards</h3>
-              <p className="text-gray-600">Use your points for free nights, dining vouchers, spa experiences, and exclusive offers.</p>
+              <p className="text-gray-600">
+                Use your points for free nights, dining vouchers, spa
+                experiences, and exclusive offers.
+              </p>
             </div>
           </div>
         </div>
@@ -137,7 +180,8 @@ export default function LandingPage() {
             Ready to Start Earning?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of members enjoying exclusive rewards and benefits. Sign up today and get 500 bonus points!
+            Join thousands of members enjoying exclusive rewards and benefits.
+            Sign up today and get 500 bonus points!
           </p>
           <Link
             href="/auth/register"
@@ -155,9 +199,13 @@ export default function LandingPage() {
             <div className="w-10 h-10 bg-gradient-to-br from-yellow-600 to-gray-200 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">S</span>
             </div>
-            <span className="text-2xl font-bold text-white">Serendib Circle</span>
+            <span className="text-2xl font-bold text-white">
+              Serendib Circle
+            </span>
           </div>
-          <p className="text-sm">© 2026 Serendib Circle. All rights reserved.</p>
+          <p className="text-sm">
+            © 2026 Serendib Circle. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

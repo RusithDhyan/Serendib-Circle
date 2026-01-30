@@ -12,10 +12,10 @@ export default function Experience({ hotelId }) {
 
   const [experiences, setExperiences] = useState([]);
 
-  const fetchExperience =useCallback(async () => {
+  const fetchExperience = useCallback(async () => {
     const experiences = await fetchPageExpByHotel(hotelId);
     if (experiences) setExperiences(experiences);
-  },[hotelId])
+  }, [hotelId]);
 
   useEffect(() => {
     fetchExperience();
@@ -24,7 +24,9 @@ export default function Experience({ hotelId }) {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this Experience?")) return;
 
-    const res = await fetch(`/api/site-admin/page-exp/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/site-admin/page-exp/${id}`, {
+      method: "DELETE",
+    });
     const result = await res.json();
     if (result.success || result.message === "Experience deleted") {
       fetchExperience();
@@ -46,60 +48,59 @@ export default function Experience({ hotelId }) {
         </div>
       ) : (
         <div>
-      {experiences.map((experience) => (
-        <div
-          key={experience._id}
-          className="pb-4"
-        >
-          <div className="flex items-start gap-5">
-            <div>
-              <h1 className="text-gray-500 font-bold">Left-Side Content</h1>
+          {experiences.map((experience) => (
+            <div key={experience._id} className="pb-4">
+              <div className="flex items-start gap-5">
+                <div>
+                  <h1 className="text-gray-500 font-bold">Left-Side Content</h1>
 
-              <Image
-                src={experience.image_left}
-                alt="image-right"
-                width={1000}
-                height={50}
-                className="w-full h-50 object-cover rounded-md mt-2"
-              />
-              <p className="text-sm mt-2">{experience.description_left}</p>
+                  <Image
+                    src={experience.image_left}
+                    alt="image-right"
+                    width={1000}
+                    height={50}
+                    className="w-full h-50 object-cover rounded-md mt-2"
+                  />
+                  <p className="text-sm mt-2">{experience.description_left}</p>
+                </div>
+                <div>
+                  <h1 className="text-gray-500 font-bold">
+                    Right-Side Content
+                  </h1>
+                  <Image
+                    src={experience.image_right}
+                    alt="image-right"
+                    width={1000}
+                    height={50}
+                    className="w-full h-50 object-cover rounded-md mt-2"
+                  />
+                  <p className="text-sm mt-2">{experience.description_right}</p>
+                </div>
+              </div>
+              <div className="space-x-2 mt-2 flex items-center justify-end gap-2">
+                {session?.user?.permissions?.canUpdatePageExp && (
+                  <button
+                    onClick={() => {
+                      setEditingExperience(experience);
+                      setShowPopup(true);
+                    }}
+                    className="bg-green-500 text-white px-3 py-1 rounded"
+                  >
+                    Edit
+                  </button>
+                )}
+                {session?.user?.permissions?.canDeletePageExp && (
+                  <button
+                    onClick={() => handleDelete(experience._id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
             </div>
-            <div>
-              <h1 className="text-gray-500 font-bold">Right-Side Content</h1>
-              <Image
-                src={experience.image_right}
-                alt="image-right"
-                width={1000}
-                height={50}
-                className="w-full h-50 object-cover rounded-md mt-2"
-              />
-              <p className="text-sm mt-2">{experience.description_right}</p>
-            </div>
-          </div>
-          <div className="space-x-2 mt-2 flex items-center justify-end gap-2">
-            {session?.user?.permissions?.canUpdatePageExp && (
-            <button
-              onClick={() => {
-                setEditingExperience(experience);
-                setShowPopup(true);
-              }}
-              className="bg-green-500 text-white px-3 py-1 rounded"
-            >
-              Edit
-            </button>
-            )}
-            {session?.user?.permissions?.canDeletePageExp && (
-            <button
-              onClick={() => handleDelete(experience._id)}
-              className="bg-red-500 text-white px-3 py-1 rounded"
-            >
-              Delete
-            </button>
-            )}
-          </div>
+          ))}
         </div>
-      ))}
-      </div>
       )}
       {showPopup && (
         <AddPageExperience

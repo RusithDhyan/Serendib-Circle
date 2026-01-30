@@ -26,8 +26,8 @@ export default function AdminRedemptions() {
   }, [filterType, filterStatus]);
 
   const fetchRedemptions = async () => {
-      const t = Date.now().toString();
-      const cs = await generateChecksum(t);
+    const t = Date.now().toString();
+    const cs = await generateChecksum(t);
 
     try {
       const response = await fetch(`/api/redemptions?t=${t}&cs=${cs}`);

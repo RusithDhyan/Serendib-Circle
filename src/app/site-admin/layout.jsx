@@ -1,6 +1,6 @@
-import AdminLayoutClient from './AdminLayoutClient';
-import { DataProvider } from '../context/DataContext';
-import { fetchAllData } from '@/lib/fetchData';
+import AdminLayoutClient from "./AdminLayoutClient";
+import { DataProvider } from "../context/DataContext";
+import { fetchAllData } from "@/lib/fetchData";
 
 export default async function SiteAdminLayout({ children }) {
   const initialData = await fetchAllData();
@@ -9,9 +9,7 @@ export default async function SiteAdminLayout({ children }) {
 
   return (
     <DataProvider initialData={initialData}>
-      <AdminLayoutClient>
-        {children}
-      </AdminLayoutClient>
+      <AdminLayoutClient>{children}</AdminLayoutClient>
     </DataProvider>
   );
 }

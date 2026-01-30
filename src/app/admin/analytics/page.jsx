@@ -25,7 +25,7 @@ export default function AdminAnalytics() {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
   const [transactionPage, setTransactionPage] = useState(1);
-  const transactionPerPage = 2
+  const transactionPerPage = 2;
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -33,14 +33,13 @@ export default function AdminAnalytics() {
   }, [timeRange]);
 
   const fetchAnalytics = async () => {
-
-      const t = Date.now().toString();
-      const cs = await generateChecksum(t);
+    const t = Date.now().toString();
+    const cs = await generateChecksum(t);
 
     try {
       const response = await fetch(`/api/admin/analytics?t=${t}&cs=${cs}`);
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setAnalytics(data);
     } catch (error) {
       console.error("Error fetching analytics:", error);
@@ -59,12 +58,12 @@ export default function AdminAnalytics() {
     indexOfLast
   );
 
-   const totalPages1 = Math.ceil(
+  const totalPages1 = Math.ceil(
     analytics?.transactions?.byType?.length / transactionPerPage
   );
   const indexOfLast1 = transactionPage * transactionPerPage;
   const indexOfFirst1 = indexOfLast1 - transactionPerPage;
-  const currentTransactions =analytics?.transactions?.byType?.slice(
+  const currentTransactions = analytics?.transactions?.byType?.slice(
     indexOfFirst1,
     indexOfLast1
   );
@@ -262,22 +261,22 @@ export default function AdminAnalytics() {
             })}
           </div>
           <div className="flex-1 justify-end space-x-2 mt-3">
-          <button
-            onClick={() => handlePageChange1(transactionPage - 1)}
-            disabled={transactionPage === 1}
-            className="py-1  rounded disabled:opacity-50"
-          >
-            <ChevronLeft/>
-          </button>
-          
-          <button
-            onClick={() => handlePageChange1(transactionPage + 1)}
-            disabled={transactionPage === totalPages1}
-            className="px-3 py-1rounded disabled:opacity-50"
-          >
-            <ChevronRight/>
-          </button>
-        </div>
+            <button
+              onClick={() => handlePageChange1(transactionPage - 1)}
+              disabled={transactionPage === 1}
+              className="py-1  rounded disabled:opacity-50"
+            >
+              <ChevronLeft />
+            </button>
+
+            <button
+              onClick={() => handlePageChange1(transactionPage + 1)}
+              disabled={transactionPage === totalPages1}
+              className="px-3 py-1rounded disabled:opacity-50"
+            >
+              <ChevronRight />
+            </button>
+          </div>
         </div>
       </div>
 

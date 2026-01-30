@@ -13,10 +13,10 @@ export default function AddAnyUsers() {
   const [showAddUsersPopup, setShowAddUsersPopup] = useState(false);
   const [editingAddUsers, setEditingAddUsers] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterTier, setFilterTier] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterTier, setFilterTier] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   useEffect(() => {
     fetchUsers();
   }, [searchTerm, filterTier]);
@@ -24,16 +24,16 @@ export default function AddAnyUsers() {
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
-      let url = '/api/admin/users?';
+      let url = "/api/admin/users?";
       if (searchTerm) url += `search=${searchTerm}&`;
       if (filterTier) url += `role=${filterTier}`;
-      
+
       const response = await fetch(url);
       const data = await response.json();
       // console.log("Fetched users:", data);
       setFilterUsers(data);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error("Error fetching users:", error);
     } finally {
       setIsLoading(false);
     }
@@ -103,7 +103,7 @@ export default function AddAnyUsers() {
     }
   };
 
-   const roles = [
+  const roles = [
     { label: "Owner", value: "owner" },
     { label: "Admin", value: "admin" },
     { label: "Manager", value: "manager" },
@@ -112,7 +112,7 @@ export default function AddAnyUsers() {
     { label: "Guest", value: "guest" },
   ];
 
-   const ROLE_LEVEL = {
+  const ROLE_LEVEL = {
     owner: 5,
     admin: 4,
     manager: 3,
@@ -122,15 +122,15 @@ export default function AddAnyUsers() {
   };
 
   const allowedRoles = useMemo(() => {
-      if (!session || !session.user.role) return roles;
-  
-      const currentLevel = ROLE_LEVEL[session.user.role.toLowerCase()];
-      const editableRole = editingAddUsers?.role?.toLowerCase() || "";
-  
-      return roles.filter(
-        (r) => ROLE_LEVEL[r.value] < currentLevel || r.value === editableRole
-      );
-    }, [session, editingAddUsers]);
+    if (!session || !session.user.role) return roles;
+
+    const currentLevel = ROLE_LEVEL[session.user.role.toLowerCase()];
+    const editableRole = editingAddUsers?.role?.toLowerCase() || "";
+
+    return roles.filter(
+      (r) => ROLE_LEVEL[r.value] < currentLevel || r.value === editableRole
+    );
+  }, [session, editingAddUsers]);
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md mt-5">
@@ -152,7 +152,7 @@ export default function AddAnyUsers() {
                 }}
               />
             </div>
-            
+
             <div className="flex items-center gap-2 justify-around px-1 w-full border border-gray-300 rounded-lg">
               <Filter className="text-gray-400" size={20} />
               <select
@@ -162,7 +162,6 @@ export default function AddAnyUsers() {
                   setCurrentPage(1); // Reset to first page on filter
                 }}
                 className="w-full py-1 rounded-lg focus:ring-serendib-primary focus:border-transparent appearance-none"
-
               >
                 <option value="">All Roles</option>
                 {allowedRoles.map((r) => (
@@ -174,20 +173,19 @@ export default function AddAnyUsers() {
             </div>
           </div>
           <button
-          onClick={() => setShowAddUsersPopup(true)}
-          className="group flex items-center gap-2 px-3 py-1 text-sm border text-serendib-primary border-serendib-primary rounded-md hover:bg-serendib-secondary hover:text-white font-bold transition"
-        >
-          <BadgePlus
-            size={18}
-            strokeWidth={1.4}
-            className="text-serendib-primary group-hover:text-white"
-          />
-          Add User
-        </button>
+            onClick={() => setShowAddUsersPopup(true)}
+            className="group flex items-center gap-2 px-3 py-1 text-sm border text-serendib-primary border-serendib-primary rounded-md hover:bg-serendib-secondary hover:text-white font-bold transition"
+          >
+            <BadgePlus
+              size={18}
+              strokeWidth={1.4}
+              className="text-serendib-primary group-hover:text-white"
+            />
+            Add User
+          </button>
         </div>
-        
       </div>
-      
+
       {!session?.user?.permissions?.canReadUsers ? (
         <div className="p-6 text-center text-gray-500">
           You do not have permission to view all users.
@@ -216,7 +214,9 @@ export default function AddAnyUsers() {
                   {currentUsers.length === 0 ? (
                     <tr>
                       <td colSpan="7" className="p-4 text-center text-gray-500">
-                        {searchTerm || filterTier ? "No users found matching your filters." : "No Users found yet."}
+                        {searchTerm || filterTier
+                          ? "No users found matching your filters."
+                          : "No Users found yet."}
                       </td>
                     </tr>
                   ) : (
@@ -241,9 +241,15 @@ export default function AddAnyUsers() {
                           </div>
                         </td>
                         <td>
-                          <div className="text-sm text-gray-600 text-center">{user.email}</div>
+                          <div className="text-sm text-gray-600 text-center">
+                            {user.email}
+                          </div>
                         </td>
-                        <td className={`p-3 font-bold text-center capitalize ${roleColors[user.role] || ""}`}>
+                        <td
+                          className={`p-3 font-bold text-center capitalize ${
+                            roleColors[user.role] || ""
+                          }`}
+                        >
                           {user.role}
                         </td>
                         <td className="py-4 px-6 text-center">

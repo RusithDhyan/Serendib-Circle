@@ -10,12 +10,15 @@ export default function ExpContent({ expId }) {
 
   const [contents, setContent] = useState([]);
 
-  const fetchContent =useCallback(async () => {
-const t = Date.now().toString();
+  const fetchContent = useCallback(async () => {
+    const t = Date.now().toString();
     const cs = await generateChecksum(t);
-    const res = await fetch(`/api/site-admin/exp-content?expId=${expId}&t=${t}&cs=${cs}`);    const data = await res.json();
+    const res = await fetch(
+      `/api/site-admin/exp-content?expId=${expId}&t=${t}&cs=${cs}`
+    );
+    const data = await res.json();
     if (data.success) setContent(data.data);
-  },[expId])
+  }, [expId]);
 
   useEffect(() => {
     fetchContent();
@@ -24,7 +27,9 @@ const t = Date.now().toString();
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this Experience?")) return;
 
-    const res = await fetch(`/api/site-admin/exp-content/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/site-admin/exp-content/${id}`, {
+      method: "DELETE",
+    });
     const result = await res.json();
     if (result.success || result.message === "Experience deleted") {
       fetchContent();
@@ -41,19 +46,19 @@ const t = Date.now().toString();
         </p>
       )}
       {contents?.map((content) => (
-        <div
-          key={content._id}
-          className="pb-4"
-        >
+        <div key={content._id} className="pb-4">
           <p className="text-lg font-semibold mt-2">{content.title}</p>
-          <div className="flex gap-4">      
-              
-             <p className="text-sm mt-2 text-gray-500">{content.description}</p>
+          <div className="flex gap-4">
+            <p className="text-sm mt-2 text-gray-500">{content.description}</p>
           </div>
           <div className="space-y-2 mt-2">
             {content.bulletPoints.map((point, index) => (
               <div key={index} className="flex items-start gap-2">
-                <CheckCircle size={18} strokeWidth={1.4} className="text-green-600 mt-1" />
+                <CheckCircle
+                  size={18}
+                  strokeWidth={1.4}
+                  className="text-green-600 mt-1"
+                />
                 <span className="text-gray-700">{point}</span>
               </div>
             ))}
