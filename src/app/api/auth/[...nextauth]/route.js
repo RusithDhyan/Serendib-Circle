@@ -115,7 +115,6 @@ export const authOptions = {
     console.log("Session object:", session); // ✅ verify role here too
     return session;
   },
-
  
 },
   pages: {
