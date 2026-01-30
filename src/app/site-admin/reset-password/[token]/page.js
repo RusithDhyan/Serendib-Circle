@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
 
 export default function ResetPasswordPage() {
   const params = useParams();
@@ -23,11 +22,11 @@ export default function ResetPasswordPage() {
     const data = await res.json();
     setMessage(data.message);
 
-    if (res.ok) {
-      setTimeout(() => {
-        router.push("/signin");
-      }, 2000);
-    }
+    // if (res.ok) {
+    //   setTimeout(() => {
+    //     router.push("/signin");
+    //   }, 2000);
+    // }
   };
 
   return (
