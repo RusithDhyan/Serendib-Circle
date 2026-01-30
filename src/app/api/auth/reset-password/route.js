@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
-import Admin from "@/models/Admin";
 import { connectDB } from "@/lib/mongodb";
+import User from "@/models/User";
 
 export async function POST(req) {
   try {
@@ -10,7 +10,7 @@ export async function POST(req) {
 
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-    const user = await Admin.findOne({
+    const user = await User.findOne({
       resetPasswordToken: hashedToken,
       resetPasswordExpire: { $gt: Date.now() },
     });
