@@ -155,11 +155,11 @@ export default function UserAccessPage() {
     user: "text-black",
   };
   return (
-    <div className="flex">
+    <div className="flex-1 mt-10 ml-64">
       <div className={"flex-1 transition-all duration-300"}>
         <div className="flex flex-col md:flex-row gap-8 p-4 min-h-screen">
           {/* LEFT: User Profile */}
-          <div className="md:w-1/2 bg-white p-6 rounded-md shadow">
+          <div className="md:w-1/2 p-6 rounded-md ">
             <div className="flex flex-col items-center">
               <Image
                 src={user.image || "/default-avatar.png"}
@@ -210,7 +210,7 @@ export default function UserAccessPage() {
           </div>
 
           {/* RIGHT: Permissions */}
-          <div className="md:w-1/2 bg-white p-6 rounded-md shadow">
+          <div className="md:w-1/2 p-6 rounded-md shadow">
             <h2 className="text-xl font-semibold mb-4">Authorization Access</h2>
             {!session?.user?.permissions?.canViewPermissions ? (
               <div className="p-6 text-center text-gray-500">

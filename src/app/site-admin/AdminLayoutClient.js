@@ -88,7 +88,7 @@ export default function AdminLayoutClient({ children }) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navigation Bar */}
-      <nav className="bg-serendib-primary text-white shadow-lg">
+      <nav className="bg-serendib-primary text-white shadow-lg fixed w-screen  z-50 shadow">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default function AdminLayoutClient({ children }) {
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-md min-h-[calc(100vh-64px)]">
+        <aside className="w-64 shadow-md bg-white fixed h-screen pt-20">
           <nav className="p-4 space-y-2">
             {navigation.map((item) => {
               const isActive = pathname === item.href;

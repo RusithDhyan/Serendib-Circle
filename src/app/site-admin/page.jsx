@@ -7,15 +7,10 @@ export default function Dashboard() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="flex">
-      <div
-        className={`
-          flex-1
-          
-        `}
-      >
+    <div className="flex-1 mt-10 ml-64">
+      <div>
         <DashboardCard />
-        
+
         <HotelTable />
       </div>
     </div>

@@ -34,12 +34,10 @@ export default function BlogPage() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex-1 mt-12 ml-64">
     
       <div
-        className={`
-          flex-1 transition-all duration-300          
-        `}
+        
       >
         <Breadcrumbs />
         <div className="flex items-center justify-between px-6 py-2 my-5 border-b border-gray-300 mx-4">

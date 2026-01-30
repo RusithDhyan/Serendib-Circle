@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import path from "path";
 import { writeFile } from "fs/promises";
 import Hotel from "@/models/Hotel";
-import { getCurrentUser } from "@/utils/auth";
 import crypto from "crypto";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";

@@ -43,13 +43,9 @@ export default function HomeContent() {
   };
 
   return (
-      <div className="flex">
+      <div className="flex-1 mt-12 ml-64">
         <div
-          className={`
-          flex-1 transition-all duration-300
-          ${isHovered ? "ml-1" : "ml-1"}
-          
-        `}
+         
         >
           <Breadcrumbs />
           <h1 className="sm:text-2xl 2xl:text-4xl font-bold text-center">

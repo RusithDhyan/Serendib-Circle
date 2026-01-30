@@ -19,7 +19,7 @@ export default function ProfileView() {
 
   const { data: session, status, update } = useSession();
 
-  console.log(session.user.image)
+  console.log(session.user.image);
   // Initialize form with session data
   useEffect(() => {
     if (session?.user) {
@@ -43,60 +43,59 @@ export default function ProfileView() {
     await signOut({ callbackUrl: "/" });
   };
 
-
   const handleUpdate = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    const formData = new FormData();
-    formData.append("fullname", fullname);
-    formData.append("email", email);
-    formData.append("phone", phone);
-    if (image) {
-      formData.append("image", image);
-    }
+    try {
+      const formData = new FormData();
+      formData.append("fullname", fullname);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      if (image) {
+        formData.append("image", image);
+      }
 
-    console.log('🚀 Sending update request...');
-    console.log('Data:', { fullname, email, phone, hasImage: !!image });
+      console.log("🚀 Sending update request...");
+      console.log("Data:", { fullname, email, phone, hasImage: !!image });
 
-    const res = await fetch("/api/site-admin/profile", {
-      method: "PUT",
-      body: formData,
-      credentials: "include",
-    });
-
-    console.log('📡 Response status:', res.status);
-    
-    const data = await res.json();
-    console.log('📦 Response data:', data);
-    
-    if (data.success) {
-      // Update NextAuth session
-      await update({
-        ...session,
-        user: {
-          ...session.user,
-          name: data.user.name,
-          email: data.user.email,
-          phone: data.user.phone,
-          image: data.user.image,
-        },
+      const res = await fetch("/api/site-admin/profile", {
+        method: "PUT",
+        body: formData,
+        credentials: "include",
       });
 
-      setShowEditModal(false);
-      alert("Profile updated successfully!");
-    } else {
-      console.error('❌ Update failed:', data);
-      alert(`Failed to update profile: ${data.message || 'Unknown error'}`);
+      console.log("📡 Response status:", res.status);
+
+      const data = await res.json();
+      console.log("📦 Response data:", data);
+
+      if (data.success) {
+        // Update NextAuth session
+        await update({
+          ...session,
+          user: {
+            ...session.user,
+            name: data.user.name,
+            email: data.user.email,
+            phone: data.user.phone,
+            image: data.user.image,
+          },
+        });
+
+        setShowEditModal(false);
+        alert("Profile updated successfully!");
+      } else {
+        console.error("❌ Update failed:", data);
+        alert(`Failed to update profile: ${data.message || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("💥 Error:", error);
+      alert(`Error: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error('💥 Error:', error);
-    alert(`Error: ${error.message}`);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   if (status === "loading") {
     return (
@@ -114,8 +113,8 @@ export default function ProfileView() {
   if (!session?.user) return <p>Not logged in</p>;
 
   return (
-    <div className="flex">
-      <div className="flex-1 transition-all duration-300">
+    <div className="flex-1 mt-12 ml-64">
+      <div>
         <Breadcrumbs />
         <div className="bg-white w-full p-6">
           <div className="flex items-center gap-6">
@@ -139,7 +138,11 @@ export default function ProfileView() {
                     : "Not has been Changed"}
                 </span>
               </h3>
-              <p className={`${roleColors[session.user.role] || "text-gray-600"}`}>
+              <p
+                className={`${
+                  roleColors[session.user.role] || "text-gray-600"
+                }`}
+              >
                 {session.user.role}
               </p>
             </div>
@@ -165,7 +168,9 @@ export default function ProfileView() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="text-gray-600 text-sm">Email</label>
-              <div className="text-gray-800 font-medium">{session.user.email}</div>
+              <div className="text-gray-800 font-medium">
+                {session.user.email}
+              </div>
             </div>
             <div>
               <label className="text-gray-600 text-sm">Phone</label>

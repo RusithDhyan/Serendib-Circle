@@ -37,7 +37,6 @@ export async function GET(req) {
     const usersByTier = await User.aggregate([
       { $group: { _id: "$tier", count: { $sum: 1 } } },
       { $sort: { count: -1 } },
-      { $limit: 1 },
     ]);
 
     // Get transaction statistics

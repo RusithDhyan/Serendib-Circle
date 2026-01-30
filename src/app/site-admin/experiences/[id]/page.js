@@ -25,7 +25,7 @@ export default function ExperienceInnerPage() {
   }, [id]);
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex-1 mt-10 ml-64">
       {/* Sidebar */}
       {/* Main Content Area */}
       <div className="flex-1 flex pb-5 w-auto">

@@ -10,7 +10,7 @@ export default function AdminUsers() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterTier, setFilterTier] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 10;
+  const usersPerPage = 5;
 
   useEffect(() => {
     fetchUsers();
@@ -53,7 +53,7 @@ export default function AdminUsers() {
   };
 
   return (
-    <div>
+    <div className='flex-1 ml-64 mt-10'>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">User Management</h1>
         <p className="text-gray-600">View and manage all loyalty program members</p>

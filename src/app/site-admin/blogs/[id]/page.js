@@ -2,7 +2,12 @@
 import AddBlogContent from "@/app/site-admin/(components)/(blog)/(forms)/AddBlogContent";
 import BlogContent from "@/app/site-admin/(components)/(blog)/BlogContent";
 import { useData } from "@/app/context/DataContext";
-import { BadgePlus, CircleChevronLeft, CircleChevronRight, Sidebar } from "lucide-react";
+import {
+  BadgePlus,
+  CircleChevronLeft,
+  CircleChevronRight,
+  Sidebar,
+} from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -17,7 +22,7 @@ export default function BlogInnerPage() {
   const { data: session } = useSession();
 
   const [blog, setBlogs] = useState({});
-  console.log(blog)
+  console.log(blog);
   const { id } = useParams();
 
   useEffect(() => {
@@ -44,30 +49,34 @@ export default function BlogInnerPage() {
   if (!blog) return <div>Loading...</div>;
 
   return (
-    <div className="flex">
-      
-      <div
-        className={`
-          flex-1 transition-all duration-300 `}
-      >
+    <div className="flex-1 mt-12 ml-64">
+      <div>
         <h1 className="sm:text-2xl 2xl:text-4xl text-center font-bold mt-10">
           {blog.title}
         </h1>
         <div className="flex flex-col md:flex-row gap-6 bg-white  rounded-lg shadow-md pt-5">
           {/* Left Side: Text Info */}
           <div className="md:w-1/2 space-y-2 p-4">
-          <h2 className="sm:text-lg 2xl:text-xl font-bold">
-            Title : <span className="text-md text-gray-700">{blog.main_title}</span>
-          </h2>
-          <p className="sm:text-lg 2xl:text-xl font-bold">
-            Description : <span className="text-sm text-gray-700">{blog.main_description}</span>
-          </p>
-           <p className="sm:text-lg 2xl:text-xl font-bold">
-            Body Title : <span className="text-sm text-gray-700">{blog.body_title}</span>
-          </p>
-          <p className="sm:text-lg 2xl:text-xl font-bold">
-            Body Description : <span className="text-sm text-gray-700">{blog.body_description}</span>
-          </p>
+            <h2 className="sm:text-lg 2xl:text-xl font-bold">
+              Title :{" "}
+              <span className="text-md text-gray-700">{blog.main_title}</span>
+            </h2>
+            <p className="sm:text-lg 2xl:text-xl font-bold">
+              Description :{" "}
+              <span className="text-sm text-gray-700">
+                {blog.main_description}
+              </span>
+            </p>
+            <p className="sm:text-lg 2xl:text-xl font-bold">
+              Body Title :{" "}
+              <span className="text-sm text-gray-700">{blog.body_title}</span>
+            </p>
+            <p className="sm:text-lg 2xl:text-xl font-bold">
+              Body Description :{" "}
+              <span className="text-sm text-gray-700">
+                {blog.body_description}
+              </span>
+            </p>
           </div>
 
           {/* Right Side: 3 Images in a row */}
@@ -123,17 +132,19 @@ export default function BlogInnerPage() {
           </div>
         </div>
 
-          {session?.user?.permissions?.canCreateBlogContent && (
-        <div className="flex items-center justify-center gap-3 px-3 mt-10  border-b sm:w-61 2xl:w-70">
-          <h1 className="sm:text-xl 2xl:text-2xl font-bold">Add Blog Content</h1>
-          <button
-            onClick={() => setShowBlogContentPopup(true)}
-            className="text-sm text-blue-500 rounded-md transition"
-          >
-            <BadgePlus size={25} className="text-green-500" />
-          </button>
-        </div>
-          )}
+        {session?.user?.permissions?.canCreateBlogContent && (
+          <div className="flex items-center justify-center gap-3 px-3 mt-10  border-b sm:w-61 2xl:w-70">
+            <h1 className="sm:text-xl 2xl:text-2xl font-bold">
+              Add Blog Content
+            </h1>
+            <button
+              onClick={() => setShowBlogContentPopup(true)}
+              className="text-sm text-blue-500 rounded-md transition"
+            >
+              <BadgePlus size={25} className="text-green-500" />
+            </button>
+          </div>
+        )}
         <BlogContent blogId={blog._id} />
         {showBlogContentPopup && (
           <AddBlogContent

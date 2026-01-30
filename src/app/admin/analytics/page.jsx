@@ -8,20 +8,37 @@ import {
   Award,
   Calendar,
   Activity,
+  ChevronUp,
+  ChevronDown,
+  Forward,
+  ArrowBigLeft,
+  ArrowBigRight,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
+import { generateChecksum } from "@/lib/fetchData";
 
 export default function AdminAnalytics() {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 5;
+  const [transactionPage, setTransactionPage] = useState(1);
+  const transactionPerPage = 2
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     fetchAnalytics();
   }, [timeRange]);
 
   const fetchAnalytics = async () => {
+
+      const t = Date.now().toString();
+      const cs = await generateChecksum(t);
+
     try {
-      const response = await fetch("/api/admin/analytics");
+      const response = await fetch(`/api/admin/analytics?t=${t}&cs=${cs}`);
       const data = await response.json();
       console.log(data);
       setAnalytics(data);
@@ -32,6 +49,33 @@ export default function AdminAnalytics() {
     }
   };
 
+  const totalPages = Math.ceil(
+    analytics?.transactions?.recent?.length / usersPerPage
+  );
+  const indexOfLast = currentPage * usersPerPage;
+  const indexOfFirst = indexOfLast - usersPerPage;
+  const currentAnalytics = analytics?.transactions?.recent.slice(
+    indexOfFirst,
+    indexOfLast
+  );
+
+   const totalPages1 = Math.ceil(
+    analytics?.transactions?.byType?.length / transactionPerPage
+  );
+  const indexOfLast1 = transactionPage * transactionPerPage;
+  const indexOfFirst1 = indexOfLast1 - transactionPerPage;
+  const currentTransactions =analytics?.transactions?.byType?.slice(
+    indexOfFirst1,
+    indexOfLast1
+  );
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+
+  const handlePageChange1 = (page) => {
+    if (page >= 1 && page <= totalPages1) setTransactionPage(page);
+  };
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -60,15 +104,15 @@ export default function AdminAnalytics() {
       ? redemptionsPerMonth[redemptionsPerMonth.length - 1].count
       : 0;
 
-  console.log("redemptions per month:", currentMonthRedemptions);
-  console.log(analytics.users?.byTier[0]?._id);
-  console.log("current month user:", currentMonthUsers);
+  // console.log("redemptions per month:", currentMonthRedemptions);
+  // console.log(analytics.users?.byTier[0]?._id);
+  // console.log("current month user:", currentMonthUsers);
 
   const totalSpending = analytics.points?.totalSpending || 0;
   const totalPointsIssued = analytics.points?.totalPointsIssued || 0;
 
   return (
-    <div>
+    <div className="flex-1 ml-64 mt-10">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Analytics & Insights
@@ -80,7 +124,7 @@ export default function AdminAnalytics() {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6">
+        <div className="bg-gradient-to-br from-blue-200 to-blue-600 text-white rounded-xl shadow-lg p-6">
           <div className="flex items-center justify-between mb-2">
             <Users size={24} />
             <TrendingUp size={20} className="opacity-75" />
@@ -98,7 +142,7 @@ export default function AdminAnalytics() {
           <div className="text-sm opacity-90">Total Revenue</div>
         </div> */}
 
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl shadow-lg p-6">
+        <div className="bg-gradient-to-br from-purple-200 to-purple-600 text-white rounded-xl shadow-lg p-6">
           <div className="flex items-center justify-between mb-2">
             <Award size={24} />
             <TrendingUp size={20} className="opacity-75" />
@@ -109,7 +153,7 @@ export default function AdminAnalytics() {
           <div className="text-sm opacity-90">Available Points </div>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-xl shadow-lg p-6">
+        <div className="bg-gradient-to-br from-orange-200 to-orange-600 text-white rounded-xl shadow-lg p-6">
           <div className="flex items-center justify-between mb-2">
             <Activity size={24} />
             <TrendingUp size={20} className="opacity-75" />
@@ -122,7 +166,7 @@ export default function AdminAnalytics() {
       </div>
 
       {/* User Distribution */}
-      <div className="grid lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid lg:grid-cols-2 gap-6 mb-8 items-start">
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
             <Users size={24} className="text-serendib-primary" />
@@ -170,7 +214,7 @@ export default function AdminAnalytics() {
             Transaction Breakdown
           </h2>
           <div className="space-y-4">
-            {analytics.transactions?.byType?.map((trans) => {
+            {currentTransactions.map((trans) => {
               const icons = {
                 earn: "💰",
                 stay: "🏨",
@@ -217,49 +261,27 @@ export default function AdminAnalytics() {
               );
             })}
           </div>
+          <div className="flex-1 justify-end space-x-2 mt-3">
+          <button
+            onClick={() => handlePageChange1(transactionPage - 1)}
+            disabled={transactionPage === 1}
+            className="py-1  rounded disabled:opacity-50"
+          >
+            <ChevronLeft/>
+          </button>
+          
+          <button
+            onClick={() => handlePageChange1(transactionPage + 1)}
+            disabled={transactionPage === totalPages1}
+            className="px-3 py-1rounded disabled:opacity-50"
+          >
+            <ChevronRight/>
+          </button>
+        </div>
         </div>
       </div>
 
-      {/* Redemptions Analysis */}
-      {/* <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-        <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-          <Award size={24} className="text-serendib-primary" />
-          Redemption Insights
-        </h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {analytics.redemptions?.byType?.map((redemption) => {
-            const icons = {
-              dining: '🍽️',
-              room: '🏨',
-              experience: '✨'
-            };
-            
-            return (
-              <div key={redemption._id} className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl">
-                <div className="text-4xl mb-3">{icons[redemption._id] || '🎁'}</div>
-                <div className="font-bold text-lg text-gray-900 capitalize mb-2">{redemption._id}</div>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Count:</span>
-                    <span className="font-bold">{redemption.count}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Points:</span>
-                    <span className="font-bold text-red-600">{redemption.totalPoints?.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Value:</span>
-                    <span className="font-bold text-green-600">${redemption.totalValue?.toFixed(2)}</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div> */}
-
-      {/* Program Health Metrics */}
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
+      <div className="grid md:grid-cols-2 gap-6 mb-8 items-start">
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-6">
             Program Health
@@ -267,7 +289,9 @@ export default function AdminAnalytics() {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
               <div>
-                <div className="text-sm text-gray-600 mb-1 font-semibold">No. Of Logins</div>
+                <div className="text-sm text-gray-600 mb-1 font-semibold">
+                  No. Of Logins
+                </div>
                 <div className="text-2xl font-bold text-green-600">
                   {currentMonthUsers}
                 </div>
@@ -275,7 +299,6 @@ export default function AdminAnalytics() {
               </div>
               <TrendingUp size={32} className="text-green-600" />
             </div>
-
             <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
               <div>
                 <div className="text-sm text-gray-600 mb-1 font-semibold">
@@ -294,30 +317,48 @@ export default function AdminAnalytics() {
               </div>
               <DollarSign size={32} className="text-blue-600" />
             </div>
-
-            <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
-              <div>
-                <div className="text-sm text-gray-600 font-semibold mb-1">
-                  Average Days to Tier Upgrade
+            <div className="bg-purple-50 rounded-lg p-4">
+              {/* Header */}
+              <div
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() => setOpen(!open)}
+              >
+                <div className="flex items-center gap-2">
+                  <Award size={24} className="text-purple-600" />
+                  <div className="text-sm text-gray-600 font-semibold">
+                    Average Days to Tier Upgrade
+                  </div>
                 </div>
-                {analytics.users?.avgTierUpgradeDays &&
-                  Object.entries(analytics.users.avgTierUpgradeDays).map(
-                    ([key, value]) => (
-                      <div
-                        key={key}
-                        className="flex justify-between text-sm text-gray-500 mb-2"
-                      >
-                        <span>{key.replaceAll("_", " ")}</span>
-                        <span className="font-semibold text-purple-600 ">
-                          {value} days
-                        </span>
-                      </div>
-                    )
-                  )}
-                {/* <div className="text-xs text-gray-500">per transaction</div> */}
+
+                {open ? (
+                  <ChevronUp size={20} className="text-gray-500" />
+                ) : (
+                  <ChevronDown size={20} className="text-gray-500" />
+                )}
               </div>
-              <Award size={32} className="text-purple-600" />
-            </div>
+
+              {/* Collapsible Content */}
+              {open && (
+                <div className="mt-3">
+                  {analytics.users?.avgTierUpgradeDays &&
+                    Object.entries(analytics.users.avgTierUpgradeDays).map(
+                      ([key, value]) => (
+                        <div
+                          key={key}
+                          className="flex justify-between text-sm text-gray-500 mb-2"
+                        >
+                          <span className="capitalize">
+                            {key.replaceAll("_", " ")}
+                          </span>
+                          <span className="font-semibold text-purple-600">
+                            {value} days
+                          </span>
+                        </div>
+                      )
+                    )}
+                </div>
+              )}
+            </div>{" "}
           </div>
         </div>
 
@@ -331,17 +372,6 @@ export default function AdminAnalytics() {
                 {analytics.users?.byTier?.[0]?._id || "N/A"}
               </div>
             </div>
-
-            {/* <div className="p-4 bg-white/10 backdrop-blur-sm rounded-lg">
-              <div className="text-3xl mb-2">💎</div>
-              <div className="text-sm opacity-90 mb-1">Total Points in Circulation</div>
-              <div className="text-2xl font-bold">
-                {totalPointsIssued.toLocaleString()}
-              </div>
-              <div className="text-xs opacity-75 mt-1">
-                ≈ ${(totalPointsIssued / 100).toLocaleString()} value
-              </div>
-            </div> */}
 
             <div className="p-4 bg-white/10 backdrop-blur-sm rounded-lg">
               <div className="text-3xl mb-2">📈</div>
@@ -370,7 +400,7 @@ export default function AdminAnalytics() {
           Recent Activity
         </h2>
         <div className="space-y-3">
-          {analytics.transactions?.recent?.slice(0, 5).map((transaction) => (
+          {currentAnalytics?.slice(0, 5).map((transaction) => (
             <div
               key={transaction._id}
               className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
@@ -403,6 +433,35 @@ export default function AdminAnalytics() {
               </div>
             </div>
           ))}
+        </div>
+        <div className="flex-1 justify-end m-4 space-x-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+          {Array.from({ length: totalPages }, (_, idx) => (
+            <button
+              key={idx + 1}
+              onClick={() => handlePageChange(idx + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === idx + 1
+                  ? "bg-serendib-secondary hover:bg-serendib-primary text-white"
+                  : "bg-gray-100"
+              }`}
+            >
+              {idx + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
         </div>
       </div>
     </div>

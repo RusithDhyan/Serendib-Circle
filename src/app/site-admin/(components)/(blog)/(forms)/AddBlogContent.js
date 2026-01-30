@@ -16,25 +16,23 @@ export default function AddBlogContent({
     image: "",
     bullet_title: "",
     bulletPoints: [],
-
   });
   const [editingBlogContentId, setEditingBlogContentId] = useState(null);
 
- 
   const fetchBlogContent = useCallback(async () => {
     const t = Date.now().toString();
     const cs = await generateChecksum(t);
-    
-  const res = await fetch(`/api/site-admin/blog-content?blogId=${blogId}`);
-  const data = await res.json();
-  console.log("Fetched BlogContent:", data.data);
 
-  if (data.success) setBlogContent(data.data);
-}, [blogId]); // ✅ stable function, only changes when blogId changes
+    const res = await fetch(`/api/site-admin/blog-content?blogId=${blogId}`);
+    const data = await res.json();
+    console.log("Fetched BlogContent:", data.data);
 
-useEffect(() => {
-  fetchBlogContent();
-}, [fetchBlogContent]); 
+    if (data.success) setBlogContent(data.data);
+  }, [blogId]); // ✅ stable function, only changes when blogId changes
+
+  useEffect(() => {
+    fetchBlogContent();
+  }, [fetchBlogContent]);
 
   useEffect(() => {
     if (editingBlogContent) {
@@ -44,7 +42,6 @@ useEffect(() => {
         image: editingBlogContent.image || "",
         bullet_title: editingBlogContent.bullet_title || "",
         bulletPoints: editingBlogContent.bulletPoints || [""],
-
       });
       setEditingBlogContentId(editingBlogContent._id);
     }
@@ -65,14 +62,13 @@ useEffect(() => {
     setForm({ ...form, bulletPoints: newBullets });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const t = Date.now().toString();
     const cs = await generateChecksum(t);
 
     const formData = new FormData();
-    console.log("bullet data",formData);
+    console.log("bullet data", formData);
     formData.append("blogId", blogId);
     formData.append("title", form.title);
     formData.append("description", form.description);
@@ -85,10 +81,13 @@ useEffect(() => {
 
     let res;
     if (editingBlogContentId) {
-      res = await fetch(`/api/site-admin/blog-content/${editingBlogContentId}?t=${t}&cs=${cs}`, {
-        method: "PUT",
-        body: formData,
-      });
+      res = await fetch(
+        `/api/site-admin/blog-content/${editingBlogContentId}?t=${t}&cs=${cs}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      );
     } else {
       res = await fetch(`/api/site-admin/blog-content?t=${t}&cs=${cs}`, {
         method: "POST",
@@ -153,7 +152,9 @@ useEffect(() => {
               name="bullet_title"
               placeholder="Bullet Title"
               value={form.bullet_title}
-              onChange={(e) => setForm({ ...form, bullet_title: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, bullet_title: e.target.value })
+              }
               className="w-full p-2 border rounded"
             />
           </div>
@@ -165,26 +166,22 @@ useEffect(() => {
                 type="file"
                 name="image"
                 accept="image/*"
-                onChange={(e) =>
-                  setForm({ ...form, image: e.target.files[0] })
-                }
+                onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
 
               <div className="flex flex-col items-center justify-center pointer-events-none">
-                <UploadCloud className="w-8 h-8 text-blue-500"/>
+                <UploadCloud className="w-8 h-8 text-blue-500" />
                 <p className="text-blue-500 text-sm">
                   Click or drag image here
                 </p>
                 {form.image && (
-                  <p className="text-green-600 text-xs">
-                    Selected: 01 Image
-                  </p>
+                  <p className="text-green-600 text-xs">Selected: 01 Image</p>
                 )}
               </div>
             </div>
           </div>
-           <div className="space-y-2 flex flex-col">
+          <div className="space-y-2 flex flex-col">
             <label className="font-semibold">Bullet Points</label>
             {form.bulletPoints.map((point, index) => (
               <div key={index} className="flex gap-2 items-center">
