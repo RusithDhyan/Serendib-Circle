@@ -732,13 +732,13 @@ userSchema.methods.updateTier = function () {
 userSchema.methods.getTierMultiplier = function () {
   switch (this.tier) {
     case "The Circle":
-      return 2.0; // 100% bonus
+      return 2.0;
     case "Voyager":
-      return 1.5; // 50% bonus
+      return 1.5; 
     case "Adventurer":
-      return 1.25; // 25% bonus
+      return 1.25;
     default:
-      return 1.0; // No bonus
+      return 1.0;
   }
 };
 

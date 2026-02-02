@@ -150,7 +150,7 @@ export default function AdminLayoutClient({ children }) {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-8">{children}</main>
+        <main className="flex-1 p-5 mt-2">{children}</main>
       </div>
     </div>
   );

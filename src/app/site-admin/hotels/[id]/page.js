@@ -60,12 +60,8 @@ export default function HotelInnerPage() {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex-1 mt-12 ml-64">
       <div
-        className={`
-          flex-1 transition-all duration-300 px-3
-          
-        `}
       >
         <h1 className="sm:text-2xl 2xl:text-4xl text-center font-bold mt-10">
           {hotel?.hotel_name}

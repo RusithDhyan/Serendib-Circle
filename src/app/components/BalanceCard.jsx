@@ -50,11 +50,18 @@ export default function BalanceCard({ user }) {
           <div className="text-xs opacity-75">100 pts = $1 USD</div>
         </div> */}
         <div>
-          <div className="text-sm opacity-90 mb-1">Total Spend</div>
-          <div className="text-2xl font-bold">
-            ${user.totalSpend.toLocaleString()}
+          <div className="relative inline-block py-2">
+            {/* stays – top right */}
+            <div className="absolute -top-2 right-[-20] text-xs opacity-75">
+              {user.totalStays} stays
+            </div>
+
+            {/* spend amount */}
+            <div className="text-5xl font-bold">
+              ${user.totalSpend.toLocaleString()}
+            </div>
           </div>
-          <div className="text-xs opacity-75">{user.totalStays} stays</div>
+           <div className="text-xl opacity-90">Total Spend</div>
         </div>
       </div>
 

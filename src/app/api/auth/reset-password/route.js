@@ -7,7 +7,6 @@ export async function POST(req) {
   try {
     await connectDB();
     const { token, password } = await req.json();
-
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
     const user = await User.findOne({

@@ -150,7 +150,7 @@ export default function ProfileView() {
             <div className="ml-auto flex gap-2">
               <button
                 onClick={() => setShowEditModal(true)}
-                className="flex items-center gap-2 text-sm px-4 py-2 text-white rounded bg-serendib-secondary hover:bg-[#dfb98d]"
+                className="flex items-center gap-2 text-sm px-4 py-2 text-white rounded bg-serendib-secondary hover:bg-serendib-primary"
               >
                 <Pencil size={16} strokeWidth={1.7} /> Edit Profile
               </button>
@@ -183,7 +183,7 @@ export default function ProfileView() {
             onClick={() => {
               setShowPopup(true);
             }}
-            className="bg-blue-800 text-white p-2 mt-5 rounded-md hover:bg-blue-900 transition"
+            className="text-white p-2 mt-5 rounded-md bg-serendib-secondary hover:bg-serendib-primary transition"
           >
             Change Password
           </button>

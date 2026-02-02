@@ -13,7 +13,6 @@ export default withAuth(
         if (pathname.startsWith("/site-admin/reset-password")) {
           return true;
         }
-
         // Protect everything else under site-admin
         return !!token;
       },

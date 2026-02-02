@@ -105,7 +105,7 @@ export default function AdminAnalytics() {
 
   // console.log("redemptions per month:", currentMonthRedemptions);
   // console.log(analytics.users?.byTier[0]?._id);
-  // console.log("current month user:", currentMonthUsers);
+  console.log("current month user:", currentMonthUsers);
 
   const totalSpending = analytics.points?.totalSpending || 0;
   const totalPointsIssued = analytics.points?.totalPointsIssued || 0;

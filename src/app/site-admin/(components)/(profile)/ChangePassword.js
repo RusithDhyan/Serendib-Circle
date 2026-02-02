@@ -120,7 +120,7 @@ export default function ChangePasswordStepper({ onClose }) {
                   isCompleted
                     ? "bg-green-500 border-green-500 text-white"
                     : isActive
-                    ? "border-blue-600 text-blue-600"
+                    ? "border-serendib-secondary text-serendib-secondary"
                     : "border-gray-300 text-gray-400"
                 }`}
               >
@@ -228,7 +228,7 @@ export default function ChangePasswordStepper({ onClose }) {
           className={`px-4 py-2 rounded-lg font-semibold border transition ${
             step === 1
               ? "border-gray-300 text-gray-400 cursor-not-allowed"
-              : "border-blue-500 text-blue-600 hover:bg-blue-600 hover:text-white"
+              : "border-serendib-secondary text-serendib-secondary hover:bg-serendib-secondary hover:text-white"
           }`}
         >
           Back
@@ -237,7 +237,7 @@ export default function ChangePasswordStepper({ onClose }) {
         {step < 3 ? (
           <button
             onClick={nextStep}
-            className="px-4 py-2 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700"
+            className="px-4 py-2 rounded-lg font-semibold bg-serendib-secondary text-white hover:bg-serendib-primary"
           >
             Next
           </button>

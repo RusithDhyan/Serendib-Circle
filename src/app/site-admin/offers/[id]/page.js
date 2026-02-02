@@ -71,14 +71,8 @@ export default function OfferInnerPage() {
           offer.offer_type || offer.offerType || "Special Offer";
 
         return (
-          <div key={offer._id} className="flex px-3">
-            <Sidebar />
-            <div
-              className={`
-          flex-1 transition-all duration-300
-          ${isHovered ? "ml-1" : "ml-1"}
-        `}
-            >
+          <div key={offer._id} className="flex-1 mt-12 ml-64">
+            <div>
               <h1 className="sm:text-2xl 2xl:text-4xl text-center font-bold mt-10">
                 {offerType} at{" "}
                 <Link href={`/hotels/${hotelId}`}>

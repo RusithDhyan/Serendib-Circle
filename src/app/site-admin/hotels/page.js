@@ -99,7 +99,7 @@ export default function OurCollection() {
                       src={hotel.thumbnail}
                       alt={hotel.hotel_name}
                       fill
-                      className="object-cover"
+                      className="object-cover rounded-t-md"
                     />
                   </Link>
                 </div>
