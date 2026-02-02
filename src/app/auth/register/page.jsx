@@ -5,7 +5,6 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import ForgotPassword from "@/app/site-admin/forgot-password/page";
 
 export default function Register() {
   const router = useRouter();
@@ -19,7 +18,6 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isForgotPassword, setIsForgotPassword] = useState(false); // New state for toggling between forms
 
   const handleChange = (e) => {
     setFormData({
@@ -123,7 +121,6 @@ export default function Register() {
           </div>
         )}
 
-        {!isForgotPassword ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex items-center justify-around gap-2">
               <div>
@@ -228,14 +225,7 @@ export default function Register() {
                   </button>
                 </div>
               </div>
-              <div className="text-right mt-1">
-                <button
-                  onClick={() => setIsForgotPassword(true)}
-                  className="text-sm text-orange-500 hover:underline"
-                >
-                  Forgot Password?
-                </button>
-              </div>
+            
             </div>
 
             <button
@@ -246,9 +236,6 @@ export default function Register() {
               {isLoading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
-        ) : (
-          <ForgotPassword onClick={() => setIsForgotPassword(false)} />
-        )}
 
         <div className="mt-6">
           <div className="relative">
