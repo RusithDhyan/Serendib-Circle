@@ -111,6 +111,8 @@ export default function ProfileView() {
 
   if (!session?.user) return <p>Not logged in</p>;
 
+
+
   return (
     <div className="flex flex-col">
       <Navbar user={session?.user} />
@@ -127,7 +129,7 @@ export default function ProfileView() {
           <div className="flex items-center gap-6">
             <div className="w-28 h-28 relative">
               <Image
-                src={session.user.image || "/all-images/profile/profile.jpeg"}
+                src={session?.user?.image || "/all-images/profile/profile.jpeg"}
                 alt="Profile Picture"
                 fill
                 className="object-cover rounded-full"
