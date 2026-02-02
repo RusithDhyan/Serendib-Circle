@@ -72,4 +72,4 @@ redemptionSchema.statics.getUserVouchers = async function(userId) {
   return this.find({ userId }).sort({ createdAt: -1 });
 };
 
-module.exports = mongoose.models.Redemption || mongoose.model('Redemption', redemptionSchema);
+export default mongoose.models.Redemption || mongoose.model('Redemption', redemptionSchema);
