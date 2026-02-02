@@ -22,6 +22,7 @@ async function createAdmin() {
     console.log('\n🔧 Serendib Circle - Admin User Setup\n');
 
     const MONGODB_URI = process.env.MONGODB_URI;
+    console.log("Connected DB:", MONGODB_URI);
     if (!MONGODB_URI) {
       console.error('❌ MONGODB_URI not found in .env');
       process.exit(1);
