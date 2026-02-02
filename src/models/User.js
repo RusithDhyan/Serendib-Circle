@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
-import bcrypt from 'bcrypt';
-
 // const mongoose = require("mongoose");
 
-// const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -740,7 +738,7 @@ userSchema.methods.getTierMultiplier = function () {
     case "Adventurer":
       return 1.25;
     default:
-      return 1.0;
+      return 1.0; // No bonus
   }
 };
 
