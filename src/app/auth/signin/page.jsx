@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -131,7 +132,7 @@ export default function SignIn() {
             <div className="text-right mt-1">
               <button
                 onClick={() => setIsForgotPassword(true)}
-                className="text-sm text-orange-500 hover:underline"
+                className="text-sm text-serendib-primary hover:underline"
               >
                 Forgot Password?
               </button>

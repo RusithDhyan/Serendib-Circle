@@ -20,12 +20,12 @@ export default function ForgotPassword({ onClick }) {
   };
 
   return (
-    <div className="space-y-4 py-10">
-      <h2 className="text-2xl 2xl:text-3xl font-bold text-left py-4">
+    <div className="space-y-2 py-5">
+      <h2 className="text-xl font-bold text-left">
         Forgot Password
       </h2>
 
-      <p className="text-sm text-gray-600 mb-4">
+      <p className="text-sm text-gray-600 mb-2">
         Please enter your email to receive a password reset link.
       </p>
       <form onSubmit={handleSubmit}>
@@ -39,13 +39,13 @@ export default function ForgotPassword({ onClick }) {
         <div className="flex items-center gap-2">
           <button
             onClick={onClick}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="border border-gray-500 text-gray-500 hover:bg-gray-200 hover:text-gray-500 px-4 py-2 rounded-md transition-all duration-300 eas-in-out"
           >
             Back
           </button>
           <button
             type="submit"
-            className="bg-[#dfb98d] text-white hover:bg-[#D9C6B1] px-4 py-2 rounded"
+            className="bg-serendib-primary text-white hover:bg-serendib-secondary px-4 py-2 rounded-md"
           >
             Send Reset Link
           </button>
