@@ -2,27 +2,36 @@ import fs from "fs";
 import path from "path";
 
 export async function GET(req, { params }) {
-  const { filename } = params;
-  const filePath = path.join( "uploads", filename);
-  console.log("filepath", filePath);
+  // SAFETY: extract filename from URL, not params
+  const url = new URL(req.url);
+  const filename = url.pathname.split("/").pop();
+
+  if (!filename) {
+    return new Response("Filename missing", { status: 400 });
+  }
+
+  const filePath = path.join(process.cwd(), "uploads", filename);
 
   if (!fs.existsSync(filePath)) {
-    return new Response(`Not found = ${filePath}`, { status: 404 });
+    return new Response("File not found", { status: 404 });
   }
 
   const fileBuffer = fs.readFileSync(filePath);
 
-  // Detect MIME type by extension (basic)
   const ext = path.extname(filename).toLowerCase();
-  let contentType = "application/octet-stream";
-  if (ext === ".jpg" || ext === ".jpeg") contentType = "image/jpeg";
-  if (ext === ".png") contentType = "image/png";
-  if (ext === ".gif") contentType = "image/gif";
+  const contentType =
+    ext === ".jpg" || ext === ".jpeg"
+      ? "image/jpeg"
+      : ext === ".png"
+      ? "image/png"
+      : ext === ".gif"
+      ? "image/gif"
+      : "application/octet-stream";
 
   return new Response(fileBuffer, {
     headers: {
-      "Content-Type": "image/jpeg",
-      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Content-Type": contentType,
+      "Cache-Control": "no-store", // IMPORTANT
     },
   });
 }

@@ -75,47 +75,40 @@ export const authOptions = {
     }
   },
 
-  // Store role in jwt
-  async jwt({ token, user }) {
+  // 🔑 FIXED JWT CALLBACK
+  async jwt({ token, user, trigger, session }) {
+    // Initial login
     if (user) {
-      // Credentials login: user.role exists
+      token.id = user.id || user._id?.toString();
       token.role = user.role || token.role;
+      token.name = user.name;
+      token.email = user.email;
+      token.image = user.image;
+      token.phone = user.phone;
     }
 
-    // Google login: fetch role from DB if missing
-    if (!token.role && user?.email) {
-      await connectDB();
-      const dbUser = await User.findOne({ email: user.email });
-      if (dbUser) token.role = dbUser.role || "guest";
+    // ✅ THIS is the missing part (runtime updates)
+    if (trigger === "update" && session?.user) {
+      token.name = session.user.name;
+      token.email = session.user.email;
+      token.phone = session.user.phone;
+      token.image = session.user.image;
     }
 
-    console.log("JWT token:", token); // ✅ verify role here
     return token;
   },
 
-  // Expose role to session
+  // ✅ Session built ONLY from token (fast + correct)
   async session({ session, token }) {
-    if (session.user) {
-      session.user.role = token.role || "guest"; // always have a fallback
-    }
+    session.user.id = token.id;
+    session.user.name = token.name;
+    session.user.email = token.email;
+    session.user.phone = token.phone;
+    session.user.image = token.image;
+    session.user.role = token.role || "guest";
 
-    // Optional: add other DB-based fields
-    await connectDB();
-    const dbUser = await User.findOne({ email: session.user.email });
-    if (dbUser) {
-      session.user.id = dbUser._id.toString();
-      session.user.tier = dbUser.tier;
-      session.user.points = dbUser.points;
-      session.user.image = dbUser.image;
-      session.user.phone = dbUser.phone;
-      session.user.updatedAt = dbUser.updatedAt;
-      session.user.permissions = dbUser.permissions;
-    }
-
-    console.log("Session object:", session); // ✅ verify role here too
     return session;
   },
- 
 },
   pages: {
     signIn: '/auth/signin',

@@ -215,7 +215,7 @@ export default function ProfileView() {
                   required
                 />
               </div>
-              <div>
+              {/* <div>
                 <label className="block text-sm font-semibold mb-1">Email</label>
                 <input
                   type="email"
@@ -224,7 +224,7 @@ export default function ProfileView() {
                   className="w-full border rounded px-3 py-2"
                   required
                 />
-              </div>
+              </div> */}
               <div>
                 <label className="block text-sm font-semibold mb-1">Phone</label>
                 <input
