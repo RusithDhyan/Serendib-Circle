@@ -79,10 +79,11 @@ export default function ProfileView() {
             name: data.user.name,
             email: data.user.email,
             phone: data.user.phone,
-            image: data.user.image,
+            image: data.user.image + `?t=${Date.now()}`, // add timestamp to force reload
           },
         });
-        router.refresh();
+
+        router.refresh(); // forces server components to fetch new session data
         setShowEditModal(false);
         alert("Profile updated successfully!");
       } else {
@@ -124,7 +125,6 @@ export default function ProfileView() {
                 alt="Profile Picture"
                 className="w-28 h-28 object-cover rounded-full"
               />
-
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-800">
