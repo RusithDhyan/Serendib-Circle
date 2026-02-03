@@ -65,7 +65,7 @@ export async function PUT(req) {
         const buffer = Buffer.from(bytes);
         
         // Create uploads directory if it doesn't exist
-        const uploadsDir = path.join(process.cwd(), "uploads");
+        const uploadsDir = path.join(process.cwd(), "/var/www/serendib-web-backend/uploads/profiles");
         if (!fs.existsSync(uploadsDir)) {
           fs.mkdirSync(uploadsDir, { recursive: true });
         }
@@ -75,7 +75,7 @@ export async function PUT(req) {
         await writeFile(filepath, buffer);
 
         // Save relative path to database
-        user.image = `https://serendib.serendibhotels.mw/api/uploads/${filename}`;
+        user.image = `/api/uploads/${filename}`;
 
       } catch (uploadError) {
         console.error("Image upload error:", uploadError);

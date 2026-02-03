@@ -139,6 +139,7 @@ export default function ProfileView() {
                 alt="Profile"
                 width={150}
                 height={150}
+                className="w-28 h-28 object-cover rounded-full"
               />
 
             </div>
