@@ -82,7 +82,7 @@ export default function ProfileView() {
             image: data.user.image,
           },
         });
-
+        router.refresh();
         setShowEditModal(false);
         alert("Profile updated successfully!");
       } else {
