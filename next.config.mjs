@@ -1,9 +1,25 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-  domains: ['serendib.serendibhotels.mw','localhost','lh3.googleusercontent.com'], // ✅ only hostnames
-},
-    transpilePackages: ['react-leaflet'],
-
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'serendib.serendibhotels.mw',
+        pathname: '/api/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/api/uploads/**',
+      },
+    ],
+  },
+  transpilePackages: ['react-leaflet'],
 };
+
 export default nextConfig;

@@ -119,12 +119,12 @@ export default function ProfileView() {
         <div className="bg-white w-full p-6">
           <div className="flex items-center gap-6">
             <div className="w-28 h-28 relative">
-              <Image
+              <img
                 src={session.user.image || "/all-images/profile/profile.jpeg"}
                 alt="Profile Picture"
-                fill
-                className="object-cover rounded-full"
+                className="w-28 h-28 object-cover rounded-full"
               />
+
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-800">
