@@ -10,7 +10,7 @@ export async function GET(req, { params }) {
     return new Response("Filename missing", { status: 400 });
   }
 
-  const filePath = path.join(process.cwd(), "uploads", filename);
+  const filePath = path.join(process.cwd(), "uploads", "profiles", filename);
 
   if (!fs.existsSync(filePath)) {
     return new Response("File not found", { status: 404 });
