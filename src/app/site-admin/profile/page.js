@@ -71,6 +71,7 @@ export default function ProfileView() {
       console.log("📦 Response data:", data);
 
       if (data.success) {
+        router.refresh(); 
         // Update NextAuth session
         await update({
           ...session,
@@ -83,7 +84,7 @@ export default function ProfileView() {
           },
         });
 
-        router.refresh(); // forces server components to fetch new session data
+        // forces server components to fetch new session data
         setShowEditModal(false);
         alert("Profile updated successfully!");
       } else {
