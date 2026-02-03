@@ -75,7 +75,7 @@ export async function PUT(req) {
         await writeFile(filepath, buffer);
 
         // Save relative path to database
-        user.image = `https://serendib.serendibhotels.mw/api/uploads/${filename}`;
+        user.image = `https://serendib.serendibhotels.mw/api/uploads/${filename}?t=${Date.now()}`;
 
       } catch (uploadError) {
         console.error("Image upload error:", uploadError);
