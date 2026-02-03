@@ -6,6 +6,8 @@ import { Users, DollarSign, TrendingUp, Gift } from "lucide-react";
 export default function AdminDashboard() {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 5;
 
   useEffect(() => {
     fetchAnalytics();
@@ -21,6 +23,15 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+   const totalPages = Math.ceil(analytics?.users?.recent?.length / usersPerPage);
+  const indexOfLast = currentPage * usersPerPage;
+  const indexOfFirst = indexOfLast - usersPerPage;
+  const recentUsers = analytics?.users?.recent?.slice(indexOfFirst, indexOfLast);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
   };
 
   if (loading) {
@@ -140,7 +151,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {analytics?.users?.recent?.map((user) => (
+                {recentUsers.map((user) => (
                 <tr key={user._id} className="border-b hover:bg-gray-50">
                   <td className="py-3 px-4">{user.name}</td>
                   <td className="py-3 px-4">{user.email}</td>
@@ -159,6 +170,36 @@ export default function AdminDashboard() {
               ))}
             </tbody>
           </table>
+
+          <div className="flex py-5 space-x-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+          {Array.from({ length: totalPages }, (_, idx) => (
+            <button
+              key={idx + 1}
+              onClick={() => handlePageChange(idx + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === idx + 1
+                  ? "bg-serendib-secondary hover:bg-serendib-primary text-white"
+                  : "bg-gray-100"
+              }`}
+            >
+              {idx + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
         </div>
       </div>
     </div>

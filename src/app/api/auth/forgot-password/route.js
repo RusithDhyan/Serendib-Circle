@@ -33,9 +33,9 @@ export async function POST(req) {
       await resend.emails.send({
         from: "No-Reply <onboarding@resend.dev>",
         to: user.email,
-        subject: "Password Reset",
+        subject: "Password Reset from Serendib Circle",
         html: `
-        <h2 style="color: #007BFF;">Change Your Password</h2>
+        <h2 style="color: #D4AF37;">Please Change Your Password, ${user.name ?? "there"}</h2>
         <p>Click here to reset: <a href="${resetUrl}">${resetUrl}</a></p>`,
       });
       console.log("Email sent successfully");
