@@ -35,7 +35,7 @@ export async function POST(req) {
         to: user.email,
         subject: "Password Reset from Serendib Circle",
         html: `
-        <h2 style="color: #D4AF37;">Please Change Your Password, ${user.name ?? "there"}</h2>
+        <h2 style="color: #D4AF37;">Please Change Your Password, ${user.name ?? "there"} !</h2>
         <p>Click here to reset: <a href="${resetUrl}">${resetUrl}</a></p>`,
       });
       console.log("Email sent successfully");

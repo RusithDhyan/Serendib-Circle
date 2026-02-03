@@ -42,7 +42,7 @@ export async function PUT(req) {
 
     const formData = await req.formData();
     const email = formData.get("email");
-    const fullname = formData.get("fullname");
+    const name = formData.get("name");
     const phone = formData.get("phone");
     const image = formData.get("image");
 
@@ -54,7 +54,7 @@ export async function PUT(req) {
     }
 
     // Update fields
-    if (fullname) user.name = fullname;
+    if (name) user.name = name;
     if (email) user.email = email;
     if (phone) user.phone = phone;
 
@@ -75,7 +75,7 @@ export async function PUT(req) {
         await writeFile(filepath, buffer);
 
         // Save relative path to database
-        user.image = `/uploads/profiles/${filename}`;
+        user.image = `https://serendib.serendibhotels.mw/api/uploads/profiles/${filename}`;
 
       } catch (uploadError) {
         console.error("Image upload error:", uploadError);

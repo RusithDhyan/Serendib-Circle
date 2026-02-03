@@ -3,7 +3,7 @@ import path from "path";
 
 export async function GET(req, { params }) {
   const { filename } = params;
-  const filePath = path.join(process.cwd(), "uploads", filename);
+  const filePath = path.join(process.cwd(), "uploads", "profiles", filename);
   console.log("filepath", filePath);
 
   if (!fs.existsSync(filePath)) {

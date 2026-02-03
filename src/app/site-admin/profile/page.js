@@ -10,7 +10,7 @@ import ChangePasswordStepper from "../(components)/(profile)/ChangePassword";
 export default function ProfileView() {
   const [loading, setLoading] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [fullname, setName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState(null);
@@ -49,7 +49,7 @@ export default function ProfileView() {
 
     try {
       const formData = new FormData();
-      formData.append("fullname", fullname);
+      formData.append("name", name);
       formData.append("email", email);
       formData.append("phone", phone);
       if (image) {
@@ -57,7 +57,7 @@ export default function ProfileView() {
       }
 
       console.log("🚀 Sending update request...");
-      console.log("Data:", { fullname, email, phone, hasImage: !!image });
+      console.log("Data:", { name, email, phone, hasImage: !!image });
 
       const res = await fetch("/api/site-admin/profile", {
         method: "PUT",
@@ -234,7 +234,7 @@ export default function ProfileView() {
                   </label>
                   <input
                     type="text"
-                    value={fullname}
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full border rounded px-3 py-2"
                     required
