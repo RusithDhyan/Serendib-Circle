@@ -20,6 +20,9 @@ export async function GET(req, { params }) {
   if (ext === ".gif") contentType = "image/gif";
 
   return new Response(fileBuffer, {
-    headers: { "Content-Type": contentType },
+    headers: {
+      "Content-Type": "image/jpeg",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+    },
   });
 }
