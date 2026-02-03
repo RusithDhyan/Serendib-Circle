@@ -65,7 +65,7 @@ export async function PUT(req) {
         const buffer = Buffer.from(bytes);
         
         // Create uploads directory if it doesn't exist
-        const uploadsDir = path.join(process.cwd(), "uploads");
+        const uploadsDir = path.join(process.cwd(), "uploads", "profiles");
         if (!fs.existsSync(uploadsDir)) {
           fs.mkdirSync(uploadsDir, { recursive: true });
         }
