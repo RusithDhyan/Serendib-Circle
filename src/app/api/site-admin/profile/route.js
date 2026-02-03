@@ -75,7 +75,7 @@ export async function PUT(req) {
         await writeFile(filepath, buffer);
 
         // Save relative path to database
-        user.image = `/api/uploads/${filename}?t=${Date.now()}`;
+        user.image = `/api/uploads/profiles/${filename}?t=${Date.now()}`;
 
       } catch (uploadError) {
         console.error("Image upload error:", uploadError);
