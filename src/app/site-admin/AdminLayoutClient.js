@@ -29,6 +29,7 @@ export default function AdminLayoutClient({ children }) {
   const pathname = usePathname();
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [user,setUser] = useState(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -42,13 +43,12 @@ export default function AdminLayoutClient({ children }) {
         try {
           const response = await fetch("/api/user");
           const userData = await response.json();
-
+          setUser(userData);
           if (
             userData.role !== "moderator" &&
             userData.role !== "supervisor" &&
             userData.role !== "manager" &&
             userData.role !== "admin" &&
-            userData.role !== "superadmin" &&
             userData.role !== "owner"
           ) {
             redirect("/dashboard");
@@ -92,6 +92,12 @@ export default function AdminLayoutClient({ children }) {
     { name: "Profile", href: "/site-admin/profile", icon: User2 },
   ];
 
+   const isSiteAdmin =
+    user.role === "admin" ||
+    user.role === "owner";
+
+    console.log(user.role)
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navigation Bar */}
@@ -104,12 +110,21 @@ export default function AdminLayoutClient({ children }) {
             </div>
 
             <div className="flex items-center gap-4">
-              <Link
+              {/* <Link
                 href="/admin"
                 className="px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition-all duration-300"
               >
                 Admin View
+              </Link> */}
+              {isSiteAdmin && (
+              <Link
+                href="/admin"
+                className="px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition-all duration-300"
+              >
+                <span>Admin Panel</span>
               </Link>
+            )}
+             
               <span className="text-sm opacity-90">{session?.user?.email}</span>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
