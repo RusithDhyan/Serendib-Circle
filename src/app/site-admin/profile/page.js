@@ -116,8 +116,8 @@ export default function ProfileView() {
           {/* Profile Image */}
           <div className="w-28 h-28 relative">
             <img
-              key={session.user.image} // forces re-render when URL changes
-              src={session.user.image || "/all-images/profile/profile.jpeg"}
+              key={session?.user?.image} // forces re-render when URL changes
+              src={session?.user?.image}
               alt="Profile Picture"
               className="w-28 h-28 object-cover rounded-full"
             />

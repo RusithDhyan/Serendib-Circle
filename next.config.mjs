@@ -18,6 +18,14 @@ const nextConfig = {
         pathname: '/api/uploads/**',
       },
     ],
+    localPatterns: [
+      {
+        pathname: "/api/uploads/**",
+      },
+      {
+        pathname: "/all-images/**"
+      }
+    ],
   },
   transpilePackages: ['react-leaflet'],
 };

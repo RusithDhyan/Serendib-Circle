@@ -1,11 +1,16 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Navbar({ user }) {
+ 
+
+  if (!user) return null;
+
   const getTierColor = (tier) => {
     switch (tier) {
       case "The Circle":
@@ -26,7 +31,7 @@ export default function Navbar({ user }) {
     user.role === "manager" ||
     user.role === "admin" ||
     user.role === "owner";
-  console.log("current user:", user.role);
+  console.log("current user:", user.tier);
 
   return (
     <nav className="bg-white shadow-md">
@@ -66,11 +71,11 @@ export default function Navbar({ user }) {
             {user.image && (
               <Link href="/guest-profile">
                 <Image
-                  src={user.image}
+                  src={user.image || "/all-images/profile/profile.jpeg"}
                   alt={user.name}
-                  width={40}
-                  height={40}
-                  className="rounded-full"
+                  width={1000}
+                  height={100}
+                  className="rounded-full w-12 h-12 object-cover"
                 />
               </Link>
             )}

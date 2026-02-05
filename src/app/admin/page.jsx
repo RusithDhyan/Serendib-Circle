@@ -25,10 +25,13 @@ export default function AdminDashboard() {
     }
   };
 
-   const totalPages = Math.ceil(analytics?.users?.recent?.length / usersPerPage);
+  const totalPages = Math.ceil(analytics?.users?.recent?.length / usersPerPage);
   const indexOfLast = currentPage * usersPerPage;
   const indexOfFirst = indexOfLast - usersPerPage;
-  const recentUsers = analytics?.users?.recent?.slice(indexOfFirst, indexOfLast);
+  const recentUsers = analytics?.users?.recent?.slice(
+    indexOfFirst,
+    indexOfLast
+  );
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) setCurrentPage(page);
@@ -120,87 +123,103 @@ export default function AdminDashboard() {
           <h2 className="text-xl font-bold text-gray-900 mb-4">
             Redemptions by Type
           </h2>
-          <div className="space-y-3">
-            {analytics?.redemptions?.byType?.map((redeem) => (
-              <div key={redeem._id} className="p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="font-semibold capitalize">{redeem._id}</span>
-                  <span className="text-lg font-bold">{redeem.count}</span>
+          {analytics?.redemptions?.byType?.length === 0 ? (
+            <div className="text-center text-gray-500 flex items-center justify-center gap-3">
+              <Gift size={20} strokeWidth={1.5} color="gray" className="" />
+              <p className="text-gray-400">No redemptions found</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {analytics?.redemptions?.byType?.map((redeem) => (
+                <div key={redeem._id} className="p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-semibold capitalize">
+                      {redeem._id}
+                    </span>
+                    <span className="text-lg font-bold">{redeem.count}</span>
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Total: ${redeem.totalValue?.toFixed(2) || 0}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-600">
-                  Total: ${redeem.totalValue?.toFixed(2) || 0}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Recent Users */}
       <div className="bg-white rounded-xl shadow-md p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Users</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left py-3 px-4">Name</th>
-                <th className="text-left py-3 px-4">Email</th>
-                <th className="text-left py-3 px-4">Tier</th>
-                <th className="text-left py-3 px-4">Points</th>
-                <th className="text-left py-3 px-4">Joined</th>
-              </tr>
-            </thead>
-            <tbody>
-                {recentUsers.map((user) => (
-                <tr key={user._id} className="border-b hover:bg-gray-50">
-                  <td className="py-3 px-4">{user.name}</td>
-                  <td className="py-3 px-4">{user.email}</td>
-                  <td className="py-3 px-4">
-                    <span className="px-2 py-1 bg-serendib-primary/10 text-serendib-primary rounded-full text-sm font-semibold">
-                      {user.tier}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 font-semibold">
-                    {user.points.toLocaleString()}
-                  </td>
-                  <td className="py-3 px-4 text-sm text-gray-600">
-                    {new Date(user.createdAt).toLocaleDateString()}
-                  </td>
+        {recentUsers.length === 0 ? (
+          <div className="text-center text-gray-500 flex items-center justify-center gap-3">
+            <Gift size={20} strokeWidth={1.5} color="gray" className="" />
+            <p className="text-gray-400">No users found yet</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left py-3 px-4">Name</th>
+                  <th className="text-left py-3 px-4">Email</th>
+                  <th className="text-left py-3 px-4">Tier</th>
+                  <th className="text-left py-3 px-4">Points</th>
+                  <th className="text-left py-3 px-4">Joined</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {recentUsers.map((user) => (
+                  <tr key={user._id} className="border-b hover:bg-gray-50">
+                    <td className="py-3 px-4">{user.name}</td>
+                    <td className="py-3 px-4">{user.email}</td>
+                    <td className="py-3 px-4">
+                      <span className="px-2 py-1 bg-serendib-primary/10 text-serendib-primary rounded-full text-sm font-semibold">
+                        {user.tier}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 font-semibold">
+                      {user.points.toLocaleString()}
+                    </td>
+                    <td className="py-3 px-4 text-sm text-gray-600">
+                      {new Date(user.createdAt).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-          <div className="flex py-5 space-x-2">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Prev
-          </button>
-          {Array.from({ length: totalPages }, (_, idx) => (
-            <button
-              key={idx + 1}
-              onClick={() => handlePageChange(idx + 1)}
-              className={`px-3 py-1 rounded ${
-                currentPage === idx + 1
-                  ? "bg-serendib-secondary hover:bg-serendib-primary text-white"
-                  : "bg-gray-100"
-              }`}
-            >
-              {idx + 1}
-            </button>
-          ))}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
-        </div>
+            <div className="flex py-5 space-x-2">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+              {Array.from({ length: totalPages }, (_, idx) => (
+                <button
+                  key={idx + 1}
+                  onClick={() => handlePageChange(idx + 1)}
+                  className={`px-3 py-1 rounded ${
+                    currentPage === idx + 1
+                      ? "bg-serendib-secondary hover:bg-serendib-primary text-white"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  {idx + 1}
+                </button>
+              ))}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

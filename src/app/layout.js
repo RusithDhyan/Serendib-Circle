@@ -13,7 +13,6 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  // ✅ Fetch all data server-side
   // const initialData = await fetchAllData();
 
   return (

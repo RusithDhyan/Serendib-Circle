@@ -10,11 +10,9 @@ import {
   Activity,
   ChevronUp,
   ChevronDown,
-  Forward,
-  ArrowBigLeft,
-  ArrowBigRight,
   ChevronRight,
   ChevronLeft,
+  Inbox,
 } from "lucide-react";
 import { generateChecksum } from "@/lib/fetchData";
 
@@ -212,54 +210,61 @@ export default function AdminAnalytics() {
             <Activity size={24} className="text-serendib-primary" />
             Transaction Breakdown
           </h2>
-          <div className="space-y-4">
-            {currentTransactions.map((trans) => {
-              const icons = {
-                earn: "💰",
-                stay: "🏨",
-                redeem: "🎁",
-              };
+          {currentTransactions.length === 0 ? (
+            <div className="text-center text-gray-500 flex items-center justify-center gap-3">
+              <Inbox size={20} strokeWidth={1.5} color="gray" className="" />
+              <p className="text-gray-400">No transactions found</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {currentTransactions.map((trans) => {
+                const icons = {
+                  earn: "💰",
+                  stay: "🏨",
+                  redeem: "🎁",
+                };
 
-              return (
-                <div
-                  key={trans._id}
-                  className="p-4 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-100"
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <span className="text-3xl">
-                        {icons[trans._id] || "📊"}
-                      </span>
-                      <div>
-                        <div className="font-bold text-gray-900 capitalize">
-                          {trans._id}
+                return (
+                  <div
+                    key={trans._id}
+                    className="p-4 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-100"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <span className="text-3xl">
+                          {icons[trans._id] || "📊"}
+                        </span>
+                        <div>
+                          <div className="font-bold text-gray-900 capitalize">
+                            {trans._id}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {trans.count} transactions
+                          </div>
                         </div>
-                        <div className="text-sm text-gray-600">
-                          {trans.count} transactions
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-serendib-primary">
+                          ${trans.totalAmount?.toFixed(2) || "0.00"}
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-serendib-primary">
-                        ${trans.totalAmount?.toFixed(2) || "0.00"}
-                      </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-serendib-primary h-2 rounded-full"
+                        style={{
+                          width: `${(
+                            (trans.count / analytics.transactions.total) *
+                            100
+                          ).toFixed(1)}%`,
+                        }}
+                      />
                     </div>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-serendib-primary h-2 rounded-full"
-                      style={{
-                        width: `${(
-                          (trans.count / analytics.transactions.total) *
-                          100
-                        ).toFixed(1)}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
           <div className="flex-1 justify-end space-x-2 mt-3">
             <button
               onClick={() => handlePageChange1(transactionPage - 1)}
@@ -398,6 +403,12 @@ export default function AdminAnalytics() {
           <Calendar size={24} className="text-serendib-primary" />
           Recent Activity
         </h2>
+        {currentAnalytics.length === 0 ? (
+            <div className="text-center text-gray-500 flex items-center justify-center gap-3">
+              <Inbox size={20} strokeWidth={1.5} color="gray" className="" />
+              <p className="text-gray-400">No recent activity found</p>
+            </div>
+          ) : (
         <div className="space-y-3">
           {currentAnalytics?.slice(0, 5).map((transaction) => (
             <div
@@ -433,6 +444,7 @@ export default function AdminAnalytics() {
             </div>
           ))}
         </div>
+          )}
         <div className="flex-1 justify-end m-4 space-x-2">
           <button
             onClick={() => handlePageChange(currentPage - 1)}

@@ -43,7 +43,9 @@ export const authOptions = {
             name: user.name,
             image: user.image,
             role: user.role,
-            phone: user.phone
+            phone: user.phone,
+            tier: user.tier,
+            permissions: user.permissions
           };
         } catch (error) {
           console.error('Auth error:', error);
@@ -85,6 +87,8 @@ export const authOptions = {
       token.email = user.email;
       token.image = user.image;
       token.phone = user.phone;
+      token.tier = user.tier;
+      token.permissions = user.permissions;
     }
 
     // ✅ THIS is the missing part (runtime updates)
@@ -93,6 +97,10 @@ export const authOptions = {
       token.email = session.user.email;
       token.phone = session.user.phone;
       token.image = session.user.image;
+      token.tier = session.user.tier;
+      token.permissions = session.user.permissions; // ✅ keep in sync
+
+    
     }
 
     return token;
@@ -104,7 +112,9 @@ export const authOptions = {
     session.user.name = token.name;
     session.user.email = token.email;
     session.user.phone = token.phone;
+    session.user.tier = token.tier;
     session.user.image = token.image;
+    session.user.permissions = token.permissions;
     session.user.role = token.role || "guest";
 
     return session;
