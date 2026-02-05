@@ -73,7 +73,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="flex-1 ml-64 mt-10">
+    <div className="flex-1 ml-64 mt-16">
       <div className="mb-8 ">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Admin Dashboard
@@ -124,7 +124,7 @@ export default function AdminDashboard() {
             Redemptions by Type
           </h2>
           {analytics?.redemptions?.byType?.length === 0 ? (
-            <div className="text-center text-gray-500 flex items-center justify-center gap-3">
+            <div className="text-center text-gray-500 flex items-center justify-center gap-3 py-5">
               <Gift size={20} strokeWidth={1.5} color="gray" className="" />
               <p className="text-gray-400">No redemptions found</p>
             </div>

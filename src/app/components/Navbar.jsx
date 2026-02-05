@@ -45,7 +45,7 @@ export default function Navbar({ user }) {
               Serendib Circle
             </Link>
 
-            {isAdmin && (
+            {/* {isAdmin && (
               <Link
                 href="/admin"
                 className="flex items-center gap-2 px-4 py-2 bg-serendib-primary text-white rounded-lg hover:bg-serendib-secondary transition-colors font-semibold"
@@ -60,7 +60,7 @@ export default function Navbar({ user }) {
               >
                 <span>Site Admin Panel</span>
               </Link>
-            )}
+            )} */}
           </div>
 
           <div className="flex items-center gap-4">

@@ -107,7 +107,7 @@ export default function AdminRedemptions() {
   };
   console.log("edfer", redemptions);
   return (
-    <div className="flex-1 ml-64 mt-10">
+    <div className="flex-1 ml-64 mt-16">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Redemption Management

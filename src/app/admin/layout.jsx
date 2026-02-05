@@ -36,11 +36,7 @@ export default function AdminLayout({ children }) {
           const response = await fetch("/api/user");
           const userData = await response.json();
 
-          if (
-            userData.role !== "admin" &&
-            userData.role !== "superadmin" &&
-            userData.role !== "owner"
-          ) {
+          if (userData.role !== "admin" && userData.role !== "owner") {
             redirect("/dashboard");
           } else {
             setIsAdmin(true);
@@ -78,6 +74,12 @@ export default function AdminLayout({ children }) {
     { name: "Profile", href: "/admin/profile", icon: User },
   ];
 
+  const isSiteAdmin =
+    session?.user?.role === "moderator" ||
+    session?.user?.role === "supervisor" ||
+    session?.user?.role === "manager" ||
+    session?.user?.role === "admin" ||
+    session?.user?.role === "owner";
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navigation Bar */}
@@ -90,12 +92,20 @@ export default function AdminLayout({ children }) {
             </div>
 
             <div className="flex items-center gap-4">
-              <Link
+              {/* <Link
                 href="/dashboard"
                 className="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
               >
                 Guest View
-              </Link>
+              </Link> */}
+              {isSiteAdmin && (
+                <Link
+                  href="/site-admin"
+                  className="flex items-center gap-2 px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-all duration-300 font-semibold"
+                >
+                  <span>Site Admin Panel</span>
+                </Link>
+              )}
               <span className="text-sm opacity-90">{session?.user?.email}</span>
 
               <button

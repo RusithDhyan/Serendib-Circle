@@ -30,35 +30,47 @@ export default function SignIn() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
+  e.preventDefault();
+  setError("");
+  setIsLoading(true);
 
-    if (!formData.email || !formData.password) {
-      setError("Please enter both email and password");
+  if (!formData.email || !formData.password) {
+    setError("Please enter both email and password");
+    setIsLoading(false);
+    return;
+  }
+
+  try {
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (result.error) {
+      setError(result.error);
       setIsLoading(false);
-      return;
-    }
+    } else {
+      // ✅ Get the session to check the user role
+      const sessionResponse = await fetch("/api/auth/session");
+      const sessionData = await sessionResponse.json();
 
-    try {
-      const result = await signIn("credentials", {
-        redirect: false,
-        email: formData.email,
-        password: formData.password,
-      });
+      const role = sessionData?.user?.role || "guest";
 
-      if (result.error) {
-        setError(result.error);
-        setIsLoading(false);
-      } else {
-        router.push(callbackUrl);
+      if (role === "guest") {
+        router.push("/dashboard");
+      } else if (role === "owner" || role === "admin") {
+        router.push("/admin");
+      }else{
+        router.push("/site-admin");
       }
-    } catch (error) {
-      console.error("Sign in error:", error);
-      setError("An error occurred. Please try again.");
-      setIsLoading(false);
     }
-  };
+  } catch (error) {
+    console.error("Sign in error:", error);
+    setError("An error occurred. Please try again.");
+    setIsLoading(false);
+  }
+};
 
   const handleGoogleSignIn = () => {
     signIn("google", { callbackUrl });

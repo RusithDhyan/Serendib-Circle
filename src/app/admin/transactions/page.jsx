@@ -86,7 +86,7 @@ export default function AdminTransactions() {
   ).length;
 
   return (
-    <div className="flex-1 ml-64 mt-10">
+    <div className="flex-1 ml-64 mt-16">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Transaction Management
