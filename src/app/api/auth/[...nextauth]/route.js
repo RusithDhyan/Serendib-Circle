@@ -96,20 +96,23 @@ export const authOptions = {
         token.permissions = user.permissions;
       }
 
-      // // 🔥 ALWAYS hydrate DB fields for Google users
-      // if (token.email) {
-      //   const dbUser = await User.findOne({ email: token.email });
-
-      //   if (dbUser) {
-      //     token.id = dbUser._id.toString();
-      //     token.role = dbUser.role;
-      //     token.tier = dbUser.tier; // ✅ FIXED
-      //     token.phone = dbUser.phone;
-      //     token.permissions = dbUser.permissions;
-      //     token.updatedAt = dbUser.updatedAt;
-      //     token.resetPasswordExpire = dbUser.resetPasswordExpire;
-      //   }
-      // }
+      if (!token.tier && token.email) {
+        try {
+          const dbUser = await User.findOne({ email: token.email });
+          if (dbUser) {
+            token.id = dbUser._id.toString();
+            token.role = dbUser.role || "guest";
+            token.tier = dbUser.tier || "Explorer"; // guaranteed
+            token.phone = dbUser.phone || "";
+            token.permissions = dbUser.permissions || [];
+            token.updatedAt = dbUser.updatedAt;
+            token.resetPasswordExpire = dbUser.resetPasswordExpire;
+          }
+        } catch (err) {
+          console.error("JWT DB hydrate error:", err);
+          // don't throw → prevent 502
+        }
+      }
 
       // ✅ THIS is the missing part (runtime updates)
       if (trigger === "update" && session?.user) {
