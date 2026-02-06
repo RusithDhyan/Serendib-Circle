@@ -7,6 +7,11 @@ import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
+    loyaltyNumber: {
+      type: String,
+      unique: true,
+      index:true
+    },
     email: {
       type: String,
       required: true,

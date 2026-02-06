@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import User from "@/models/User";
 import { connectDB } from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
+import { generateLoyaltyNumber } from "@/lib/loyalty";
 
 export async function POST(req) {
   try {
@@ -33,11 +34,13 @@ export async function POST(req) {
 
     // ✅ HASH PASSWORD
     const hashedPassword = await bcrypt.hash(password, 10);
+    const loyaltyNumber = generateLoyaltyNumber();
 
     const user = await User.create({
       name,
       email,
       password: hashedPassword, // ✅ store hashed
+      loyaltyNumber: loyaltyNumber
     });
 
     return NextResponse.json(
@@ -45,6 +48,7 @@ export async function POST(req) {
         message: "User created successfully",
         user: {
           id: user._id,
+          loyaltyNumber: user.loyaltyNumber,
           name: user.name,
           email: user.email,
         },

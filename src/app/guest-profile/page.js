@@ -17,9 +17,26 @@ export default function ProfileView() {
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [user, setUserData] = useState(null);
 
   const router = useRouter();
   const { data: session, status, update } = useSession();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchUserData();
+    }
+  }, [status]);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch("/api/user");
+      const data = await response.json();
+      setUserData(data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } 
+  };
 
   /* ===== TIERS ===== */
   const tiers = [
@@ -30,18 +47,11 @@ export default function ProfileView() {
   ];
 
   const currentTierIndex = tiers.findIndex(
-    (t) => t.name === session?.user?.tier
+    (t) => t.name === user?.tier
   );
   const nextTier = tiers[currentTierIndex + 1];
 
-  /* ===== INIT FORM DATA ===== */
-  useEffect(() => {
-    if (session?.user) {
-      setName(session.user.name || "");
-      setEmail(session.user.email || "");
-      setPhone(session.user.phone || "");
-    }
-  }, [session]);
+ 
 
   /* ===== ROLE COLORS ===== */
   const roleColors = {
@@ -117,14 +127,12 @@ export default function ProfileView() {
     router.push("/");
     return null;
   }
-  console.log(session?.user?.resetPasswordExpire);
-  console.log(session?.user?.tier);
-  if (!session?.user) return null;
+  // console.log(user?.tier);
+  if (!user) return null;
 
-  /* ================= RENDER ================= */
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar user={session.user} />
+      <Navbar user={user} />
 
       <div className="max-w-auto mx-auto px-6 py-8">
         {/* BACK */}
@@ -133,35 +141,38 @@ export default function ProfileView() {
           className="inline-flex items-center gap-2 text-serendib-primary hover:text-serendib-secondary mb-6"
         >
           <ArrowLeft size={18} />
-          Back to Dashboard
+          Back to Dashboard 
         </Link>
 
         {/* ===== PROFILE HEADER ===== */}
         <div className="bg-white rounded-2xl shadow p-6 flex flex-col md:flex-row gap-6 items-center">
-          <div className="relative w-28 h-28">
+          <div className="flex flex-col items-center"><div className="relative w-28 h-28">
             <Image
-              src={session.user.image || "/all-images/profile/profile.jpeg"}
+              src={user?.image || "/all-images/profile/profile.jpeg"}
               alt="Profile"
               fill
               className="rounded-full object-cover"
             />
+           
           </div>
-
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-800">{name}</h2>
-            <p
-              className={`text-sm ${
-                roleColors[session.user.role] || "text-gray-600"
+           <p
+              className={`text-lg font-semibold ${
+                roleColors[user?.role] || "text-gray-600"
               }`}
             >
-              {session.user.role}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
+              {user?.role}
+            </p></div>
+
+          <div className="flex-1">
+            <h2 className="text-2xl font-bold text-gray-800">{user?.name}</h2>
+            <span className="text-md bg-yellow-200 px-2 rounded-2xl shadow-md">Loyalty Number : {user?.loyaltyNumber}</span>
+            
+            <p className="text-sm text-gray-500 mt-2">
               Last password change:{" "}
               <span className="text-red-400">
-                {session?.user?.resetPasswordExpire
-                  ? new Date(session.user.resetPasswordExpire).toLocaleString()
-                  : "not has been changed"}
+                {user?.resetPasswordExpire
+                  ? new Date(user?.resetPasswordExpire).toLocaleString()
+                  : "Not has been changed"}
               </span>
             </p>
           </div>
@@ -188,7 +199,7 @@ export default function ProfileView() {
             <div className="text-4xl">{tiers[currentTierIndex]?.icon}</div>
             <div>
               <h3 className="text-xl font-semibold text-serendib-primary">
-                {session.user.tier}
+                {user?.tier}
               </h3>
               <p className="text-sm text-gray-600">Current Tier</p>
             </div>

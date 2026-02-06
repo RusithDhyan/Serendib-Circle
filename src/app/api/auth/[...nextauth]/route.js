@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
+import { generateLoyaltyNumber } from "@/lib/loyalty";
 
 export const authOptions = {
   providers: [
@@ -39,6 +40,7 @@ export const authOptions = {
 
           return {
             id: user._id.toString(),
+            loyaltyNumber: user.loyaltyNumber,
             email: user.email,
             name: user.name,
             image: user.image,
@@ -69,6 +71,7 @@ export const authOptions = {
             name: user.name,
             image: user.image,
             googleId: account.providerAccountId,
+            loyaltyNumber: generateLoyaltyNumber()
           });
         }
 
@@ -81,53 +84,32 @@ export const authOptions = {
 
     // 🔑 FIXED JWT CALLBACK
     async jwt({ token, user, trigger, session, account }) {
-      let dbUser = null;
 
-      try {
-        if (!global.dbConnected) {
-          await connectDB();
-          global.dbConnected = true; // optional optimization
-        } // Initial login
-        if (user) {
-          token.id = user.id || user._id?.toString();
-          token.role = user.role || token.role;
-          token.name = user.name;
-          token.email = user.email;
-          token.image = user.image;
-          token.phone = user.phone;
-          token.tier = user.tier;
-          token.updatedAt = user.updatedAt;
-          token.resetPasswordExpire = user.resetPasswordExpire;
-          token.permissions = user.permissions;
-        }
+      if (user) {
+        token.id = user.id || user._id?.toString();
+        token.loyaltyNumber = user.loyaltyNumber;
+        token.role = user.role || token.role;
+        token.name = user.name;
+        token.email = user.email;
+        token.image = user.image;
+        token.phone = user.phone;
+        token.tier = user.tier;
+        token.updatedAt = user.updatedAt;
+        token.resetPasswordExpire = user.resetPasswordExpire;
+        token.permissions = user.permissions;
+      }
 
-        if (account?.provider === "google" && token.email) {
-          dbUser = await User.findOne({ email: token.email }).lean();
-          if (dbUser) {
-            token.id = dbUser._id.toString();
-            token.role = dbUser.role || "guest";
-            token.tier = dbUser.tier || "Explorer";
-            token.phone = dbUser.phone || "";
-            token.permissions = dbUser.permissions || [];
-            token.updatedAt = dbUser.updatedAt;
-            token.resetPasswordExpire = dbUser.resetPasswordExpire;
-          }
-        }
-
-        // ✅ THIS is the missing part (runtime updates)
-        if (trigger === "update" && session?.user) {
-          token.name = session.user.name;
-          token.email = session.user.email;
-          token.phone = session.user.phone;
-          token.image = session.user.image;
-          token.tier = session.user.tier;
-          token.updatedAt = session.user.updatedAt;
-          token.resetPasswordExpire = session.user.resetPasswordExpire;
-          token.permissions = session.user.permissions; // ✅ keep in sync
-        }
-      } catch (err) {
-        console.error("JWT callback error (safe):", err);
-        // do NOT throw → prevent 502
+      // ✅ THIS is the missing part (runtime updates)
+      if (trigger === "update" && session?.user) {
+        token.loyaltyNumber = session.user.loyaltyNumber;
+        token.name = session.user.name;
+        token.email = session.user.email;
+        token.phone = session.user.phone;
+        token.image = session.user.image;
+        token.tier = session.user.tier;
+        token.updatedAt = session.user.updatedAt;
+        token.resetPasswordExpire = session.user.resetPasswordExpire;
+        token.permissions = session.user.permissions; // ✅ keep in sync
       }
 
       return token;
@@ -136,6 +118,7 @@ export const authOptions = {
     // ✅ Session built ONLY from token (fast + correct)
     async session({ session, token }) {
       session.user.id = token.id;
+      session.user.loyaltyNumber = token.loyaltyNumber;
       session.user.name = token.name;
       session.user.email = token.email;
       session.user.phone = token.phone;

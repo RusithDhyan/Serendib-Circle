@@ -94,7 +94,6 @@ export default function AdminLayoutClient({ children }) {
   ];
 
   const isSiteAdmin = user.role === "admin" || user.role === "owner";
-
   console.log(user.role);
 
   return (

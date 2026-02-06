@@ -143,13 +143,13 @@ export default function ProfileView() {
           <div className="ml-auto flex gap-2">
             <button
               onClick={() => setShowEditModal(true)}
-              className="flex items-center gap-2 text-sm px-4 py-2 text-white rounded bg-serendib-secondary hover:bg-serendib-primary"
+              className="flex items-center gap-2 text-sm px-4 py-2 text-white rounded-md bg-serendib-secondary hover:bg-serendib-primary"
             >
               <Pencil size={16} strokeWidth={1.7} /> Edit Profile
             </button>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 text-sm px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              className="flex items-center gap-2 text-sm px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
             >
               <LogOut size={16} /> Logout
             </button>
@@ -171,7 +171,7 @@ export default function ProfileView() {
 
         <button
           onClick={() => setShowPopup(true)}
-          className="text-white p-2 mt-5 rounded-md bg-serendib-secondary hover:bg-serendib-primary transition"
+          className="text-white p-2 mt-5 rounded-md bg-serendib-primary hover:bg-serendib-secondary transition"
         >
           Change Password
         </button>
