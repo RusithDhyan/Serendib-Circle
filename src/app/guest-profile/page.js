@@ -28,6 +28,15 @@ export default function ProfileView() {
     }
   }, [status]);
 
+  useEffect(() => {
+  if (showEditModal && user) {
+    setName(user.name || "");
+    setEmail(user.email || "");
+    setPhone(user.phone || "");
+  }
+}, [showEditModal, user]);
+
+
   const fetchUserData = async () => {
     try {
       const response = await fetch("/api/user");
@@ -35,7 +44,7 @@ export default function ProfileView() {
       setUserData(data);
     } catch (error) {
       console.error("Error fetching user data:", error);
-    } 
+    }
   };
 
   /* ===== TIERS ===== */
@@ -46,12 +55,8 @@ export default function ProfileView() {
     { name: "The Circle", stays: 11, spend: 3500, icon: "👑" },
   ];
 
-  const currentTierIndex = tiers.findIndex(
-    (t) => t.name === user?.tier
-  );
+  const currentTierIndex = tiers.findIndex((t) => t.name === user?.tier);
   const nextTier = tiers[currentTierIndex + 1];
-
- 
 
   /* ===== ROLE COLORS ===== */
   const roleColors = {
@@ -91,14 +96,10 @@ export default function ProfileView() {
 
       if (data.success) {
         await update({
-          ...session,
-          user: {
-            ...session.user,
-            name: data.user.name,
-            email: data.user.email,
-            phone: data.user.phone,
-            image: data.user.image,
-          },
+          name: data.user.name,
+          email: data.user.email,
+          phone: data.user.phone,
+          image: data.user.image,
         });
 
         setShowEditModal(false);
@@ -129,6 +130,7 @@ export default function ProfileView() {
   }
   // console.log(user?.tier);
   if (!user) return null;
+  if (!user.email) return null;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -141,32 +143,35 @@ export default function ProfileView() {
           className="inline-flex items-center gap-2 text-serendib-primary hover:text-serendib-secondary mb-6"
         >
           <ArrowLeft size={18} />
-          Back to Dashboard 
+          Back to Dashboard
         </Link>
 
         {/* ===== PROFILE HEADER ===== */}
         <div className="bg-white rounded-2xl shadow p-6 flex flex-col md:flex-row gap-6 items-center">
-          <div className="flex flex-col items-center"><div className="relative w-28 h-28">
-            <Image
-              src={user?.image || "/all-images/profile/profile.jpeg"}
-              alt="Profile"
-              fill
-              className="rounded-full object-cover"
-            />
-           
-          </div>
-           <p
+          <div className="flex flex-col items-center">
+            <div className="relative w-28 h-28">
+              <Image
+                src={user?.image || "/all-images/profile/profile.jpeg"}
+                alt="Profile"
+                fill
+                className="rounded-full object-cover"
+              />
+            </div>
+            <p
               className={`text-lg font-semibold ${
                 roleColors[user?.role] || "text-gray-600"
               }`}
             >
               {user?.role}
-            </p></div>
+            </p>
+          </div>
 
           <div className="flex-1">
             <h2 className="text-2xl font-bold text-gray-800">{user?.name}</h2>
-            <span className="text-md bg-yellow-200 px-2 rounded-2xl shadow-md">Loyalty Number : {user?.loyaltyNumber}</span>
-            
+            <span className="text-md bg-yellow-200 px-2 rounded-2xl shadow-md">
+              Loyalty Number : {user?.loyaltyNumber}
+            </span>
+
             <p className="text-sm text-gray-500 mt-2">
               Last password change:{" "}
               <span className="text-red-400">
@@ -228,13 +233,11 @@ export default function ProfileView() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-gray-500">Email</p>
-              <p className="font-medium">{session.user.email}</p>
+              <p className="font-medium">{user?.email}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Phone</p>
-              <p className="font-medium">
-                {session.user.phone || "Not provided"}
-              </p>
+              <p className="font-medium">{user?.phone || "Not provided"}</p>
             </div>
           </div>
         </div>
@@ -242,7 +245,7 @@ export default function ProfileView() {
           onClick={() => {
             setShowPopup(true);
           }}
-          className="bg-blue-800 text-white p-2 mt-5 rounded-md hover:bg-blue-900 transition"
+          className="bg-serendib-primary text-white p-2 mt-5 rounded-md hover:bg-blue-900 transition"
         >
           Change Password
         </button>
@@ -298,7 +301,6 @@ export default function ProfileView() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full border rounded px-3 py-2"
-                  required
                 />
               </div>
 
@@ -311,7 +313,6 @@ export default function ProfileView() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full border rounded px-3 py-2"
-                  required
                 />
               </div>
 
