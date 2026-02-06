@@ -84,7 +84,7 @@ export default function UserDetail() {
   const { user, transactions, redemptions } = userData;
 
   return (
-    <div>
+    <div className="flex-1 ml-64 mt-16">
       <Link
         href="/admin/users"
         className="inline-flex items-center gap-2 text-serendib-primary hover:text-serendib-secondary mb-6"
