@@ -69,8 +69,6 @@ export const authOptions = {
             name: user.name,
             image: user.image,
             googleId: account.providerAccountId,
-            role: "guest",
-            tier: "Explorer",
           });
         }
 
@@ -82,7 +80,8 @@ export const authOptions = {
     },
 
     // 🔑 FIXED JWT CALLBACK
-    async jwt({ token, user, trigger, session,account }) {
+    async jwt({ token, user, trigger, session, account }) {
+      await connectDB();
       // Initial login
       if (user) {
         token.id = user.id || user._id?.toString();
@@ -97,20 +96,20 @@ export const authOptions = {
         token.permissions = user.permissions;
       }
 
-       // 🔥 ALWAYS hydrate DB fields for Google users
-  if (account?.provider === "google" || token.email) {
-    const dbUser = await User.findOne({ email: token.email });
+      // // 🔥 ALWAYS hydrate DB fields for Google users
+      // if (token.email) {
+      //   const dbUser = await User.findOne({ email: token.email });
 
-    if (dbUser) {
-      token.id = dbUser._id.toString();
-      token.role = dbUser.role;
-      token.tier = dbUser.tier; // ✅ GUARANTEED
-      token.permissions = dbUser.permissions;
-      token.phone = dbUser.phone;
-      token.updatedAt = dbUser.updatedAt;
-      token.resetPasswordExpire = dbUser.resetPasswordExpire;
-    }
-  }
+      //   if (dbUser) {
+      //     token.id = dbUser._id.toString();
+      //     token.role = dbUser.role;
+      //     token.tier = dbUser.tier; // ✅ FIXED
+      //     token.phone = dbUser.phone;
+      //     token.permissions = dbUser.permissions;
+      //     token.updatedAt = dbUser.updatedAt;
+      //     token.resetPasswordExpire = dbUser.resetPasswordExpire;
+      //   }
+      // }
 
       // ✅ THIS is the missing part (runtime updates)
       if (trigger === "update" && session?.user) {
@@ -133,12 +132,12 @@ export const authOptions = {
       session.user.name = token.name;
       session.user.email = token.email;
       session.user.phone = token.phone;
-      session.user.tier = token.tier || "Explorer";
+      session.user.tier = token.tier;
       session.user.image = token.image;
       session.user.permissions = token.permissions;
       session.user.updatedAt = token.updatedAt;
       session.user.resetPasswordExpire = token.resetPasswordExpire;
-      session.user.role = token.role || "guest";
+      session.user.role = token.role;
 
       return session;
     },
