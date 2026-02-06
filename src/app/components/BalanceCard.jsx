@@ -37,13 +37,13 @@ export default function BalanceCard({ user }) {
       </div>
 
       <div className="mb-6">
-        <div className="text-5xl font-bold mb-2">
+        <div className="text-6xl font-bold mb-2">
           {user.points.toLocaleString()}
         </div>
         <div className="text-xl opacity-90">Points</div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/20">
+      <div className="flex gap-4 pt-4 border-t border-white/20">
         {/* <div>
           <div className="text-sm opacity-90 mb-1">USD Value</div>
           <div className="text-2xl font-bold">${pointsValue}</div>
@@ -57,7 +57,7 @@ export default function BalanceCard({ user }) {
             </div>
 
             {/* spend amount */}
-            <div className="text-5xl font-bold">
+            <div className="text-6xl font-bold">
               ${user.totalSpend.toLocaleString()}
             </div>
           </div>

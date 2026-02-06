@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { Pencil, LogOut, X, ArrowLeft } from "lucide-react";
 import Image from "next/image";
@@ -6,20 +7,34 @@ import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import ChangePasswordStepper from "../site-admin/(components)/(profile)/ChangePassword";
 
 export default function ProfileView() {
   const [loading, setLoading] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [fullname, setName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState(null);
-  const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
 
+  const router = useRouter();
   const { data: session, status, update } = useSession();
 
-  // Initialize form with session data
+  /* ===== TIERS ===== */
+  const tiers = [
+    { name: "Explorer", stays: 0, spend: 0, icon: "🌟" },
+    { name: "Adventurer", stays: 2, spend: 1000, icon: "🗺️" },
+    { name: "Voyager", stays: 5, spend: 2000, icon: "⛵" },
+    { name: "The Circle", stays: 11, spend: 3500, icon: "👑" },
+  ];
+
+  const currentTierIndex = tiers.findIndex(
+    (t) => t.name === session?.user?.tier
+  );
+  const nextTier = tiers[currentTierIndex + 1];
+
+  /* ===== INIT FORM DATA ===== */
   useEffect(() => {
     if (session?.user) {
       setName(session.user.name || "");
@@ -28,6 +43,7 @@ export default function ProfileView() {
     }
   }, [session]);
 
+  /* ===== ROLE COLORS ===== */
   const roleColors = {
     owner: "text-purple-600",
     admin: "text-red-600",
@@ -38,25 +54,22 @@ export default function ProfileView() {
     guest: "text-gray-600",
   };
 
+  /* ===== LOGOUT ===== */
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });
   };
 
+  /* ===== UPDATE PROFILE ===== */
   const handleUpdate = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const formData = new FormData();
-      formData.append("fullname", fullname);
+      formData.append("name", name);
       formData.append("email", email);
       formData.append("phone", phone);
-      if (image) {
-        formData.append("image", image);
-      }
-
-      console.log("🚀 Sending update request...");
-      console.log("Data:", { fullname, email, phone, hasImage: !!image });
+      if (image) formData.append("image", image);
 
       const res = await fetch("/api/site-admin/profile", {
         method: "PUT",
@@ -64,13 +77,9 @@ export default function ProfileView() {
         credentials: "include",
       });
 
-      console.log("📡 Response status:", res.status);
-
       const data = await res.json();
-      console.log("📦 Response data:", data);
 
       if (data.success) {
-        // Update NextAuth session
         await update({
           ...session,
           user: {
@@ -85,21 +94,21 @@ export default function ProfileView() {
         setShowEditModal(false);
         alert("Profile updated successfully!");
       } else {
-        console.error("❌ Update failed:", data);
-        alert(`Failed to update profile: ${data.message || "Unknown error"}`);
+        alert(data.message || "Update failed");
       }
-    } catch (error) {
-      console.error("💥 Error:", error);
-      alert(`Error: ${error.message}`);
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
     } finally {
       setLoading(false);
     }
   };
 
+  /* ===== AUTH GUARDS ===== */
   if (status === "loading") {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
       </div>
     );
   }
@@ -108,175 +117,216 @@ export default function ProfileView() {
     router.push("/");
     return null;
   }
+  console.log(session?.user?.resetPasswordExpire);
+  console.log(session?.user?.tier);
+  if (!session?.user) return null;
 
-  if (!session?.user) return <p>Not logged in</p>;
-
+  /* ================= RENDER ================= */
   return (
-    <div className="flex flex-col">
-      <Navbar user={session?.user} />
+    <div className="min-h-screen bg-gray-50">
+      <Navbar user={session.user} />
 
-      <div className="p-10">
+      <div className="max-w-auto mx-auto px-6 py-8">
+        {/* BACK */}
         <Link
           href="/dashboard"
           className="inline-flex items-center gap-2 text-serendib-primary hover:text-serendib-secondary mb-6"
         >
-          <ArrowLeft size={20} />
-          Back to Users
+          <ArrowLeft size={18} />
+          Back to Dashboard
         </Link>
-        <div className="bg-white w-full p-6">
-          <div className="flex items-center gap-6">
-            <div className="w-28 h-28 relative">
-              <Image
-                src={session?.user?.image || "/all-images/profile/profile.jpeg"}
-                alt="Profile Picture"
-                fill
-                className="object-cover rounded-full"
-              />
-              {/* <img
-                src={session?.user?.image || "/all-images/profile/profile.jpeg"}
-                alt="Profile"
-                width={150}
-                height={150}
-                className="w-28 h-28 object-cover rounded-full"
-              /> */}
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800">{fullname}</h2>
-              <h3 className="text-sm font-light">
-                Last Password Changed Time:{" "}
-                <span className="text-red-400">
-                  {session.user.updatedAt
-                    ? new Date(session.user.updatedAt).toLocaleString()
-                    : "Not has been Changed"}
-                </span>
-              </h3>
-              <p
-                className={`${
-                  roleColors[session.user.role] || "text-gray-600"
-                }`}
-              >
-                {session.user.role}
-              </p>
-            </div>
 
-            <div className="ml-auto flex gap-2">
-              <button
-                onClick={() => setShowEditModal(true)}
-                className="flex items-center gap-2 text-sm px-4 py-2 text-white rounded bg-serendib-secondary hover:bg-serendib-primary"
-              >
-                <Pencil size={16} strokeWidth={1.7} /> Edit Profile
-              </button>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 text-sm px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                <LogOut size={16} /> Sign Out
-              </button>
-            </div>
+        {/* ===== PROFILE HEADER ===== */}
+        <div className="bg-white rounded-2xl shadow p-6 flex flex-col md:flex-row gap-6 items-center">
+          <div className="relative w-28 h-28">
+            <Image
+              src={session.user.image || "/all-images/profile/profile.jpeg"}
+              alt="Profile"
+              fill
+              className="rounded-full object-cover"
+            />
           </div>
 
-          <div className="border-t border-gray-300 bg-gray-200 my-6"></div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-gray-600 text-sm">Email</label>
-              <div className="text-gray-800 font-medium">
-                {session.user.email}
-              </div>
-            </div>
-            <div>
-              <label className="text-gray-600 text-sm">Phone</label>
-              <div className="text-gray-800 font-medium">
-                {session.user.phone || "Not provided"}
-              </div>
-            </div>
+          <div className="flex-1">
+            <h2 className="text-2xl font-bold text-gray-800">{name}</h2>
+            <p
+              className={`text-sm ${
+                roleColors[session.user.role] || "text-gray-600"
+              }`}
+            >
+              {session.user.role}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Last password change:{" "}
+              <span className="text-red-400">
+                {session?.user?.resetPasswordExpire
+                  ? new Date(session.user.resetPasswordExpire).toLocaleString()
+                  : "not has been changed"}
+              </span>
+            </p>
           </div>
-          {/* <button
-            onClick={() => {
-              setShowPopup(true);
-            }}
-            className="bg-blue-800 text-white p-2 mt-5 rounded-md hover:bg-blue-900 transition"
-          >
-            Change Password
-          </button> */}
+
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowEditModal(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-serendib-secondary text-white hover:bg-serendib-primary"
+            >
+              <Pencil size={16} /> Edit
+            </button>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
+            >
+              <LogOut size={16} /> Logout
+            </button>
+          </div>
         </div>
 
-        {/* === Edit Modal === */}
-        {showEditModal && (
-          <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg w-[90%] max-w-2xl relative">
-              <button
-                className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
-                onClick={() => setShowEditModal(false)}
-              >
-                <X />
-              </button>
-              <h1 className="text-2xl text-center font-bold mb-4 text-blue-800">
-                Edit Profile
-              </h1>
-              <form
-                onSubmit={handleUpdate}
-                encType="multipart/form-data"
-                className="space-y-4"
-              >
-                <div>
-                  <label className="block text-sm font-semibold mb-1">
-                    Profile Image
-                  </label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setImage(e.target.files[0])}
-                    className="w-full border border-black text-blue-500 rounded px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-1">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    value={fullname}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full border rounded px-3 py-2"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full border rounded px-3 py-2"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold mb-1">
-                    Phone
-                  </label>
-                  <input
-                    type="text"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full border rounded px-3 py-2"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed"
-                >
-                  {loading ? "Saving..." : "Save Changes"}
-                </button>
-              </form>
+        {/* ===== TIER CARD ===== */}
+        <div className="bg-white rounded-2xl shadow p-6 mt-6">
+          <div className="flex items-center gap-4">
+            <div className="text-4xl">{tiers[currentTierIndex]?.icon}</div>
+            <div>
+              <h3 className="text-xl font-semibold text-serendib-primary">
+                {session.user.tier}
+              </h3>
+              <p className="text-sm text-gray-600">Current Tier</p>
             </div>
           </div>
-        )}
+
+          {nextTier && (
+            <div className="mt-4 bg-serendib-primary/5 rounded-lg p-4">
+              <p className="text-sm font-semibold text-serendib-primary">
+                Next Tier: {nextTier.name}
+              </p>
+              <p className="text-sm text-gray-600 mt-1">
+                {nextTier.name === "Adventurer" &&
+                  "25% point bonus + Early check-in"}
+                {nextTier.name === "Voyager" &&
+                  "50% point bonus + Room upgrades"}
+                {nextTier.name === "The Circle" &&
+                  "100% point bonus + VIP status"}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* ===== ACCOUNT INFO ===== */}
+        <div className="bg-white rounded-2xl shadow p-6 mt-6">
+          <h3 className="text-lg font-semibold mb-4">Account Information</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-sm text-gray-500">Email</p>
+              <p className="font-medium">{session.user.email}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Phone</p>
+              <p className="font-medium">
+                {session.user.phone || "Not provided"}
+              </p>
+            </div>
+          </div>
+        </div>
+        <button
+          onClick={() => {
+            setShowPopup(true);
+          }}
+          className="bg-blue-800 text-white p-2 mt-5 rounded-md hover:bg-blue-900 transition"
+        >
+          Change Password
+        </button>
       </div>
+      {showPopup && (
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+          <ChangePasswordStepper
+            onClose={() => {
+              setShowPopup(false);
+            }}
+          />
+        </div>
+      )}
+
+      {/* ===== EDIT MODAL ===== */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-[90%] max-w-2xl relative">
+            <button
+              onClick={() => setShowEditModal(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+            >
+              <X />
+            </button>
+
+            <h2 className="text-2xl font-bold text-center mb-6 text-blue-800">
+              Edit Profile
+            </h2>
+
+            <form
+              onSubmit={handleUpdate}
+              encType="multipart/form-data"
+              className="space-y-4"
+            >
+              <div>
+                <label className="block text-sm font-semibold mb-1">
+                  Profile Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImage(e.target.files[0])}
+                  className="w-full border rounded px-3 py-2"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full border rounded px-3 py-2"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full border rounded px-3 py-2"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1">
+                  Phone
+                </label>
+                <input
+                  type="text"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full border rounded px-3 py-2"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+              >
+                {loading ? "Saving..." : "Save Changes"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

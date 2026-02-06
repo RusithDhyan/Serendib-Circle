@@ -32,7 +32,7 @@ export async function POST(req) {
     // 🔹 Hash new password and save
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
-    // user.resetPasswordExpire = new Date();
+    user.resetPasswordExpire = new Date();
 
     await user.save();
 

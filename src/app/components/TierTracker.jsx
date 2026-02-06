@@ -66,7 +66,7 @@ export default function TierTracker({ user }) {
               <ChevronRight className="text-gray-400" size={20} />
             </div>
 
-            <div className="mt-6 p-4 bg-serendib-primary/5 rounded-lg">
+            {/* <div className="mt-6 p-4 bg-serendib-primary/5 rounded-lg">
               <div className="text-sm font-semibold text-serendib-primary mb-2">
                 Next Tier Benefits
               </div>
@@ -78,7 +78,7 @@ export default function TierTracker({ user }) {
                 {nextTier.name === "The Circle" &&
                   "100% point bonus + VIP status"}
               </div>
-            </div>
+            </div> */}
           </div>
         </>
       ) : (
