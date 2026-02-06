@@ -81,49 +81,53 @@ export const authOptions = {
 
     // 🔑 FIXED JWT CALLBACK
     async jwt({ token, user, trigger, session, account }) {
-      await connectDB();
-      // Initial login
-      if (user) {
-        token.id = user.id || user._id?.toString();
-        token.role = user.role || token.role;
-        token.name = user.name;
-        token.email = user.email;
-        token.image = user.image;
-        token.phone = user.phone;
-        token.tier = user.tier;
-        token.updatedAt = user.updatedAt;
-        token.resetPasswordExpire = user.resetPasswordExpire;
-        token.permissions = user.permissions;
-      }
+      let dbUser = null;
 
-      if (!token.tier && token.email) {
-        try {
-          const dbUser = await User.findOne({ email: token.email });
+      try {
+        if (!global.dbConnected) {
+          await connectDB();
+          global.dbConnected = true; // optional optimization
+        } // Initial login
+        if (user) {
+          token.id = user.id || user._id?.toString();
+          token.role = user.role || token.role;
+          token.name = user.name;
+          token.email = user.email;
+          token.image = user.image;
+          token.phone = user.phone;
+          token.tier = user.tier;
+          token.updatedAt = user.updatedAt;
+          token.resetPasswordExpire = user.resetPasswordExpire;
+          token.permissions = user.permissions;
+        }
+
+        if (account?.provider === "google" && token.email) {
+          dbUser = await User.findOne({ email: token.email }).lean();
           if (dbUser) {
             token.id = dbUser._id.toString();
             token.role = dbUser.role || "guest";
-            token.tier = dbUser.tier || "Explorer"; // guaranteed
+            token.tier = dbUser.tier || "Explorer";
             token.phone = dbUser.phone || "";
             token.permissions = dbUser.permissions || [];
             token.updatedAt = dbUser.updatedAt;
             token.resetPasswordExpire = dbUser.resetPasswordExpire;
           }
-        } catch (err) {
-          console.error("JWT DB hydrate error:", err);
-          // don't throw → prevent 502
         }
-      }
 
-      // ✅ THIS is the missing part (runtime updates)
-      if (trigger === "update" && session?.user) {
-        token.name = session.user.name;
-        token.email = session.user.email;
-        token.phone = session.user.phone;
-        token.image = session.user.image;
-        token.tier = session.user.tier;
-        token.updatedAt = session.user.updatedAt;
-        token.resetPasswordExpire = session.user.resetPasswordExpire;
-        token.permissions = session.user.permissions; // ✅ keep in sync
+        // ✅ THIS is the missing part (runtime updates)
+        if (trigger === "update" && session?.user) {
+          token.name = session.user.name;
+          token.email = session.user.email;
+          token.phone = session.user.phone;
+          token.image = session.user.image;
+          token.tier = session.user.tier;
+          token.updatedAt = session.user.updatedAt;
+          token.resetPasswordExpire = session.user.resetPasswordExpire;
+          token.permissions = session.user.permissions; // ✅ keep in sync
+        }
+      } catch (err) {
+        console.error("JWT callback error (safe):", err);
+        // do NOT throw → prevent 502
       }
 
       return token;
