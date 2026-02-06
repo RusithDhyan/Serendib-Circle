@@ -23,13 +23,14 @@ import {
   MessageCircle,
   UserPlus,
 } from "lucide-react";
+import Image from "next/image";
 
 export default function AdminLayoutClient({ children }) {
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -92,11 +93,9 @@ export default function AdminLayoutClient({ children }) {
     { name: "Profile", href: "/site-admin/profile", icon: User2 },
   ];
 
-   const isSiteAdmin =
-    user.role === "admin" ||
-    user.role === "owner";
+  const isSiteAdmin = user.role === "admin" || user.role === "owner";
 
-    console.log(user.role)
+  console.log(user.role);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -117,21 +116,37 @@ export default function AdminLayoutClient({ children }) {
                 Admin View
               </Link> */}
               {isSiteAdmin && (
-              <Link
-                href="/admin"
-                className="px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition-all duration-300"
-              >
-                <span>Admin Panel</span>
-              </Link>
-            )}
-             
-              <span className="text-sm opacity-90">{session?.user?.email}</span>
+                <Link
+                  href="/admin"
+                  className="px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition-all duration-300"
+                >
+                  <span>Admin Panel</span>
+                </Link>
+              )}
+
+                {session.user.image && (
+                  <Link href="/site-admin/profile" className="flex flex-col items-center">
+                    <Image
+                      src={
+                        session.user.image || "/all-images/profile/profile.jpeg"
+                      }
+                      alt={session.user.name}
+                      width={1000}
+                      height={100}
+                      className="rounded-full w-8 h-8 object-cover"
+                    />
+
+                    <span className="text-xs opacity-90 hover:underline ">
+                      {session?.user?.email}
+                    </span>
+                  </Link>
+                )}
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg transition-colors"
+                className="flex items-center px-2 py-2 gap-2 bg-red-500 hover:bg-red-600 rounded-lg transition-all duration-300"
               >
                 <LogOut size={18} />
-                <span>Sign Out</span>
+                <span className="text-md">Sign Out</span>
               </button>
             </div>
           </div>

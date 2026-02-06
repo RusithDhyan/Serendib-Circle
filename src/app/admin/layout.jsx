@@ -16,6 +16,7 @@ import {
   User,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 
 export default function AdminLayout({ children }) {
   const { data: session, status } = useSession();
@@ -106,7 +107,23 @@ export default function AdminLayout({ children }) {
                   <span>Site Admin Panel</span>
                 </Link>
               )}
-              <span className="text-sm opacity-90">{session?.user?.email}</span>
+              {session.user.image && (
+                  <Link href="/admin/profile" className="flex flex-col items-center">
+                    <Image
+                      src={
+                        session.user.image
+                      }
+                      alt={session.user.name}
+                      width={1000}
+                      height={100}
+                      className="rounded-full w-8 h-8 object-cover"
+                    />
+
+                    <span className="text-xs opacity-90 hover:underline ">
+                      {session?.user?.email}
+                    </span>
+                  </Link>
+                )}
 
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
