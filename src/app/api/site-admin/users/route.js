@@ -5,6 +5,7 @@ import crypto from "crypto";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import User from "@/models/User";
+import { generateLoyaltyNumber } from "@/lib/loyalty";
 
 
 const ROLE_LEVEL = {
@@ -81,7 +82,10 @@ export async function POST(req) {
       );
     }
 
+    const loyaltyNumber = generateLoyaltyNumber();
+
     const newUser = await User.create({
+      loyaltyNumber: loyaltyNumber,
       name,
       email,
       password: hashedPassword,

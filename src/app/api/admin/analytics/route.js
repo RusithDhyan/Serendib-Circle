@@ -101,7 +101,7 @@ export async function GET(req) {
       .limit(10)
       .populate("userId", "name email");
 
-    const recentUsers = await User.find()
+    const recentUsers = await User.find({role:"guest"})
       .sort({ createdAt: -1 })
       .limit(10)
       .select("-password");

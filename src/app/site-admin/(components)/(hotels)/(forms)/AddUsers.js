@@ -212,7 +212,7 @@ export default function AddUsers({ onClose, editingAddUsers }) {
                   onChange={(e) =>
                     setForm({ ...form, countryCode: e.target.value })
                   }
-                  required
+              
                   className="border-b px-4 py-2 bg-white w-full sm:w-1/1"
                 >
                   <option value="" disabled>
