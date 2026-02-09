@@ -43,11 +43,8 @@ next-env.d.ts
 
 ecosystem.config.js
 
-/public/all-images
 
 # But do NOT ignore .gitkeep
 !/public/all-images/uploads/.gitkeep
 
-/uploads
-/public/api/
-/public/uploads
+
