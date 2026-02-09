@@ -85,6 +85,10 @@ export const authOptions = {
     // 🔑 FIXED JWT CALLBACK
     async jwt({ token, user, trigger, session, account }) {
 
+      if (account?.provider){
+        token.provider = account.provider;
+      }
+
       if (user) {
         token.id = user.id || user._id?.toString();
         token.loyaltyNumber = user.loyaltyNumber;
@@ -128,6 +132,8 @@ export const authOptions = {
       session.user.updatedAt = token.updatedAt;
       session.user.resetPasswordExpire = token.resetPasswordExpire;
       session.user.role = token.role;
+
+      session.user.provider = token.provider;
 
       return session;
     },

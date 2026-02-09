@@ -1,8 +1,11 @@
 "use client";
 import { Eye, EyeOff, X } from "lucide-react";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function ChangePasswordStepper({ onClose }) {
+  const { data: session } = useSession();
+
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -12,9 +15,18 @@ export default function ChangePasswordStepper({ onClose }) {
   });
   const [message, setMessage] = useState({ type: "", text: "" });
   const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const isGoogleUser = session?.user?.provider === "google";
+  console.log("hi",session?.user?.provider);
+  useEffect(() => {
+  if (isGoogleUser && step === 1) {
+    setStep(2);
+  }
+}, [isGoogleUser, step]);
 
   const nextStep = () => {
     if (step === 1 && !formData.currentPassword)
@@ -142,7 +154,7 @@ export default function ChangePasswordStepper({ onClose }) {
 
       {/* Step Content */}
       <div className="space-y-4">
-        {step === 1 && (
+       {!isGoogleUser && step === 1 && (
           <div className="relative">
             <label className="block text-sm font-medium mb-1">
               Current Password
@@ -162,7 +174,8 @@ export default function ChangePasswordStepper({ onClose }) {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </span>
           </div>
-        )}
+        )
+      }
 
         {step === 2 && (
           <div className="relative">

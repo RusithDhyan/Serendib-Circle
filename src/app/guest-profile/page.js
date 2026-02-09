@@ -245,7 +245,7 @@ export default function ProfileView() {
           onClick={() => {
             setShowPopup(true);
           }}
-          className="bg-serendib-primary text-white p-2 mt-5 rounded-md hover:bg-blue-900 transition"
+          className="bg-serendib-primary text-white p-2 mt-5 rounded-md hover:bg-serendib-secondary transition"
         >
           Change Password
         </button>
@@ -271,7 +271,7 @@ export default function ProfileView() {
               <X />
             </button>
 
-            <h2 className="text-2xl font-bold text-center mb-6 text-blue-800">
+            <h2 className="text-2xl font-bold text-center mb-6 text-serendib-primary">
               Edit Profile
             </h2>
 
@@ -331,7 +331,7 @@ export default function ProfileView() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+                className="w-full py-2 bg-serendib-primary text-white rounded hover:bg-serendib-secondary disabled:opacity-50"
               >
                 {loading ? "Saving..." : "Save Changes"}
               </button>
