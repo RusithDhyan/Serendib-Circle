@@ -59,7 +59,7 @@ export default function AdminDashboard() {
       color: "bg-green-500",
     },
     {
-      name: "Points Issued",
+      name: "Active Points Pool",
       value: (analytics?.points?.totalPointsIssued || 0).toLocaleString(),
       icon: TrendingUp,
       color: "bg-serendib-primary",

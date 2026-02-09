@@ -18,8 +18,9 @@ export async function GET(req) {
     await connectDB();
 
     // Get user statistics
-    const totalUsers = await User.countDocuments();
+    const totalUsers = await User.countDocuments({ role: "guest" });
     const usersPerMonth = await User.aggregate([
+      { $match: { role: "guest" } },
       {
         $group: {
           _id: {
@@ -35,6 +36,7 @@ export async function GET(req) {
     ]);
 
     const usersByTier = await User.aggregate([
+      { $match: { role: "guest" } },
       { $group: { _id: "$tier", count: { $sum: 1 } } },
       { $sort: { count: -1 } },
     ]);
@@ -57,6 +59,7 @@ export async function GET(req) {
 
     // Get points statistics
     const pointsStats = await User.aggregate([
+      {$match: {role: "guest"}},
       {
         $group: {
           _id: null,
@@ -70,6 +73,7 @@ export async function GET(req) {
     // Get redemption statistics
     const totalRedemptions = await Redemption.countDocuments();
     const redemptionsPerMonth = await Redemption.aggregate([
+      { $match: { status: { $ne: "expired" } } },
       {
         $group: {
           _id: {
@@ -101,14 +105,16 @@ export async function GET(req) {
       .limit(10)
       .populate("userId", "name email");
 
-    const recentUsers = await User.find({role:"guest"})
+    const recentUsers = await User.find({ role: "guest" })
       .sort({ createdAt: -1 })
       .limit(10)
       .select("-password");
 
     // -------- Avg Days to Tier Upgrade --------
     const usersWithHistory = await User.find(
-      { "tierHistory.1": { $exists: true } },
+      { 
+        role: "guest",
+        "tierHistory.1": { $exists: true } },
       { tierHistory: 1 }
     );
 
@@ -121,10 +127,10 @@ export async function GET(req) {
         const from = history[i - 1];
         const to = history[i];
 
-        const key = `from ${from.tier.replaceAll(" ", "")}_to_${to.tier.replaceAll(
+        const key = `from ${from.tier.replaceAll(
           " ",
           ""
-        )} :`;
+        )}_to_${to.tier.replaceAll(" ", "")} :`;
 
         const days =
           (new Date(to.date) - new Date(from.date)) / (1000 * 60 * 60 * 24);
