@@ -8,8 +8,8 @@ import { fetchAllData } from "@/lib/fetchData";
 import SessionProvider from "./components/SessionProvider";
 
 export const metadata = {
-  title: "HMS_Serendib",
-  description: "Hotel Management System",
+  title: "Serendib Circle",
+  description: "Loyalty Management System",
 };
 
 export default async function RootLayout({ children }) {
@@ -18,7 +18,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" className="">
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico"/>
       </head>
       <body className="transition-colors duration-300 bg-white text-black">
         {/* <DataProvider initialData={initialData}>

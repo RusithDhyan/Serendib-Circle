@@ -4,8 +4,40 @@ import User from "@/models/User";
 import Transaction from "@/models/Transaction";
 import Redemption from "@/models/Redemption";
 import { connectDB } from "@/lib/mongodb";
+import crypto from "crypto";
+
+const EXPIRY_LIMIT = 3 * 60 * 1000;
 
 export async function GET(req) {
+      const t = req.nextUrl.searchParams.get("t");
+      const cs = req.nextUrl.searchParams.get("cs");
+      console.log("huuu",cs);
+    
+      if (!t || !cs) {
+        let res = NextResponse.json({ success: false, error: "Missing parameters" }, { status: 400 });
+        return res;
+      }
+    
+      // --- 2. Validate timestamp ---
+      if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
+        let res = NextResponse.json({ success: false, error: "Expired request" }, { status: 401 });
+        return res;
+      }
+    
+      // --- 3. Validate checksum ---
+      const serverChecksum = crypto
+        .createHash("sha256")
+        .update(t + process.env.API_KEY)
+        .digest("hex");
+    
+        // console.log("Backend API Key:", process.env.API_KEY);
+    
+    
+      if (serverChecksum !== cs) {
+        let res = NextResponse.json({ success: false, error: "Invalid checksum" }, { status: 401 });
+        return res;
+      }
+  
   try {
     const authCheck = await checkAdminAuth();
     if (authCheck.error) {

@@ -79,7 +79,7 @@ export default function AdminLayout({ children }) {
     session?.user?.role === "moderator" ||
     session?.user?.role === "supervisor" ||
     session?.user?.role === "manager" ||
-    session?.user?.role === "admin" ||
+    // session?.user?.role === "admin" ||
     session?.user?.role === "owner";
   return (
     <div className="min-h-screen bg-gray-50">

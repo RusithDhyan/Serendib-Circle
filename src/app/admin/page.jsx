@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Users, DollarSign, TrendingUp, Gift } from "lucide-react";
+import { generateChecksum } from "@/lib/fetchData";
 
 export default function AdminDashboard() {
   const [analytics, setAnalytics] = useState(null);
@@ -14,8 +15,10 @@ export default function AdminDashboard() {
   }, []);
 
   const fetchAnalytics = async () => {
+    const t = Date.now().toString();
+    const cs = await generateChecksum(t);
     try {
-      const response = await fetch("/api/admin/analytics");
+      const response = await fetch(`/api/admin/analytics?t=${t}&cs=${cs}`);
       const data = await response.json();
       setAnalytics(data);
     } catch (error) {
