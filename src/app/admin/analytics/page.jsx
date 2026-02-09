@@ -263,9 +263,7 @@ export default function AdminAnalytics() {
                   </div>
                 );
               })}
-            </div>
-          )}
-          <div className="flex-1 justify-end space-x-2 mt-3">
+               <div className="flex-1 justify-end space-x-2 mt-3">
             <button
               onClick={() => handlePageChange1(transactionPage - 1)}
               disabled={transactionPage === 1}
@@ -282,6 +280,9 @@ export default function AdminAnalytics() {
               <ChevronRight />
             </button>
           </div>
+            </div>
+          )}
+         
         </div>
       </div>
 
@@ -443,9 +444,7 @@ export default function AdminAnalytics() {
               </div>
             </div>
           ))}
-        </div>
-          )}
-        <div className="flex-1 justify-end m-4 space-x-2">
+          <div className="flex-1 justify-end m-4 space-x-2">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
@@ -474,6 +473,11 @@ export default function AdminAnalytics() {
             Next
           </button>
         </div>
+        </div>
+
+        
+          )}
+        
       </div>
     </div>
   );
