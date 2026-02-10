@@ -8,6 +8,7 @@ export async function POST(req) {
     await connectDB();
     const { token, password } = await req.json();
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const { newPassword } = await req.json();
 
     const user = await User.findOne({
       resetPasswordToken: hashedToken,
@@ -21,6 +22,12 @@ export async function POST(req) {
       );
     }
 
+    if (!newPassword || newPassword.length < 6) {
+      return NextResponse.json(
+        { message: "Password must be at least 6 characters" },
+        { status: 400 }
+      );
+    }
     // Update password
     const hashedPassword = await bcrypt.hash(password, 10);
     user.password = hashedPassword;
