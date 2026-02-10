@@ -68,7 +68,7 @@ export default function AdminLayout({ children }) {
 
   const navigation = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    { name: "Users", href: "/admin/users", icon: Users },
+    // { name: "Users", href: "/admin/users", icon: Users },
     { name: "Transactions", href: "/admin/transactions", icon: Receipt },
     { name: "Redemptions", href: "/admin/redemptions", icon: Gift },
     { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
