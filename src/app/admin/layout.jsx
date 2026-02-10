@@ -68,7 +68,7 @@ export default function AdminLayout({ children }) {
 
   const navigation = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    // { name: "Users", href: "/admin/users", icon: Users },
+    { name: "Users", href: "/admin/users", icon: Users },
     { name: "Transactions", href: "/admin/transactions", icon: Receipt },
     { name: "Redemptions", href: "/admin/redemptions", icon: Gift },
     { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
@@ -88,7 +88,7 @@ export default function AdminLayout({ children }) {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2">
-              <Shield size={24} />
+              <Shield size={24}/>
               <span className="text-xl font-bold">Admin Panel</span>
             </div>
 
