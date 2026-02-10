@@ -13,6 +13,11 @@ const nextConfig = {
         pathname: '/**',
       },
       {
+        protocol: 'https',
+        hostname: 'serendib-circle.vercel.app',
+        pathname: '/api/uploads/**',
+      },
+      {
         protocol: 'http',
         hostname: 'localhost',
         pathname: '/api/uploads/**',
