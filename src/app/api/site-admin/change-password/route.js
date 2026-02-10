@@ -62,7 +62,7 @@ if (!user) {
     }
 
     user.password = await bcrypt.hash(newPassword, 10);
-    user.resetPasswordExpire = new Date();
+    user.passwordChangedAt = new Date();
     await user.save();
 
     return NextResponse.json(

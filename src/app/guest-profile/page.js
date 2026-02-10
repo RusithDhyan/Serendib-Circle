@@ -175,8 +175,8 @@ export default function ProfileView() {
             <p className="text-sm text-gray-500 mt-2">
               Last password change:{" "}
               <span className="text-red-400">
-                {user?.resetPasswordExpire
-                  ? new Date(user?.resetPasswordExpire).toLocaleString()
+                {user?.passwordChangedAt
+                  ? new Date(user?.passwordChangedAt).toLocaleString()
                   : "Not has been changed"}
               </span>
             </p>
