@@ -220,6 +220,7 @@ export default function AdminAnalytics() {
               {currentTransactions.map((trans) => {
                 const icons = {
                   earn: "💰",
+                  dining:"🍽️",
                   stay: "🏨",
                   redeem: "🎁",
                 };
