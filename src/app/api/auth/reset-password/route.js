@@ -2,7 +2,6 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
-import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
@@ -24,8 +23,8 @@ export async function POST(req) {
     }
 
     if (!newPassword || newPassword.length < 6) {
-      return NextResponse.json(
-        { message: "Password must be at least 6 characters" },
+      return new Response(
+        JSON.stringify({ message: "Password must be at least 6 charactors" }),
         { status: 400 }
       );
     }
