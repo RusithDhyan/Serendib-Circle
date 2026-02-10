@@ -219,7 +219,7 @@ export default function AdminTransactions() {
                     Points
                   </th>
                   <th className="text-left py-4 px-6 font-semibold text-gray-700">
-                    User ID
+                    Loyalty No.
                   </th>
                 </tr>
               </thead>
