@@ -71,6 +71,7 @@ export async function PUT(req) {
         }
 
         const filename = `${Date.now()}-${image.name.replace(/\s/g, '-')}`;
+        console.log("hi",filename);
         const filepath = path.join(uploadsDir, filename);
         await writeFile(filepath, buffer);
 
