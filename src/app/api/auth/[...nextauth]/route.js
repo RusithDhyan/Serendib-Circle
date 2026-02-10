@@ -48,7 +48,7 @@ export const authOptions = {
             phone: user.phone,
             tier: user.tier,
             updatedAt: user.updatedAt,
-            resetPasswordExpire: user.resetPasswordExpire,
+            passwordChangedAt: user.passwordChangedAt,
             permissions: user.permissions,
           };
         } catch (error) {
@@ -99,7 +99,7 @@ export const authOptions = {
         token.phone = user.phone;
         token.tier = user.tier;
         token.updatedAt = user.updatedAt;
-        token.resetPasswordExpire = user.resetPasswordExpire;
+        token.passwordChangedAt = user.passwordChangedAt;
         token.permissions = user.permissions;
       }
 
@@ -112,7 +112,7 @@ export const authOptions = {
         token.image = session.user.image;
         token.tier = session.user.tier;
         token.updatedAt = session.user.updatedAt;
-        token.resetPasswordExpire = session.user.resetPasswordExpire;
+        token.passwordChangedAt = session.user.passwordChangedAt;
         token.permissions = session.user.permissions; // ✅ keep in sync
       }
 
@@ -130,7 +130,7 @@ export const authOptions = {
       session.user.image = token.image;
       session.user.permissions = token.permissions;
       session.user.updatedAt = token.updatedAt;
-      session.user.resetPasswordExpire = token.resetPasswordExpire;
+      session.user.passwordChangedAt = token.passwordChangedAt;
       session.user.role = token.role;
 
       session.user.provider = token.provider;

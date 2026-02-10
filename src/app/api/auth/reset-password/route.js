@@ -26,6 +26,7 @@ export async function POST(req) {
     user.password = hashedPassword;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
+    user.passwordChangedAt = new Date();
     await user.save();
 
     return new Response(
