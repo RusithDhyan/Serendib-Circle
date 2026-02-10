@@ -278,7 +278,8 @@ export default function AdminTransactions() {
                       </td>
                       <td className="py-4 px-6">
                         <div className="text-xs text-gray-500 font-mono">
-                          {transaction.userId?.substring(0, 8)}...
+                          {/* {transaction.userId?.substring(0, 8)}... */}
+                          {transaction.loyaltyNumber}
                         </div>
                       </td>
                     </tr>

@@ -82,9 +82,60 @@ export async function GET(req) {
     if (userId) query.userId = userId;
     if (type) query.type = type;
 
-    const transactions = await Transaction.find(query)
-      .sort({ createdAt: -1 })
-      .limit(limit);
+    // const transactions = await Transaction.find(query)
+    //   .sort({ createdAt: -1 })
+    //   .limit(limit);
+
+    const transactions = await Transaction.aggregate([
+      { $match: query },
+
+      // Convert userId to ObjectId safely
+      {
+        $addFields: {
+          userObjectId: {
+            $cond: [
+              { $regexMatch: { input: "$userId", regex: /^[0-9a-fA-F]{24}$/ } },
+              { $toObjectId: "$userId" },
+              null,
+            ],
+          },
+        },
+      },
+
+      // Lookup the user
+      {
+        $lookup: {
+          from: "users",
+          localField: "userObjectId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+
+      // Unwind user array
+      {
+        $unwind: { path: "$user", preserveNullAndEmptyArrays: true },
+      },
+
+      // Add loyaltyNumber only if user.role === "guest"
+      {
+        $addFields: {
+          loyaltyNumber: {
+            $cond: [
+              { $eq: ["$user.role", "guest"] },
+              "$user.loyaltyNumber",
+              null,
+            ],
+          },
+        },
+      },
+
+      // Remove extra fields
+      { $project: { user: 0, userObjectId: 0 } },
+
+      { $sort: { createdAt: -1 } },
+      { $limit: limit },
+    ]);
 
     return NextResponse.json(transactions);
   } catch (error) {
