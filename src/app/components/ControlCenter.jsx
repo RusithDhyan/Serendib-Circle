@@ -1,74 +1,18 @@
 "use client";
-import { useState } from "react";
-import { Settings, Save } from "lucide-react";
+import { Settings } from "lucide-react";
+import Link from "next/link";
 
-export default function ControlCenter({ user, onUpdate }) {
-  const [dietaryPreferences, setDietaryPreferences] = useState(
-    user.dietaryPreferences || []
-  );
-  const [roomPreferences, setRoomPreferences] = useState(
-    user.roomPreferences || []
-  );
-  const [explorePreferences, setExplorePreferences] = useState(
-    user.explorePreferences || []
-  );
-  const [isSaving, setIsSaving] = useState(false);
-  const dietaryOptions = [
-    "Vegetarian",
-    "Vegan",
-    "Gluten-Free",
-    "Dairy-Free",
-    "Halal",
-    "Kosher",
-    "No Seafood",
-    "Nut Allergies",
+export default function ControlCenter({ user }) {
+  const exploreOptions = [
+    {
+      label: "Experience",
+      url: "https://serendibhotels.mw/experiences",
+    },
+    {
+      label: "Location",
+      url: "https://serendibhotels.mw/our-collection",
+    },
   ];
-  const roomOptions = [
-    "Ocean View",
-    "City View",
-    "High Floor",
-    "Low Floor",
-    "King Bed",
-    "Twin Beds",
-    "Smoking",
-    "Non-Smoking",
-    "Quiet Location",
-    "Near Elevator",
-  ];
-  const exploreOptions = ["Experience", "Location", "Dining"];
-
-  const togglePreference = (list, setList, item) => {
-    if (list.includes(item)) {
-      setList(list.filter((i) => i !== item));
-    } else {
-      setList([...list, item]);
-    }
-  };
-
-  const handleSave = async () => {
-    setIsSaving(true);
-    try {
-      const response = await fetch("/api/user", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          dietaryPreferences,
-          roomPreferences,
-          explorePreferences,
-        }),
-      });
-      if (response.ok) {
-        alert("Preferences saved successfully!");
-        onUpdate();
-      } else {
-        alert("Failed to save preferences");
-      }
-    } catch (error) {
-      alert("An error occurred. Please try again.");
-    } finally {
-      setIsSaving(false);
-    }
-  };
 
   return (
     <div className="card">
@@ -96,62 +40,20 @@ export default function ControlCenter({ user, onUpdate }) {
           </div>
         </div>
       </div>
-      <div className="space-y-6">
         <div>
           <h3 className="font-semibold text-gray-900 mb-3">Explore</h3>
-          <div className="flex flex-wrap gap-2">
-            {exploreOptions.map((option) => (
-              <button
-                key={option}
-                onClick={() =>
-                  togglePreference(
-                    explorePreferences,
-                    setExplorePreferences,
-                    option
-                  )
-                }
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                  explorePreferences.includes(option)
-                    ? "bg-serendib-primary text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
+          <div className="flex  gap-2">
+            {exploreOptions.map((option, idx) => (
+              <Link
+                href={option.url}
+                key={idx}
+                className="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-serendib-primary hover:bg-serendib-secondary text-white"
               >
-                {option}
-              </button>
+                {option.label}
+              </Link>
             ))}
           </div>
         </div>
-        {/* <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Dietary Preferences</h3>
-          <div className="flex flex-wrap gap-2">
-            {dietaryOptions.map((option) => (
-              <button key={option} onClick={() => togglePreference(dietaryPreferences, setDietaryPreferences, option)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${dietaryPreferences.includes(option) ? 'bg-serendib-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                {option}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Room Preferences</h3>
-          <div className="flex flex-wrap gap-2">
-            {roomOptions.map((option) => (
-              <button key={option} onClick={() => togglePreference(roomPreferences, setRoomPreferences, option)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${roomPreferences.includes(option) ? 'bg-serendib-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                {option}
-              </button>
-            ))}
-          </div>
-        </div> */}
-        <button
-          onClick={handleSave}
-          disabled={isSaving}
-          className="w-full btn-primary flex items-center justify-center gap-2"
-        >
-          <Save size={18} />
-          {isSaving ? "Saving..." : "Save Preferences"}
-        </button>
-      </div>
     </div>
   );
 }
