@@ -40,7 +40,7 @@ export default function BalanceCard({ user }) {
         <div className="text-6xl font-bold mb-2">
           {user.points.toLocaleString()}
         </div>
-        <div className="text-xl opacity-90">Points</div>
+        <div className="text-xl opacity-90">Active Points</div>
       </div>
 
       <div className="flex gap-4 pt-4 border-t border-white/20">
