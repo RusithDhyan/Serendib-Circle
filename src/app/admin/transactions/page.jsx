@@ -79,7 +79,7 @@ export default function AdminTransactions() {
   const totalPoints = transactions.reduce((sum, t) => sum + (t.points || 0), 0);
   const totalAmount = transactions.reduce((sum, t) => sum + (t.amount || 0), 0);
   const earnTransactions = transactions.filter(
-    (t) => t.type === "earn" || t.type === "stay"
+    (t) => t.type === "dining" || t.type === "experience" || t.type === "stay"
   ).length;
   const redeemTransactions = transactions.filter(
     (t) => t.type === "redeem"
@@ -169,7 +169,8 @@ export default function AdminTransactions() {
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-serendib-primary focus:border-transparent appearance-none"
             >
               <option value="">All Transaction Types</option>
-              <option value="earn">Purchase</option>
+              <option value="dining">Dining</option>
+              <option value="experience">Experience</option>
               <option value="stay">Hotel Stay</option>
               <option value="redeem">Redemption</option>
             </select>
