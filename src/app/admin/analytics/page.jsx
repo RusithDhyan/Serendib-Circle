@@ -220,7 +220,7 @@ export default function AdminAnalytics() {
               {currentTransactions.map((trans) => {
                 const icons = {
                   earn: "💰",
-                  dining:"🍽️",
+                  dining: "🍽️",
                   stay: "🏨",
                   redeem: "🎁",
                 };
@@ -264,26 +264,25 @@ export default function AdminAnalytics() {
                   </div>
                 );
               })}
-               <div className="flex-1 justify-end space-x-2 mt-3">
-            <button
-              onClick={() => handlePageChange1(transactionPage - 1)}
-              disabled={transactionPage === 1}
-              className="py-1  rounded disabled:opacity-50"
-            >
-              <ChevronLeft />
-            </button>
+              <div className="flex-1 justify-end space-x-2 mt-3">
+                <button
+                  onClick={() => handlePageChange1(transactionPage - 1)}
+                  disabled={transactionPage === 1}
+                  className="py-1  rounded disabled:opacity-50"
+                >
+                  <ChevronLeft />
+                </button>
 
-            <button
-              onClick={() => handlePageChange1(transactionPage + 1)}
-              disabled={transactionPage === totalPages1}
-              className="px-3 py-1rounded disabled:opacity-50"
-            >
-              <ChevronRight />
-            </button>
-          </div>
+                <button
+                  onClick={() => handlePageChange1(transactionPage + 1)}
+                  disabled={transactionPage === totalPages1}
+                  className="px-3 py-1rounded disabled:opacity-50"
+                >
+                  <ChevronRight />
+                </button>
+              </div>
             </div>
           )}
-         
         </div>
       </div>
 
@@ -312,12 +311,8 @@ export default function AdminAnalytics() {
                 </div>
                 <div className="text-2xl font-bold text-blue-600">
                   {totalPointsIssued > 0
-                    ? (
-                        (analytics.transactions?.totalBuy / totalUsers) *
-                        100
-                      ).toFixed(1)
+                    ? (analytics.transactions?.totalBuy / totalUsers).toFixed(1)
                     : 0}
-                  %
                 </div>
                 <div className="text-xs text-gray-500">of members</div>
               </div>
@@ -325,46 +320,34 @@ export default function AdminAnalytics() {
             </div>
             <div className="bg-purple-50 rounded-lg p-4">
               {/* Header */}
-              <div
-                className="flex items-center justify-between cursor-pointer"
-                onClick={() => setOpen(!open)}
-              >
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Award size={24} className="text-purple-600" />
                   <div className="text-sm text-gray-600 font-semibold">
                     Average Days to Tier Upgrade
                   </div>
                 </div>
-
-                {open ? (
-                  <ChevronUp size={20} className="text-gray-500" />
-                ) : (
-                  <ChevronDown size={20} className="text-gray-500" />
-                )}
               </div>
 
-              {/* Collapsible Content */}
-              {open && (
-                <div className="mt-3">
-                  {analytics.users?.avgTierUpgradeDays &&
-                    Object.entries(analytics.users.avgTierUpgradeDays).map(
-                      ([key, value]) => (
-                        <div
-                          key={key}
-                          className="flex justify-between text-sm text-gray-500 mb-2"
-                        >
-                          <span className="capitalize">
-                            {key.replaceAll("_", " ")}
-                          </span>
-                          <span className="font-semibold text-purple-600">
-                            {value} days
-                          </span>
-                        </div>
-                      )
-                    )}
-                </div>
-              )}
-            </div>{" "}
+              <div className="mt-3">
+                {analytics.users?.avgTierUpgradeDays &&
+                  Object.entries(analytics.users.avgTierUpgradeDays).map(
+                    ([key, value]) => (
+                      <div
+                        key={key}
+                        className="flex justify-between text-sm text-gray-500 mb-2"
+                      >
+                        <span className="capitalize">
+                          {key.replaceAll("_", " ")}
+                        </span>
+                        <span className="font-semibold text-purple-600">
+                          {value} days
+                        </span>
+                      </div>
+                    )
+                  )}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -406,79 +389,76 @@ export default function AdminAnalytics() {
           Recent Activity
         </h2>
         {currentAnalytics.length === 0 ? (
-            <div className="text-center text-gray-500 flex items-center justify-center gap-3">
-              <Inbox size={20} strokeWidth={1.5} color="gray" className="" />
-              <p className="text-gray-400">No recent activity found</p>
-            </div>
-          ) : (
-        <div className="space-y-3">
-          {currentAnalytics?.slice(0, 5).map((transaction) => (
-            <div
-              key={transaction._id}
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-serendib-primary/10 rounded-full flex items-center justify-center">
-                  <Activity size={20} className="text-serendib-primary" />
+          <div className="text-center text-gray-500 flex items-center justify-center gap-3">
+            <Inbox size={20} strokeWidth={1.5} color="gray" className="" />
+            <p className="text-gray-400">No recent activity found</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {currentAnalytics?.slice(0, 5).map((transaction) => (
+              <div
+                key={transaction._id}
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-serendib-primary/10 rounded-full flex items-center justify-center">
+                    <Activity size={20} className="text-serendib-primary" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-900">
+                      {transaction.description}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      {transaction.userId?.email || "Unknown user"}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-semibold text-gray-900">
-                    {transaction.description}
+                <div className="text-right">
+                  <div
+                    className={`font-bold ${
+                      transaction.points > 0 ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {transaction.points > 0 ? "+" : ""}
+                    {transaction.points?.toLocaleString() || 0} pts
                   </div>
                   <div className="text-sm text-gray-600">
-                    {transaction.userId?.email || "Unknown user"}
+                    ${transaction.amount?.toFixed(2) || "0.00"}
                   </div>
                 </div>
               </div>
-              <div className="text-right">
-                <div
-                  className={`font-bold ${
-                    transaction.points > 0 ? "text-green-600" : "text-red-600"
+            ))}
+            <div className="flex-1 justify-end m-4 space-x-2">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+              >
+                Prev
+              </button>
+              {Array.from({ length: totalPages }, (_, idx) => (
+                <button
+                  key={idx + 1}
+                  onClick={() => handlePageChange(idx + 1)}
+                  className={`px-3 py-1 rounded ${
+                    currentPage === idx + 1
+                      ? "bg-serendib-secondary hover:bg-serendib-primary text-white"
+                      : "bg-gray-100"
                   }`}
                 >
-                  {transaction.points > 0 ? "+" : ""}
-                  {transaction.points?.toLocaleString() || 0} pts
-                </div>
-                <div className="text-sm text-gray-600">
-                  ${transaction.amount?.toFixed(2) || "0.00"}
-                </div>
-              </div>
+                  {idx + 1}
+                </button>
+              ))}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+              >
+                Next
+              </button>
             </div>
-          ))}
-          <div className="flex-1 justify-end m-4 space-x-2">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Prev
-          </button>
-          {Array.from({ length: totalPages }, (_, idx) => (
-            <button
-              key={idx + 1}
-              onClick={() => handlePageChange(idx + 1)}
-              className={`px-3 py-1 rounded ${
-                currentPage === idx + 1
-                  ? "bg-serendib-secondary hover:bg-serendib-primary text-white"
-                  : "bg-gray-100"
-              }`}
-            >
-              {idx + 1}
-            </button>
-          ))}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
-        </div>
-
-        
-          )}
-        
+          </div>
+        )}
       </div>
     </div>
   );

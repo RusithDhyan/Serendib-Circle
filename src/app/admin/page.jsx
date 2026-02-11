@@ -142,7 +142,7 @@ export default function AdminDashboard() {
                     <span className="text-lg font-bold">{redeem.count}</span>
                   </div>
                   <div className="text-sm text-gray-600">
-                    Total: ${redeem.totalValue?.toFixed(2) || 0}
+                    Total: {redeem.totalValue?.toFixed(2) || 0}
                   </div>
                 </div>
               ))}
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
               <thead>
                 <tr className="border-b">
                   <th className="text-left py-3 px-4">Name</th>
-                  <th className="text-left py-3 px-4">Email</th>
+                  <th className="text-left py-3 px-4">Loyalty No.</th>
                   <th className="text-left py-3 px-4">Tier</th>
                   <th className="text-left py-3 px-4">Points</th>
                   <th className="text-left py-3 px-4">Joined</th>
@@ -175,7 +175,7 @@ export default function AdminDashboard() {
                 {recentUsers.map((user) => (
                   <tr key={user._id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4">{user.name}</td>
-                    <td className="py-3 px-4">{user.email}</td>
+                    <td className="py-3 px-4">{user.loyaltyNumber}</td>
                     <td className="py-3 px-4">
                       <span className="px-2 py-1 bg-serendib-primary/10 text-serendib-primary rounded-full text-sm font-semibold">
                         {user.tier}

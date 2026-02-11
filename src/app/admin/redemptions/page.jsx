@@ -382,7 +382,7 @@ export default function AdminRedemptions() {
                     <div className="text-right">
                       <div className="font-bold text-gray-900">{count}</div>
                       <div className="text-xs text-gray-600">
-                        ${value.toFixed(2)}
+                        {value.toFixed(2)}
                       </div>
                     </div>
                   </div>
