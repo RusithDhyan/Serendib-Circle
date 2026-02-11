@@ -117,7 +117,7 @@ export default function AdminRedemptions() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 2xl:gap-6 mb-6">
         <div className="bg-white rounded-xl shadow-md p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-600">Total Redemptions</span>
@@ -223,25 +223,25 @@ export default function AdminRedemptions() {
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Date
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Type
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Voucher Code
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Value
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Points
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Status
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Expires
                   </th>
                 </tr>
@@ -258,7 +258,7 @@ export default function AdminRedemptions() {
                       key={redemption._id}
                       className="border-t hover:bg-gray-50"
                     >
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div className="text-sm font-semibold text-gray-900">
                           {format(
                             new Date(redemption.createdAt),
@@ -269,7 +269,7 @@ export default function AdminRedemptions() {
                           {format(new Date(redemption.createdAt), "h:mm a")}
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div className="flex items-center gap-2">
                           <span className="text-2xl">{typeIcon}</span>
                           <span className="text-sm font-semibold capitalize">
@@ -277,22 +277,22 @@ export default function AdminRedemptions() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div className="font-mono text-sm font-bold text-serendib-primary">
                           {redemption.voucherCode}
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div className="text-sm font-bold text-gray-900">
                           ${redemption.dollarValue?.toFixed(2) || "0.00"}
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div className="text-sm font-semibold text-red-600">
                           -{redemption.pointsCost?.toLocaleString() || 0}
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div
                           className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${statusColor}`}
                         >
@@ -302,7 +302,7 @@ export default function AdminRedemptions() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div
                           className={`text-sm ${
                             isExpired

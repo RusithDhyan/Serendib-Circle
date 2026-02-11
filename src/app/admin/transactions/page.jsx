@@ -204,22 +204,22 @@ export default function AdminTransactions() {
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Date & Time
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Type
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Description
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Amount
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Points
                   </th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Loyalty No.
                   </th>
                 </tr>
@@ -234,7 +234,7 @@ export default function AdminTransactions() {
                       key={transaction._id}
                       className="border-t hover:bg-gray-50"
                     >
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div className="text-sm font-semibold text-gray-900">
                           {format(
                             new Date(transaction.createdAt),
@@ -245,7 +245,7 @@ export default function AdminTransactions() {
                           {format(new Date(transaction.createdAt), "h:mm a")}
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div
                           className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${colorClass}`}
                         >
@@ -255,17 +255,17 @@ export default function AdminTransactions() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div className="text-sm text-gray-900">
                           {transaction.description}
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div className="text-sm font-semibold text-gray-900">
                           ${transaction.amount?.toFixed(2) || "0.00"}
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div
                           className={`text-sm font-bold ${
                             transaction.points > 0
@@ -277,7 +277,7 @@ export default function AdminTransactions() {
                           {transaction.points?.toLocaleString() || 0}
                         </div>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-2 2xl:py-4 px-6">
                         <div className="text-xs text-gray-500 font-mono">
                           {/* {transaction.userId?.substring(0, 8)}... */}
                           {transaction.loyaltyNumber}
