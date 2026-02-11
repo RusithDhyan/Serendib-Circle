@@ -6,15 +6,15 @@ export default function LandingPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-6 2xl:py-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-yellow-600 to-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">S</span>
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-gray-300 bg-clip-text text-transparent">
-                Serendib Circle
-              </span>
+            <div className="flex items-center">
+              <Image
+                src="/all-images/logo/Serendib.png"
+                width={1000}
+                height={100}
+                className="w-30 2xl:w-40 h-auto object-cover"
+              />
             </div>
 
             <div className="flex items-center gap-4">
@@ -26,7 +26,7 @@ export default function LandingPage() {
               </Link>
               <Link
                 href="/auth/register"
-                className="px-6 py-2.5 bg-gradient-to-r from-yellow-600 to-gray-300 text-white font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
+                className="px-6 py-2.5 bg-[#CD7F32] text-white font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
               >
                 Get Started
               </Link>
@@ -38,17 +38,9 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center items-center pt-32 pb-20 px-6 text-center">
         <div className="space-y-8">
-          <div className="inline-block">
-            <span className="px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
-              ✨ Earn Rewards • Save More • Travel Better
-            </span>
-          </div>
-
-          <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+           <h1 className="text-5xl md:text-6xl font-bold leading-tight">
             Welcome to
-            <span className="block bg-gradient-to-r from-yellow-600 to-gray-200 bg-clip-text text-transparent">
-              Serendib Circle
-            </span>
+            <span className="block text-[#CD7F32]">Serendib Circle</span>
           </h1>
 
           <p className="text-xl text-gray-600 leading-relaxed">
@@ -59,7 +51,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/auth/register"
-              className="px-8 py-4 bg-gradient-to-r from-yellow-600 to-gray-300 text-white font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center"
+              className="px-8 py-4 bg-[#CD7F32] text-white font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center"
             >
               Join Free Today
             </Link>
