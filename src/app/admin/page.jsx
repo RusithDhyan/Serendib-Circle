@@ -93,7 +93,7 @@ export default function AdminDashboard() {
                 <stat.icon className="text-white" size={24} />
               </div>
             </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">
+            <div className="sm:text-2xl 2xl:text-3xl font-bold text-gray-900 mb-1">
               {stat.value}
             </div>
             <div className="text-sm text-gray-600">{stat.name}</div>
@@ -103,7 +103,7 @@ export default function AdminDashboard() {
 
       {/* Users by Tier */}
       <div className="grid lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow-md p-6">
+        <div className="bg-white rounded-xl shadow-md p-3 2xl:p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">
             Users by Tier
           </h2>
@@ -122,7 +122,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md p-6">
+        <div className="bg-white rounded-xl shadow-md p-3 2xl:p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">
             Redemptions by Type
           </h2>
