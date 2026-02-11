@@ -85,9 +85,9 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 2xl:gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 2xl:gap-6 mb-4 2xl:mb-8">
         {stats.map((stat) => (
-          <div key={stat.name} className="bg-white rounded-xl shadow-md p-6">
+          <div key={stat.name} className="bg-white rounded-xl shadow-md p-3 2xl:p-6">
             <div className="flex items-center justify-between mb-4">
               <div className={`${stat.color} p-3 rounded-lg`}>
                 <stat.icon className="text-white" size={24} />
