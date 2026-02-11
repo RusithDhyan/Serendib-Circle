@@ -144,7 +144,7 @@ export default function SignIn() {
             <div className="text-right mt-1">
               <button
                 onClick={() => setIsForgotPassword(true)}
-                className="text-sm text-serendib-primary hover:underline hover:text-serendib-secondary"
+                className="text-sm text-serendib-primary hover:underline hover:text-serendib-secondary transition-all duration-300"
               >
                 Forgot Password?
               </button>
