@@ -119,7 +119,7 @@ export default function ProfileView() {
   if (!user.email) return null;
 
   return (
-    <div className="flex-1 mt-12 ml-64">
+    <div className="flex-1 sm:ml-50 2xl:ml-64 sm:mt-12">
       <div>
         {/* ===== PROFILE HEADER ===== */}
         <div className="bg-white rounded-2xl shadow p-6 flex flex-col md:flex-row gap-6 items-center">
