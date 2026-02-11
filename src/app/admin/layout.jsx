@@ -127,10 +127,10 @@ export default function AdminLayout({ children }) {
 
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg transition-colors"
+                className="flex items-center gap-1 2xl:gap-2 px-2 2xl:px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg transition-colors"
               >
                 <LogOut size={18} />
-                <span>Sign Out</span>
+                <span className="sm:text-sm">Sign Out</span>
               </button>
             </div>
           </div>

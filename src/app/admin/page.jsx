@@ -77,11 +77,11 @@ export default function AdminDashboard() {
 
   return (
     <div className="flex-1 sm:ml-50 2xl:ml-64 sm:mt-12">
-      <div className="mb-4 2xl:mb-8 ">
+      <div className="mb-4 2xl:mb-8">
         <h1 className="text-2xl 2xl:text-3xl font-bold text-gray-900 2xl:mb-2">
           Admin Dashboard
         </h1>
-        <p className="text-gray-600">Overview of your loyalty program</p>
+        <p className="text-gray-600">Overview of your loyalty program </p>
       </div>
 
       {/* Stats Grid */}
@@ -152,7 +152,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Recent Users */}
-      <div className="bg-white rounded-xl shadow-md p-6">
+      <div className="bg-white rounded-xl shadow-md p-3 2xl:p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Users</h2>
         {recentUsers.length === 0 ? (
           <div className="text-center text-gray-500 flex items-center justify-center gap-3">
