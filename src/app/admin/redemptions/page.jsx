@@ -107,8 +107,8 @@ export default function AdminRedemptions() {
   console.log("edfer", redemptions);
   return (
     <div className="flex-1 sm:ml-50 2xl:ml-64 sm:mt-12">
-      <div className="mb-8">
-        <h1 className="text-2xl 2xl:text-3xl font-bold text-gray-900 mb-2">
+      <div className="mb-4 2xl:mb-8">
+        <h1 className="text-2xl 2xl:text-3xl font-bold text-gray-900 2xl:mb-2">
           Redemption Management
         </h1>
         <p className="text-gray-600">

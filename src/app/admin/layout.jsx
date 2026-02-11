@@ -139,7 +139,7 @@ export default function AdminLayout({ children }) {
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-md fixed h-screen pt-20 ">
+        <aside className="sm:w-52 2xl:w-64 bg-white shadow-md fixed h-screen pt-20 ">
           <nav className="p-4 space-y-2">
             {navigation.map((item) => {
               const isActive = pathname === item.href;
