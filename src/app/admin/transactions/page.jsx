@@ -111,7 +111,7 @@ export default function AdminTransactions() {
             <span className="text-sm text-gray-600">Total Points</span>
             <TrendingUp className="text-green-600" size={20} />
           </div>
-          <div className="text-3xl font-bold text-green-600">
+          <div className="text-xl sm:text-2xl 2xl:text-3xl font-bold text-green-600">
             +
             {transactions
               .filter((t) => t.points > 0)
@@ -128,7 +128,7 @@ export default function AdminTransactions() {
             <span className="text-sm text-gray-600">Total Redemptions</span>
             <TrendingDown className="text-red-600" size={20} />
           </div>
-          <div className="text-3xl font-bold text-red-600">
+          <div className="text-xl sm:text-2xl 2xl:text-3xl font-bold text-red-600">
             {Math.abs(
               transactions
                 .filter((t) => t.points < 0)
@@ -145,7 +145,7 @@ export default function AdminTransactions() {
             <span className="text-sm text-gray-600">Total Spend</span>
             <TrendingUp className="text-serendib-primary" size={20} />
           </div>
-          <div className="text-3xl font-bold text-serendib-primary">
+          <div className="text-xl sm:text-2xl 2xl:text-3xl font-bold text-serendib-primary">
             $
             {totalAmount.toLocaleString(undefined, {
               minimumFractionDigits: 2,

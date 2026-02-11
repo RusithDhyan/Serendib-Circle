@@ -123,7 +123,7 @@ export default function AdminRedemptions() {
             <span className="text-sm text-gray-600">Total Redemptions</span>
             <Gift className="text-serendib-primary" size={20} />
           </div>
-          <div className="text-3xl font-bold text-gray-900">{stats.total}</div>
+          <div className="text-xl sm:text-2xl 2xl:text-3xl font-bold text-gray-900">{stats.total}</div>
         </div>
 
         <div className="bg-white rounded-xl shadow-md p-6">
@@ -131,7 +131,7 @@ export default function AdminRedemptions() {
             <span className="text-sm text-gray-600">Active Vouchers</span>
             <CheckCircle className="text-green-600" size={20} />
           </div>
-          <div className="text-3xl font-bold text-green-600">
+          <div className="text-xl sm:text-2xl 2xl:text-3xl font-bold text-green-600">
             {stats.active}
           </div>
         </div>
@@ -141,7 +141,7 @@ export default function AdminRedemptions() {
             <span className="text-sm text-gray-600">Used Vouchers</span>
             <CheckCircle className="text-blue-600" size={20} />
           </div>
-          <div className="text-3xl font-bold text-blue-600">{stats.used}</div>
+          <div className="text-xl sm:text-2xl 2xl:text-3xl font-bold text-blue-600">{stats.used}</div>
         </div>
 
         <div className="bg-white rounded-xl shadow-md p-6">
