@@ -149,7 +149,7 @@ export default function AdminRedemptions() {
             <span className="text-sm text-gray-600">Total Value</span>
             <Gift className="text-purple-600" size={20} />
           </div>
-          <div className="text-3xl font-bold text-purple-600">
+          <div className="sm:text-xl 2xl:text-3xl font-bold text-purple-600">
             ${stats.totalValue.toLocaleString()}
           </div>
           <div className="text-sm text-gray-500 mt-1">
