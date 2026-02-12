@@ -316,7 +316,7 @@ export default function AdminAnalytics() {
                 </div>
                 <div className="text-xs text-gray-500">No of purchases a month</div>
               </div>
-              <DollarSign size={32} className="text-blue-600" />
+              <DollarSign size={32} className="text-blue-600"/>
             </div>
             <div className="bg-purple-50 rounded-lg p-4">
               {/* Header */}

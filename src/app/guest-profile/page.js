@@ -29,13 +29,12 @@ export default function ProfileView() {
   }, [status]);
 
   useEffect(() => {
-  if (showEditModal && user) {
-    setName(user.name || "");
-    setEmail(user.email || "");
-    setPhone(user.phone || "");
-  }
-}, [showEditModal, user]);
-
+    if (showEditModal && user) {
+      setName(user.name || "");
+      setEmail(user.email || "");
+      setPhone(user.phone || "");
+    }
+  }, [showEditModal, user]);
 
   const fetchUserData = async () => {
     try {
@@ -47,18 +46,16 @@ export default function ProfileView() {
     }
   };
 
-  /* ===== TIERS ===== */
   const tiers = [
-    { name: "Explorer", stays: 0, spend: 0, icon: "🌟" },
-    { name: "Adventurer", stays: 2, spend: 1000, icon: "🗺️" },
-    { name: "Voyager", stays: 5, spend: 2000, icon: "⛵" },
-    { name: "The Circle", stays: 11, spend: 3500, icon: "👑" },
+    { name: "Explorer", icon: "🌟" },
+    { name: "Adventurer", icon: "🗺️" },
+    { name: "Voyager", icon: "⛵" },
+    { name: "The Circle", icon: "👑" },
   ];
 
   const currentTierIndex = tiers.findIndex((t) => t.name === user?.tier);
   const nextTier = tiers[currentTierIndex + 1];
 
-  /* ===== ROLE COLORS ===== */
   const roleColors = {
     owner: "text-purple-600",
     admin: "text-red-600",
@@ -69,12 +66,10 @@ export default function ProfileView() {
     guest: "text-gray-600",
   };
 
-  /* ===== LOGOUT ===== */
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });
   };
 
-  /* ===== UPDATE PROFILE ===== */
   const handleUpdate = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -89,7 +84,6 @@ export default function ProfileView() {
       const res = await fetch("/api/site-admin/profile", {
         method: "PUT",
         body: formData,
-        credentials: "include",
       });
 
       const data = await res.json();
@@ -104,8 +98,6 @@ export default function ProfileView() {
 
         setShowEditModal(false);
         alert("Profile updated successfully!");
-      } else {
-        alert(data.message || "Update failed");
       }
     } catch (err) {
       console.error(err);
@@ -115,7 +107,6 @@ export default function ProfileView() {
     }
   };
 
-  /* ===== AUTH GUARDS ===== */
   if (status === "loading") {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -128,16 +119,14 @@ export default function ProfileView() {
     router.push("/");
     return null;
   }
-  // console.log(user?.tier);
+
   if (!user) return null;
-  if (!user.email) return null;
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar user={user} />
 
-      <div className="max-w-auto mx-auto px-6 py-8">
-        {/* BACK */}
+      <div className=" mx-auto px-6 py-8">
         <Link
           href="/dashboard"
           className="inline-flex items-center gap-2 text-serendib-primary hover:text-serendib-secondary mb-6"
@@ -146,8 +135,10 @@ export default function ProfileView() {
           Back to Dashboard
         </Link>
 
-        {/* ===== PROFILE HEADER ===== */}
-        <div className="bg-white rounded-2xl shadow p-6 flex flex-col md:flex-row gap-6 items-center">
+        {/* PROFILE HEADER */}
+        <div className="bg-white rounded-2xl shadow p-6 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
+
+          {/* Image + Role */}
           <div className="flex flex-col items-center">
             <div className="relative w-28 h-28">
               <Image
@@ -157,38 +148,40 @@ export default function ProfileView() {
                 className="rounded-full object-cover"
               />
             </div>
-            <p
-              className={`text-lg font-semibold ${
-                roleColors[user?.role] || "text-gray-600"
-              }`}
-            >
+            <p className={`text-lg font-semibold ${roleColors[user?.role] || "text-gray-600"}`}>
               {user?.role}
             </p>
           </div>
 
+          {/* Name Section */}
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-800">{user?.name}</h2>
-            <span className="text-md bg-yellow-200 px-2 rounded-2xl shadow-md">
+            <h2 className="text-2xl font-bold text-gray-800">
+              {user?.name}
+            </h2>
+
+            <span className="text-md bg-yellow-200 px-3 py-1 rounded-2xl shadow-md inline-block mt-2">
               Loyalty Number : {user?.loyaltyNumber}
             </span>
 
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-gray-500 mt-3">
               Last password change:{" "}
               <span className="text-red-400">
                 {user?.passwordChangedAt
                   ? new Date(user?.passwordChangedAt).toLocaleString()
-                  : "Not has been changed"}
+                  : "Not changed yet"}
               </span>
             </p>
           </div>
 
-          <div className="flex gap-2">
+          {/* Buttons */}
+          <div className="flex gap-2 justify-center md:justify-end">
             <button
               onClick={() => setShowEditModal(true)}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-serendib-secondary text-white hover:bg-serendib-primary"
             >
               <Pencil size={16} /> Edit
             </button>
+
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
@@ -198,10 +191,13 @@ export default function ProfileView() {
           </div>
         </div>
 
-        {/* ===== TIER CARD ===== */}
-        <div className="bg-white rounded-2xl shadow p-6 mt-6">
-          <div className="flex items-center gap-4">
-            <div className="text-4xl">{tiers[currentTierIndex]?.icon}</div>
+        {/* TIER CARD */}
+        <div className="bg-white rounded-2xl shadow p-6 mt-6 text-center md:text-left">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
+            <div className="text-4xl">
+              {tiers[currentTierIndex]?.icon}
+            </div>
+
             <div>
               <h3 className="text-xl font-semibold text-serendib-primary">
                 {user?.tier}
@@ -215,128 +211,42 @@ export default function ProfileView() {
               <p className="text-sm font-semibold text-serendib-primary">
                 Next Tier: {nextTier.name}
               </p>
-              <p className="text-sm text-gray-600 mt-1">
-                {nextTier.name === "Adventurer" &&
-                  "25% point bonus + Early check-in"}
-                {nextTier.name === "Voyager" &&
-                  "50% point bonus + Room upgrades"}
-                {nextTier.name === "The Circle" &&
-                  "100% point bonus + VIP status"}
-              </p>
             </div>
           )}
         </div>
 
-        {/* ===== ACCOUNT INFO ===== */}
-        <div className="bg-white rounded-2xl shadow p-6 mt-6">
-          <h3 className="text-lg font-semibold mb-4">Account Information</h3>
+        {/* ACCOUNT INFO */}
+        <div className="bg-white rounded-2xl shadow p-6 mt-6 text-center md:text-left">
+          <h3 className="text-lg font-semibold mb-4">
+            Account Information
+          </h3>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-gray-500">Email</p>
               <p className="font-medium">{user?.email}</p>
             </div>
+
             <div>
               <p className="text-sm text-gray-500">Phone</p>
-              <p className="font-medium">{user?.phone || "Not provided"}</p>
+              <p className="font-medium">
+                {user?.phone || "Not provided"}
+              </p>
             </div>
           </div>
         </div>
+
         <button
-          onClick={() => {
-            setShowPopup(true);
-          }}
-          className="bg-serendib-primary text-white p-2 mt-5 rounded-md hover:bg-serendib-secondary transition"
+          onClick={() => setShowPopup(true)}
+          className="bg-serendib-primary text-white p-2 mt-6 rounded-md hover:bg-serendib-secondary transition w-full md:w-auto mx-auto md:mx-0 flex justify-center"
         >
           Change Password
         </button>
       </div>
+
       {showPopup && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-          <ChangePasswordStepper
-            onClose={() => {
-              setShowPopup(false);
-            }}
-          />
-        </div>
-      )}
-
-      {/* ===== EDIT MODAL ===== */}
-      {showEditModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-[90%] max-w-2xl relative">
-            <button
-              onClick={() => setShowEditModal(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
-            >
-              <X />
-            </button>
-
-            <h2 className="text-2xl font-bold text-center mb-6 text-serendib-primary">
-              Edit Profile
-            </h2>
-
-            <form
-              onSubmit={handleUpdate}
-              encType="multipart/form-data"
-              className="space-y-4"
-            >
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Profile Image
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setImage(e.target.files[0])}
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Phone
-                </label>
-                <input
-                  type="text"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="w-full border rounded px-3 py-2"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-2 bg-serendib-primary text-white rounded hover:bg-serendib-secondary disabled:opacity-50"
-              >
-                {loading ? "Saving..." : "Save Changes"}
-              </button>
-            </form>
-          </div>
+          <ChangePasswordStepper onClose={() => setShowPopup(false)} />
         </div>
       )}
     </div>
