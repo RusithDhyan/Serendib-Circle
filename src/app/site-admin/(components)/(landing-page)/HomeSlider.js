@@ -178,7 +178,7 @@ export default function LandingPage() {
           </p>
           <Link
             href="/auth/register"
-            className="inline-block px-12 py-4 bg-white text-yellow-600 font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300"
+            className="inline-block px-12 py-4 bg-white text-[#dfb98d] font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300"
           >
             Create Free Account
           </Link>
