@@ -114,10 +114,12 @@ export default function RedemptionCenter({ user, onRedeem }) {
                     <div className="text-sm text-end text-gray-600 mt-1">
                       {percentage}%
                     </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 2xl:h-3">
                     <div
                       className="h-2 2xl:h-3 rounded-full transition-all duration-500 bg-serendib-secondary"
                       style={{ width: `${percentage}%` }}
                     />
+                  </div>
                   </div>
 
                   <div className="flex-1 w-50 text-center text-sm font-semibold text-purple-700 my-2 bg-purple-100 px-2 rounded-xl shadow-md">

@@ -39,7 +39,7 @@ export default function TierTracker({ user }) {
               <span className="text-gray-600">Progress to {nextTier.name}</span>
               <span className="font-semibold">{progress.toFixed(0)}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
+            <div className="w-full bg-gray-200 rounded-full h-2 2xl:h-3">
               <div
                 className="bg-gradient-to-r from-serendib-secondary to-serendib-accent h-2 2xl:h-3 rounded-full transition-all duration-500"
                 style={{ width: `${progress}%` }}
@@ -65,20 +65,6 @@ export default function TierTracker({ user }) {
               </div>
               <ChevronRight className="text-gray-400" size={20} />
             </div>
-
-            {/* <div className="mt-6 p-4 bg-serendib-primary/5 rounded-lg">
-              <div className="text-sm font-semibold text-serendib-primary mb-2">
-                Next Tier Benefits
-              </div>
-              <div className="text-sm text-gray-600">
-                {nextTier.name === "Adventurer" &&
-                  "25% point bonus + Early check-in"}
-                {nextTier.name === "Voyager" &&
-                  "50% point bonus + Room upgrades"}
-                {nextTier.name === "The Circle" &&
-                  "100% point bonus + VIP status"}
-              </div>
-            </div> */}
           </div>
         </>
       ) : (
