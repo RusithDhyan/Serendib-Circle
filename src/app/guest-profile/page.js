@@ -137,7 +137,6 @@ export default function ProfileView() {
 
         {/* PROFILE HEADER */}
         <div className="bg-white rounded-2xl shadow p-6 flex flex-col md:flex-row gap-6 items-center md:items-start text-center md:text-left">
-
           {/* Image + Role */}
           <div className="flex flex-col items-center">
             <div className="relative w-28 h-28">
@@ -148,16 +147,18 @@ export default function ProfileView() {
                 className="rounded-full object-cover"
               />
             </div>
-            <p className={`text-lg font-semibold ${roleColors[user?.role] || "text-gray-600"}`}>
+            <p
+              className={`text-lg font-semibold ${
+                roleColors[user?.role] || "text-gray-600"
+              }`}
+            >
               {user?.role}
             </p>
           </div>
 
           {/* Name Section */}
           <div className="flex-1">
-            <h2 className="text-2xl font-bold text-gray-800">
-              {user?.name}
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-800">{user?.name}</h2>
 
             <span className="text-md bg-yellow-200 px-3 py-1 rounded-2xl shadow-md inline-block mt-2">
               Loyalty Number : {user?.loyaltyNumber}
@@ -194,9 +195,7 @@ export default function ProfileView() {
         {/* TIER CARD */}
         <div className="bg-white rounded-2xl shadow p-6 mt-6 text-center md:text-left">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
-            <div className="text-4xl">
-              {tiers[currentTierIndex]?.icon}
-            </div>
+            <div className="text-4xl">{tiers[currentTierIndex]?.icon}</div>
 
             <div>
               <h3 className="text-xl font-semibold text-serendib-primary">
@@ -211,15 +210,21 @@ export default function ProfileView() {
               <p className="text-sm font-semibold text-serendib-primary">
                 Next Tier: {nextTier.name}
               </p>
+              <p className="text-sm text-gray-600 mt-1">
+                {nextTier.name === "Adventurer" &&
+                  "25% point bonus + Early check-in"}
+                {nextTier.name === "Voyager" &&
+                  "50% point bonus + Room upgrades"}
+                {nextTier.name === "The Circle" &&
+                  "100% point bonus + VIP status"}
+              </p>
             </div>
           )}
         </div>
 
         {/* ACCOUNT INFO */}
         <div className="bg-white rounded-2xl shadow p-6 mt-6 text-center md:text-left">
-          <h3 className="text-lg font-semibold mb-4">
-            Account Information
-          </h3>
+          <h3 className="text-lg font-semibold mb-4">Account Information</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -229,9 +234,7 @@ export default function ProfileView() {
 
             <div>
               <p className="text-sm text-gray-500">Phone</p>
-              <p className="font-medium">
-                {user?.phone || "Not provided"}
-              </p>
+              <p className="font-medium">{user?.phone || "Not provided"}</p>
             </div>
           </div>
         </div>
@@ -249,7 +252,6 @@ export default function ProfileView() {
           <ChangePasswordStepper onClose={() => setShowPopup(false)} />
         </div>
       )}
-
 
       {/* ===== EDIT MODAL ===== */}
       {showEditModal && (
