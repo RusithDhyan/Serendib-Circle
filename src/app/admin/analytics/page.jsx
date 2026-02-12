@@ -314,7 +314,7 @@ export default function AdminAnalytics() {
                     ? (analytics.transactions?.totalBuy / totalUsers).toFixed(1)
                     : 0}
                 </div>
-                <div className="text-xs text-gray-500">of members</div>
+                <div className="text-xs text-gray-500">No of purchases a month</div>
               </div>
               <DollarSign size={32} className="text-blue-600" />
             </div>
