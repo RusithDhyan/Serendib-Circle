@@ -1,65 +1,27 @@
-import { NextResponse } from "next/server";
+// export function generateLoyaltyNumber() {
+//   const prefix = "SHR";
+//   const random = Math.floor(100 + Math.random() * 900);
+//   return `${prefix}-${random}`;
+// }
+
 import User from "@/models/User";
-import { connectDB } from "@/lib/mongodb";
-import bcrypt from "bcryptjs";
-import { generateLoyaltyNumber } from "@/lib/loyalty";
 
-export async function POST(req) {
-  try {
-    const { name, email, password } = await req.json();
+export async function generateLoyaltyNumber() {
+  const prefix = "SHR";
 
-    if (!name || !email || !password) {
-      return NextResponse.json(
-        { error: "All fields are required" },
-        { status: 400 }
-      );
-    }
+  // Get last GUEST user only
+  const lastGuest = await User.findOne({ role: "guest" })
+    .sort({ loyaltyNumber: -1 })
+    .select("loyaltyNumber");
 
-    if (password.length < 6) {
-      return NextResponse.json(
-        { error: "Password must be at least 6 characters" },
-        { status: 400 }
-      );
-    }
+  let nextNumber = 1;
 
-    await connectDB();
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      return NextResponse.json(
-        { error: "User already exists with this email" },
-        { status: 400 }
-      );
-    }
-
-    // ✅ HASH PASSWORD
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const loyaltyNumber = await generateLoyaltyNumber();
-
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword, // ✅ store hashed
-      loyaltyNumber: loyaltyNumber
-    });
-
-    return NextResponse.json(
-      {
-        message: "User created successfully",
-        user: {
-          id: user._id,
-          loyaltyNumber: user.loyaltyNumber,
-          name: user.name,
-          email: user.email,
-        },
-      },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error("Registration error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+  if (lastGuest && lastGuest.loyaltyNumber) {
+    const lastNumber = parseInt(lastGuest.loyaltyNumber.split("-")[1]);
+    nextNumber = lastNumber + 1;
   }
+
+  const formattedNumber = String(nextNumber).padStart(3, "0");
+
+  return `${prefix}-${formattedNumber}`;
 }
