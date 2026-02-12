@@ -41,7 +41,7 @@ export default function TierTracker({ user }) {
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
               <div
-                className="bg-gradient-to-r from-serendib-secondary to-serendib-accent h-3 rounded-full transition-all duration-500"
+                className="bg-gradient-to-r from-serendib-secondary to-serendib-accent h-2 2xl:h-3 rounded-full transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>

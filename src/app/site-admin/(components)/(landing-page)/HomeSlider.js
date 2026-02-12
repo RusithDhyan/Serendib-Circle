@@ -8,15 +8,14 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
         <div className="container mx-auto px-6 2xl:py-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Image
-                src="/all-images/logo/Serendib.png"
-                width={1000}
-                height={100}
-                className="w-30 2xl:w-40 h-auto object-cover"
-              />
-            </div>
-
+              <div className="flex items-center">
+                  <Image src="/all-images/logo/Serendib.png" 
+                  alt="logo"
+                  width={1000}
+                  height={100}
+                  className="w-30 2xl:w-40 h-auto object-cover"/>
+              </div>
+            
             <div className="flex items-center gap-4">
               <Link
                 href="/auth/signin"
@@ -26,7 +25,7 @@ export default function LandingPage() {
               </Link>
               <Link
                 href="/auth/register"
-                className="px-6 py-2.5 bg-[#CD7F32] text-white font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
+                className="px-6 py-2.5 bg-[#dfb98d] text-white font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
               >
                 Get Started
               </Link>
@@ -38,9 +37,9 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center items-center pt-32 pb-20 px-6 text-center">
         <div className="space-y-8">
-           <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+          <h1 className="text-5xl md:text-6xl font-bold leading-tight">
             Welcome to
-            <span className="block text-[#CD7F32]">Serendib Circle</span>
+            <span className="block text-[#dfb98d]">Serendib Circle</span>
           </h1>
 
           <p className="text-xl text-gray-600 leading-relaxed">
@@ -51,13 +50,13 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/auth/register"
-              className="px-8 py-4 bg-[#CD7F32] text-white font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center"
+              className="px-8 py-4 bg-[#dfb98d] text-white font-bold rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 text-center"
             >
               Join Free Today
             </Link>
             <Link
               href="/auth/signin"
-              className="px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 font-bold rounded-full hover:border-yellow-600 hover:text-yellow-600 transition-all duration-300 text-center"
+              className="px-8 py-4 bg-white border-2 border-gray-200 text-gray-700 font-bold rounded-full hover:border-[#dfb98d] hover:text-yellow-600 transition-all duration-300 text-center"
             >
               Sign In
             </Link>
@@ -91,7 +90,7 @@ export default function LandingPage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {/* Feature 1 */}
-            <div className="group p-8 bg-gradient-to-br from-blue-50 to-white rounded-2xl border border-blue-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+            <div className="group p-8 bg-gradient-to-br from-blue-50 to-white rounded-2xl border border-blue-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center">
               <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <svg
                   className="w-8 h-8 text-white"
@@ -108,14 +107,14 @@ export default function LandingPage() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold mb-3">Earn Points</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-center">
                 Get 10 points per dollar spent. Tier members earn up to 2x bonus
                 points on every purchase.
               </p>
             </div>
 
             {/* Feature 2 */}
-            <div className="group p-8 bg-gradient-to-br from-purple-50 to-white rounded-2xl border border-purple-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+            <div className="group p-8 bg-gradient-to-br from-purple-50 to-white rounded-2xl border border-purple-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center">
               <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <svg
                   className="w-8 h-8 text-white"
@@ -132,14 +131,14 @@ export default function LandingPage() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold mb-3">Tier Benefits</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-center">
                 Progress through 4 exclusive tiers and unlock premium perks,
                 upgrades, and VIP treatment.
               </p>
             </div>
 
             {/* Feature 3 */}
-            <div className="group p-8 bg-gradient-to-br from-green-50 to-white rounded-2xl border border-green-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+            <div className="group p-8 bg-gradient-to-br from-green-50 to-white rounded-2xl border border-green-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col items-center">
               <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-green-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <svg
                   className="w-8 h-8 text-white"
@@ -156,7 +155,7 @@ export default function LandingPage() {
                 </svg>
               </div>
               <h3 className="text-2xl font-bold mb-3">Redeem Rewards</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-center">
                 Use your points for free nights, dining vouchers, spa
                 experiences, and exclusive offers.
               </p>
@@ -166,12 +165,12 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-br from-yellow-600 to-gray-200">
+      <section className="py-20 px-6 bg-gradient-to-br from-[#dfb98d] to-gray-100">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Start Earning?
           </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-white mb-8 max-w-2xl mx-auto">
             Join thousands of members enjoying exclusive rewards and benefits.
             Sign up today and get 500 bonus points!
           </p>
@@ -188,8 +187,14 @@ export default function LandingPage() {
       <footer className="py-2 px-6 bg-black text-gray-400">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-yellow-600 to-gray-200 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">S</span>
+            <div className="w-15 h-15 bg-white/80 rounded-lg flex items-center justify-center">
+              <div className="flex items-center">
+                  <Image src="/all-images/logo/Serendib.png" 
+                  alt="logo"
+                  width={1000}
+                  height={100}
+                  className="w-15 h-auto object-cover"/>
+              </div>
             </div>
             <span className="text-2xl font-bold text-white">
               Serendib Circle
