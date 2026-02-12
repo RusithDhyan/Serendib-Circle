@@ -104,6 +104,13 @@ export default function ControlCenter({ user }) {
       <div className="mt-3">
         <h3 className="text-lg font-semibold mb-3">Explore Offers</h3>
 
+        {offers.length === 0 ? (
+                  <div className="text-center py-12 text-gray-500">
+                    <Gift size={48} className="mx-auto mb-4 opacity-50" />
+                    <p>No offers found</p>
+                  </div>
+                ) : (
+
         <div className="relative">
           {/* Left Arrow */}
           <button
@@ -153,6 +160,7 @@ export default function ControlCenter({ user }) {
             &#8594;
           </button>
         </div>
+                )}
       </div>
     </div>
   );
