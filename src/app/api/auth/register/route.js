@@ -34,7 +34,7 @@ export async function POST(req) {
 
     // ✅ HASH PASSWORD
     const hashedPassword = await bcrypt.hash(password, 10);
-    const loyaltyNumber = generateLoyaltyNumber();
+    const loyaltyNumber = await generateLoyaltyNumber();
 
     const user = await User.create({
       name,
