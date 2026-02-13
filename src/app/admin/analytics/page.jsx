@@ -163,7 +163,7 @@ export default function AdminAnalytics() {
       </div>
 
       {/* User Distribution */}
-      <div className="grid lg:grid-cols-2 gap-6 mb-8 items-start">
+      <div className="grid lg:grid-cols-2 gap-6 mb-8">
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
             <Users size={24} className="text-serendib-primary" />
