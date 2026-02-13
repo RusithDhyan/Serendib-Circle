@@ -311,7 +311,7 @@ export default function AdminAnalytics() {
                 </div>
                 <div className="text-2xl font-bold text-blue-600">
                   {totalPointsIssued > 0
-                    ? (analytics.transactions?.totalBuy)
+                    ? (analytics.transactions?.totalBuy/totalUsers).toFixed(0)
                     : 0}
                 </div>
                 <div className="text-xs text-gray-500">No of purchases a month</div>
