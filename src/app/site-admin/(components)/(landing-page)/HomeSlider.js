@@ -167,7 +167,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-to-br from-[#dfb98d] to-gray-100">
+      <section className="py-20 px-6 bg-[#dfb98d]">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Start Earning?
