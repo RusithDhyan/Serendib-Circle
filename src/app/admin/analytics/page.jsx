@@ -286,7 +286,7 @@ export default function AdminAnalytics() {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6 mb-8 items-start">
+      <div className="grid md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-6">
             Program Health
