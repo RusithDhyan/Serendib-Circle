@@ -82,7 +82,7 @@ export async function POST(req) {
       );
     }
 
-    const loyaltyNumber = generateLoyaltyNumber();
+    const loyaltyNumber = await generateLoyaltyNumber();
 
     const newUser = await User.create({
       loyaltyNumber: loyaltyNumber,
