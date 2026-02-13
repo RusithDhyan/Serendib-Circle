@@ -81,7 +81,6 @@ export async function POST(req) {
         { status: 403 }
       );
     }
-
     const loyaltyNumber = await generateLoyaltyNumber();
 
     const newUser = await User.create({
