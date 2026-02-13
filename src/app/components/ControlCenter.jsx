@@ -89,7 +89,6 @@ export default function ControlCenter({ user }) {
         <div className="flex  gap-2">
           {exploreOptions.map((option, idx) => (
             <Link
-            onClick={() => window.open(offer.url, "_blank")}
               href={option.url}
               key={idx}
               className="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-serendib-primary hover:bg-serendib-secondary text-white"
@@ -105,62 +104,61 @@ export default function ControlCenter({ user }) {
         <h3 className="text-lg font-semibold mb-3">Explore Offers</h3>
 
         {offers.length === 0 ? (
-                  <div className="text-center py-12 text-gray-500">
-                    <Gift size={48} className="mx-auto mb-4 opacity-50" />
-                    <p>No offers found</p>
-                  </div>
-                ) : (
-
-        <div className="relative">
-          {/* Left Arrow */}
-          <button
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow hover:bg-gray-100"
-            onClick={() => scrollCarousel("left")}
-          >
-            &#8592;
-          </button>
-
-          {/* Carousel Container */}
-          <div
-            id="offersCarousel"
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
-          >
-            {offers.map((offer, idx) => (
-              <div
-                key={idx}
-                className="min-w-[300px] flex-shrink-0 bg-white rounded-xl shadow p-4  transition"
-                onClick={() => handleOfferClick(offer)}
-              >
-                <Image
-                  src={offer.image}
-                  alt={offer.title}
-                  width={1000}
-                  height={100}
-                  className="w-full h-32 object-cover rounded-lg mb-2"
-                />
-                <h4 className="text-sm font-semibold">{offer.title}</h4>
-                <div className="flex items-end justify-between">
-                  <p className="text-xs text-gray-500">{offer.description}</p>
-                  <button
-                    onClick={() => window.open(offer.url, "_blank")}
-                    className="bg-gray-200 hover:bg-gray-300 border border-gray-300 shadow-md rounded-lg px-2 transition-all duration-300 cursor-pointer"
-                  >
-                    Explore
-                  </button>
-                </div>
-              </div>
-            ))}
+          <div className="text-center py-12 text-gray-500">
+            <Gift size={48} className="mx-auto mb-4 opacity-50" />
+            <p>No offers found</p>
           </div>
+        ) : (
+          <div className="relative">
+            {/* Left Arrow */}
+            <button
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow hover:bg-gray-100"
+              onClick={() => scrollCarousel("left")}
+            >
+              &#8592;
+            </button>
 
-          {/* Right Arrow */}
-          <button
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow hover:bg-gray-100"
-            onClick={() => scrollCarousel("right")}
-          >
-            &#8594;
-          </button>
-        </div>
-                )}
+            {/* Carousel Container */}
+            <div
+              id="offersCarousel"
+              className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
+            >
+              {offers.map((offer, idx) => (
+                <div
+                  key={idx}
+                  className="min-w-[300px] flex-shrink-0 bg-white rounded-xl shadow p-4  transition"
+                  onClick={() => handleOfferClick(offer)}
+                >
+                  <Image
+                    src={offer.image}
+                    alt={offer.title}
+                    width={1000}
+                    height={100}
+                    className="w-full h-32 object-cover rounded-lg mb-2"
+                  />
+                  <h4 className="text-sm font-semibold">{offer.title}</h4>
+                  <div className="flex items-end justify-between">
+                    <p className="text-xs text-gray-500">{offer.description}</p>
+                    <button
+                      onClick={() => window.open(offer.url, "_blank")}
+                      className="bg-gray-200 hover:bg-gray-300 border border-gray-300 shadow-md rounded-lg px-2 transition-all duration-300 cursor-pointer"
+                    >
+                      Explore
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Right Arrow */}
+            <button
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow hover:bg-gray-100"
+              onClick={() => scrollCarousel("right")}
+            >
+              &#8594;
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

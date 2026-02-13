@@ -9,35 +9,43 @@ import crypto from "crypto";
 const EXPIRY_LIMIT = 3 * 60 * 1000;
 
 export async function GET(req) {
-      const t = req.nextUrl.searchParams.get("t");
-      const cs = req.nextUrl.searchParams.get("cs");
-      console.log("huuu",cs);
-    
-      if (!t || !cs) {
-        let res = NextResponse.json({ success: false, error: "Missing parameters" }, { status: 400 });
-        return res;
-      }
-    
-      // --- 2. Validate timestamp ---
-      if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
-        let res = NextResponse.json({ success: false, error: "Expired request" }, { status: 401 });
-        return res;
-      }
-    
-      // --- 3. Validate checksum ---
-      const serverChecksum = crypto
-        .createHash("sha256")
-        .update(t + process.env.API_KEY)
-        .digest("hex");
-    
-        // console.log("Backend API Key:", process.env.API_KEY);
-    
-    
-      if (serverChecksum !== cs) {
-        let res = NextResponse.json({ success: false, error: "Invalid checksum" }, { status: 401 });
-        return res;
-      }
-  
+  const t = req.nextUrl.searchParams.get("t");
+  const cs = req.nextUrl.searchParams.get("cs");
+  console.log("huuu", cs);
+
+  if (!t || !cs) {
+    let res = NextResponse.json(
+      { success: false, error: "Missing parameters" },
+      { status: 400 }
+    );
+    return res;
+  }
+
+  // --- 2. Validate timestamp ---
+  if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
+    let res = NextResponse.json(
+      { success: false, error: "Expired request" },
+      { status: 401 }
+    );
+    return res;
+  }
+
+  // --- 3. Validate checksum ---
+  const serverChecksum = crypto
+    .createHash("sha256")
+    .update(t + process.env.API_KEY)
+    .digest("hex");
+
+  // console.log("Backend API Key:", process.env.API_KEY);
+
+  if (serverChecksum !== cs) {
+    let res = NextResponse.json(
+      { success: false, error: "Invalid checksum" },
+      { status: 401 }
+    );
+    return res;
+  }
+
   try {
     const authCheck = await checkAdminAuth();
     if (authCheck.error) {
@@ -75,8 +83,18 @@ export async function GET(req) {
 
     // Get transaction statistics
     const totalTransactions = await Transaction.countDocuments();
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const endOfMonth = new Date();
+    endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+    endOfMonth.setDate(0);
+    endOfMonth.setHours(23, 59, 59, 999);
+
     const totalBuy = await Transaction.countDocuments({
       type: { $ne: "redeem" },
+      createdAt: { $gte: startOfMonth, $lte: endOfMonth },
     });
 
     const transactionsByType = await Transaction.aggregate([
@@ -91,7 +109,7 @@ export async function GET(req) {
 
     // Get points statistics
     const pointsStats = await User.aggregate([
-      {$match: {role: "guest"}},
+      { $match: { role: "guest" } },
       {
         $group: {
           _id: null,
@@ -144,9 +162,10 @@ export async function GET(req) {
 
     // -------- Avg Days to Tier Upgrade --------
     const usersWithHistory = await User.find(
-      { 
+      {
         role: "guest",
-        "tierHistory.1": { $exists: true } },
+        "tierHistory.1": { $exists: true },
+      },
       { tierHistory: 1 }
     );
 
