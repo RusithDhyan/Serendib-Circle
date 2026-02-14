@@ -1,202 +1,104 @@
 "use client";
-import { useState } from "react";
-import { Gift, Coffee, Bed, Sparkles } from "lucide-react";
 
-export default function RedemptionCenter({ user, onRedeem }) {
-  const [isRedeeming, setIsRedeeming] = useState(false);
-  const [selectedVoucher, setSelectedVoucher] = useState(null);
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { redirect } from "next/navigation";
+import Navbar from "../components/Navbar";
+import TierTracker from "../components/TierTracker";
+import RecentTransactions from "../components/RecentTransactions";
+import RedemptionCenter from "../components/RedemptionCenter";
+import ControlCenter from "../components/ControlCenter";
+import BalanceCard from "../components/BalanceCard";
 
-  const vouchers = [
-    {
-      id: 1,
-      type: "dining",
-      icon: Coffee,
-      title: "Dining Voucher",
-      description: "Redeem for F&B at any Serendib property",
-      amount: 1000,
-      content: "Redeem with 1000 points",
-    },
-    {
-      id: 2,
-      type: "room",
-      icon: Bed,
-      title: "Room Voucher",
-      description: "Apply towards your next stay",
-      amount: 5000,
-      content: "Redeem with 5000 points",
-    },
-    {
-      id: 3,
-      type: "experience",
-      icon: Sparkles,
-      title: "Experience Voucher",
-      description: "Unlock exclusive experiences",
-      amount: 15000,
-      content: "Redeem with 15000 points",
-    },
-  ];
+export default function Dashboard() {
+  const { data: session, status } = useSession();
+  const [userData, setUserData] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleRedeem = async (type, points) => {
-    if (user.points < points) {
-      alert("Insufficient points!");
-      return;
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect("/auth/signin");
     }
+  }, [status]);
 
-    if (
-      !confirm(
-        `Redeem ${points} points for a $${(points / 100).toFixed(
-          2
-        )} ${type} voucher?`
-      )
-    )
-      return;
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchUserData();
+      fetchTransactions();
+    }
+  }, [status]);
 
-    setIsRedeeming(true);
-
+  const fetchUserData = async () => {
     try {
-      const response = await fetch("/api/redemptions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, pointsCost: points }),
-      });
-
+      const response = await fetch("/api/user");
       const data = await response.json();
-
-      if (response.ok) {
-        alert(
-          `Success! Your voucher code is: ${
-            data.redemption.voucherCode
-          }\n\nValid until: ${new Date(
-            data.redemption.expiresAt
-          ).toLocaleDateString()}`
-        );
-        onRedeem();
-      } else {
-        alert(data.error || "Redemption failed");
-      }
+      setUserData(data);
     } catch (error) {
-      alert("An error occurred. Please try again.");
+      console.error("Error fetching user data:", error);
     } finally {
-      setIsRedeeming(false);
-      setSelectedVoucher(null);
+      setLoading(false);
     }
   };
 
-  return (
-    <div className="card">
-      <div className="flex items-center gap-2 mb-6">
-        <Gift className="text-serendib-primary" size={24} />
-        <h2 className="text-xl font-semibold">Redeem Now</h2>
+  const fetchTransactions = async () => {
+    try {
+      const response = await fetch("/api/transactions");
+      const data = await response.json();
+      setTransactions(data);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  };
+
+  const refreshData = () => {
+    fetchUserData();
+    fetchTransactions();
+  };
+
+  if (status === "loading" || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-serendib-primary"></div>
       </div>
+    );
+  }
 
-      <div className="space-y-4">
-        {vouchers.map((voucher) => {
-          const percentage =
-            user.points < voucher.amount
-              ? ((user.points / voucher.amount) * 100).toFixed(1)
-              : 100;
+  if (!userData) {
+    return null;
+  }
 
-          return (
-            <div
-              key={voucher.type}
-              className="border border-gray-200 rounded-lg p-4"
-            >
-              {/* Voucher Info */}
-              <div className="flex items-start gap-3 mb-3">
-                <div className="p-2 bg-serendib-primary/10 rounded-lg">
-                  <voucher.icon
-                    className="text-serendib-primary"
-                    size={20}
-                  />
-                </div>
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navbar user={userData} />
 
-                <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900">
-                    {voucher.title}
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    {voucher.description}
-                  </p>
-                </div>
-              </div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back, {userData.name}!
+          </h1>
+          <p className="text-gray-600">
+            Manage your rewards and track your progress
+          </p>
+        </div>
 
-              {/* Expanded Section */}
-              {selectedVoucher === voucher.type ? (
-                <div className="space-y-6">
-                  {/* Progress Bar */}
-                  <div>
-                    <div className="text-sm text-end text-gray-600 mb-1">
-                      {percentage}%
-                    </div>
+        <div className="grid lg:grid-cols-3 gap-6 mb-8">
+          <div className="lg:col-span-2">
+            <BalanceCard user={userData} />
+          </div>
+          <div>
+            <TierTracker user={userData} />
+          </div>
+        </div>
 
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div
-                        className="h-3 rounded-full bg-serendib-secondary transition-all duration-500"
-                        style={{ width: `${percentage}%` }}
-                      />
-                    </div>
-                  </div>
+        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+          <RedemptionCenter user={userData} onRedeem={refreshData} />
+          <ControlCenter user={userData} onUpdate={refreshData} />
+        </div>
 
-                  {/* Voucher Content */}
-                  <div className="text-center text-sm font-semibold text-purple-700 bg-purple-100 px-2 py-1 rounded-xl shadow-md">
-                    {voucher.content}
-                  </div>
-
-                  {/* Dynamic Button */}
-                  <div className="grid grid-cols-1 gap-2">
-                    {user.points >= voucher.amount ? (
-                      // ✅ REAL REDEEM BUTTON
-                      <button
-                        onClick={() =>
-                          handleRedeem(voucher.type, voucher.amount)
-                        }
-                        disabled={isRedeeming}
-                        className="p-3 rounded-lg border-2 border-serendib-primary hover:bg-serendib-primary hover:text-white transition-all cursor-pointer"
-                      >
-                        <div className="font-bold">
-                          Redeem {voucher.amount.toLocaleString()} pts
-                        </div>
-                        <div className="text-xs">
-                          ${(voucher.amount / 100).toFixed(2)}
-                        </div>
-                      </button>
-                    ) : (
-                      // ❌ PROGRESS BUTTON
-                      <button
-                        disabled
-                        className="p-3 rounded-lg border-2 border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
-                      >
-                        <div className="font-bold">
-                          {percentage}% Complete
-                        </div>
-                        <div className="text-xs">
-                          Need{" "}
-                          {(voucher.amount - user.points).toLocaleString()} more pts
-                        </div>
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Cancel Button */}
-                  <button
-                    onClick={() => setSelectedVoucher(null)}
-                    className="w-full mt-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 py-2 rounded-md transition-all duration-300 border border-gray-200"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setSelectedVoucher(voucher.type)}
-                  className="w-full btn-primary"
-                  disabled={isRedeeming}
-                >
-                  Redeem
-                </button>
-              )}
-            </div>
-          );
-        })}
+        <div>
+          <RecentTransactions transactions={transactions} />
+        </div>
       </div>
     </div>
   );
