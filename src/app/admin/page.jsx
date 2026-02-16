@@ -87,10 +87,7 @@ export default function AdminDashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 2xl:gap-6 mb-4 2xl:mb-8">
         {stats.map((stat) => (
-          <div
-            key={stat.name}
-            className="bg-white rounded-xl shadow-md p-3 2xl:p-6"
-          >
+          <div key={stat.name} className="bg-white rounded-xl shadow-md p-3 2xl:p-6">
             <div className="flex items-center justify-between mb-4">
               <div className={`${stat.color} p-3 rounded-lg`}>
                 <stat.icon className="text-white" size={24} />
@@ -178,11 +175,11 @@ export default function AdminDashboard() {
                 {recentUsers.map((user) => (
                   <tr key={user._id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4">{user.name}</td>
-                    <td className="py-2 2xl:py-4 px-6">
-                      <div className="text-xs text-gray-500 font-mono">
-                        {transaction.loyaltyNumber}
-                      </div>
-                    </td>
+                     <td className="py-2 2xl:py-4 px-6">
+                        <div className="text-xs text-gray-500 font-mono">
+                          {user.loyaltyNumber}
+                        </div>
+                      </td>
                     <td className="py-3 px-4">
                       <span className="px-2 py-1 bg-serendib-primary/10 text-serendib-primary rounded-full text-sm font-semibold">
                         {user.tier}
