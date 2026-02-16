@@ -112,12 +112,12 @@ export default function RedemptionCenter({ user, onRedeem }) {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold text-gray-900">
-                    {voucher.title}
-                  </h3>
-                   {/* Voucher Content */}
-                  <span className="text-center text-sm font-semibold text-purple-700 bg-purple-50 px-2 py-1 rounded-xl shadow-md w-50">
-                    {voucher.content}
-                  </span>
+                      {voucher.title}
+                    </h3>
+                    {/* Voucher Content */}
+                    {/* <span className="text-center text-sm font-semibold text-purple-700 bg-purple-50 px-2 py-1 rounded-xl shadow-md w-50">
+                      {voucher.content}
+                    </span> */}
                   </div>
                   <p className="text-sm text-gray-600">{voucher.description}</p>
                 </div>
@@ -159,7 +159,7 @@ export default function RedemptionCenter({ user, onRedeem }) {
                   disabled={!canRedeem || isRedeeming}
                   className={`relative w-full overflow-hidden rounded-lg border-2 py-0 font-semibold transition-all ${
                     canRedeem
-                      ? "border-serendib-primary text-serendib-primary hover:bg-serendib-primary hover:text-white cursor-pointer"
+                      ? "border-serendib-primary text-white bg-serendib-primary hover:bg-serendib-secondary hover:text-white cursor-pointer"
                       : "border-gray-300 text-gray-500 bg-gray-100 cursor-not-allowed"
                   }`}
                 >
@@ -170,8 +170,10 @@ export default function RedemptionCenter({ user, onRedeem }) {
                   />
 
                   {/* Button label */}
-                  <span className="relative z-10 text-sm">Redeem</span>
-                  <p className="relative text-xs">{percentage.toFixed(1)}%</p>
+                  <div className="flex items-center justify-between px-2">
+                    <span className="relative z-10 text-sm flex-1">Redeem</span>
+                    <p className="relative text-xs">{percentage.toFixed(1)}%</p>
+                  </div>
                 </button>
               )}
             </div>
