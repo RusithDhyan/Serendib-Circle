@@ -5,6 +5,7 @@ import { Gift, Coffee, Bed, Sparkles } from "lucide-react";
 export default function RedemptionCenter({ user, onRedeem }) {
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [selectedVoucher, setSelectedVoucher] = useState(null);
+
   const vouchers = [
     {
       id: 1,
@@ -40,6 +41,7 @@ export default function RedemptionCenter({ user, onRedeem }) {
       alert("Insufficient points!");
       return;
     }
+
     if (
       !confirm(
         `Redeem ${points} points for a $${(points / 100).toFixed(
@@ -48,14 +50,18 @@ export default function RedemptionCenter({ user, onRedeem }) {
       )
     )
       return;
+
     setIsRedeeming(true);
+
     try {
       const response = await fetch("/api/redemptions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type, pointsCost: points }),
       });
+
       const data = await response.json();
+
       if (response.ok) {
         alert(
           `Success! Your voucher code is: ${
@@ -82,67 +88,63 @@ export default function RedemptionCenter({ user, onRedeem }) {
         <Gift className="text-serendib-primary" size={24} />
         <h2 className="text-xl font-semibold">Redeem Now</h2>
       </div>
-      {/* <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-        <div className="text-sm text-blue-800">💡 <strong>100 points = $1 USD</strong> • All vouchers valid for 6 months</div>
-      </div> */}
+
       <div className="space-y-4">
         {vouchers.map((voucher) => {
-          const percentage =
-            user.points < voucher.amount
-              ? ((user.points / voucher.amount) * 100).toFixed(1)
-              : 100;
+          const percentage = Math.min(
+            (user.points / voucher.amount) * 100,
+            100
+          );
+
+          const canRedeem = user.points >= voucher.amount;
 
           return (
             <div
               key={voucher.type}
               className="border border-gray-200 rounded-lg p-4"
             >
+              {/* Voucher Info */}
               <div className="flex items-start gap-3 mb-3">
                 <div className="p-2 bg-serendib-primary/10 rounded-lg">
                   <voucher.icon className="text-serendib-primary" size={20} />
                 </div>
+
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-gray-900">
                     {voucher.title}
                   </h3>
+                   {/* Voucher Content */}
+                  <span className="text-center text-sm font-semibold text-purple-700 bg-purple-50 px-2 py-1 rounded-xl shadow-md w-50">
+                    {voucher.content}
+                  </span>
+                  </div>
                   <p className="text-sm text-gray-600">{voucher.description}</p>
                 </div>
               </div>
+
+              {/* Expanded Section */}
               {selectedVoucher === voucher.type ? (
                 <div className="space-y-6">
-                  <div className="w-full rounded-full h-3">
-                    <div className="text-sm text-end text-gray-600 mt-1">
-                      {percentage}%
+                  {/* REAL REDEEM BUTTON */}
+                  <button
+                    onClick={() => handleRedeem(voucher.type, voucher.amount)}
+                    disabled={!canRedeem || isRedeeming}
+                    className={`px-3 rounded-lg border-2 transition-all w-full ${
+                      canRedeem
+                        ? "border-serendib-primary hover:bg-serendib-primary hover:text-white cursor-pointer"
+                        : "border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed"
+                    }`}
+                  >
+                    <div className="font-bold text-sm">
+                      Redeem {voucher.amount.toLocaleString()} pts
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2 2xl:h-3">
-                      <div
-                        className="h-2 2xl:h-3 rounded-full transition-all duration-500 bg-serendib-secondary"
-                        style={{ width: `${percentage}%` }}
-                      />
+                    <div className="text-xs">
+                      ${(voucher.amount / 100).toFixed(2)}
                     </div>
-                  </div>
+                  </button>
 
-                  <div className="flex-1 w-50 text-center text-sm font-semibold text-purple-700 my-2 bg-purple-100 px-2 rounded-xl shadow-md">
-                    {voucher.content}
-                  </div>
-                  <div className="grid grid-cols-1 gap-2">
-                    <button
-                      onClick={() => handleRedeem(voucher.type, voucher.amount)}
-                      disabled={isRedeeming || user.points < voucher.amount}
-                      className={`p-3 rounded-lg border-2 transition-all ${
-                        user.points >= voucher.amount
-                          ? "border-serendib-primary hover:bg-serendib-primary hover:text-white cursor-pointer"
-                          : "border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed"
-                      }`}
-                    >
-                      <div className="font-bold">
-                        {voucher.amount.toLocaleString()} pts
-                      </div>
-                      <div className="text-xs">
-                        ${(voucher.amount / 100).toFixed(2)}
-                      </div>
-                    </button>
-                  </div>
+                  {/* Cancel Button */}
                   <button
                     onClick={() => setSelectedVoucher(null)}
                     className="w-full mt-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 py-2 rounded-md transition-all duration-300 border border-gray-200"
@@ -151,12 +153,25 @@ export default function RedemptionCenter({ user, onRedeem }) {
                   </button>
                 </div>
               ) : (
+                /* 🔥 OUTER REDEEM BUTTON WITH PROGRESS BAR */
                 <button
-                  onClick={() => setSelectedVoucher(voucher.type)}
-                  className="w-full btn-primary"
-                  disabled={isRedeeming}
+                  onClick={() => canRedeem && setSelectedVoucher(voucher.type)}
+                  disabled={!canRedeem || isRedeeming}
+                  className={`relative w-full overflow-hidden rounded-lg border-2 py-0 font-semibold transition-all ${
+                    canRedeem
+                      ? "border-serendib-primary text-serendib-primary hover:bg-serendib-primary hover:text-white cursor-pointer"
+                      : "border-gray-300 text-gray-500 bg-gray-100 cursor-not-allowed"
+                  }`}
                 >
-                  Redeem
+                  {/* Progress fill */}
+                  <div
+                    className="absolute left-0 top-0 h-full bg-serendib-secondary/50 transition-all duration-500"
+                    style={{ width: `${percentage}%` }}
+                  />
+
+                  {/* Button label */}
+                  <span className="relative z-10 text-sm">Redeem</span>
+                  <p className="relative text-xs">{percentage.toFixed(2)}%</p>
                 </button>
               )}
             </div>
