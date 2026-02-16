@@ -176,7 +176,7 @@ export default function AdminDashboard() {
                   <tr key={user._id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4">{user.name}</td>
                      <td className="py-2 2xl:py-4 px-6">
-                        <div className="text-xs text-gray-500 font-mono">
+                        <div className="text-xs text-gray-500 font-mono ">
                           {user.loyaltyNumber}
                         </div>
                       </td>

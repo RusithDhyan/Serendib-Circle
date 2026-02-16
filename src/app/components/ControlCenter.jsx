@@ -101,7 +101,7 @@ export default function ControlCenter({ user }) {
 
       {/* ===== Explore Offers Carousel ===== */}
       <div className="mt-3">
-        <h3 className="text-lg font-semibold mb-3">Explore Offers</h3>
+        <h3 className="text-lg font-semibold">Explore Offers</h3>
 
         {offers.length === 0 ? (
           <div className="text-center py-12 text-gray-500">
