@@ -171,7 +171,7 @@ export default function RedemptionCenter({ user, onRedeem }) {
 
                   {/* Button label */}
                   <span className="relative z-10 text-sm">Redeem</span>
-                  <p className="relative text-xs">{percentage.toFixed(2)}%</p>
+                  <p className="relative text-xs">{percentage.toFixed(1)}%</p>
                 </button>
               )}
             </div>
