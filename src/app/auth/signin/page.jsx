@@ -79,11 +79,11 @@ export default function SignIn() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-serendib-primary via-serendib-secondary to-serendib-accent flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-serendib-primary mb-2">
+        <div className="text-center  mb-4 sm:mb-8">
+          <h1 className="text-xl sm:text-3xl font-bold text-serendib-primary sm:mb-2">
             Welcome Back
           </h1>
-          <p className="text-gray-600">Sign in to access your rewards</p>
+          <p className="text-gray-600 text-sm">Sign in to access your rewards</p>
         </div>
 
         {error && (
@@ -93,7 +93,7 @@ export default function SignIn() {
         )}
 
         {!isForgotPassword ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-4">
             <div>
               <label
                 htmlFor="email"
@@ -144,7 +144,7 @@ export default function SignIn() {
             <div className="text-right mt-1">
               <button
                 onClick={() => setIsForgotPassword(true)}
-                className="text-sm text-serendib-primary hover:underline hover:text-serendib-secondary transition-all duration-300"
+                className="text-xs sm:text-sm text-serendib-primary hover:underline hover:text-serendib-secondary transition-all duration-300"
               >
                 Forgot Password?
               </button>
@@ -196,13 +196,13 @@ export default function SignIn() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            <span className="font-semibold text-gray-700">
+            <span className="text-sm sm:text-md font-semibold text-gray-700">
               Sign in with Google
             </span>
           </button>
         </div>
 
-        <div className="mt-6 text-center text-sm text-gray-600">
+        <div className="mt-3 sm:mt-6 text-center text-sm text-gray-600">
           Don't have an account?{" "}
           <Link
             href="/auth/register"

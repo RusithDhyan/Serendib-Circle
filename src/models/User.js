@@ -90,18 +90,6 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: "",
     },
-    explorePreferences: {
-      type: [String],
-      default: [],
-    },
-    dietaryPreferences: {
-      type: [String],
-      default: [],
-    },
-    roomPreferences: {
-      type: [String],
-      default: [],
-    },
     addedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

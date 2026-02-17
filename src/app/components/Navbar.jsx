@@ -62,7 +62,7 @@ export default function Navbar({ user }) {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className={`tier-badge ${getTierColor(user.tier)}`}>
+            <div className={`tier-badge ${getTierColor(user.tier)} hidden sm:block`}>
               {user.tier}
             </div>
 
