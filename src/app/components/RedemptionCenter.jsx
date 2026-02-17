@@ -84,7 +84,7 @@ export default function RedemptionCenter({ user, onRedeem }) {
 
   return (
     <div className="card">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-2 mb-3 sm:mb-6">
         <Gift className="text-serendib-primary" size={24} />
         <h2 className="text-xl font-semibold">Redeem Now</h2>
       </div>
@@ -101,7 +101,7 @@ export default function RedemptionCenter({ user, onRedeem }) {
           return (
             <div
               key={voucher.type}
-              className="border border-gray-200 rounded-lg p-4"
+              className="border border-gray-200 rounded-lg p-2 sm:p-4"
             >
               {/* Voucher Info */}
               <div className="flex items-start gap-3 mb-3">
@@ -114,12 +114,8 @@ export default function RedemptionCenter({ user, onRedeem }) {
                     <h3 className="font-semibold text-gray-900">
                       {voucher.title}
                     </h3>
-                    {/* Voucher Content */}
-                    {/* <span className="text-center text-sm font-semibold text-purple-700 bg-purple-50 px-2 py-1 rounded-xl shadow-md w-50">
-                      {voucher.content}
-                    </span> */}
                   </div>
-                  <p className="text-sm text-gray-600">{voucher.description}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">{voucher.description}</p>
                 </div>
               </div>
 

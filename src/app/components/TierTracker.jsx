@@ -21,11 +21,11 @@ export default function TierTracker({ user }) {
 
   return (
     <div className="card">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-2 mb-3 sm:mb-6">
         <Award className="text-serendib-primary" size={24} />
         <h2 className="text-xl font-semibold">Tier Progress</h2>
       </div>
-      <div className="mb-6">
+      <div className="mb-3 sm:mb-6">
         <div className="text-4xl mb-2">{tiers[currentTierIndex].icon}</div>
         <div className="text-2xl font-bold text-serendib-primary mb-1">
           {user.tier}
@@ -34,8 +34,8 @@ export default function TierTracker({ user }) {
       </div>
       {nextTier ? (
         <>
-          <div className="mb-4">
-            <div className="flex justify-between text-sm mb-2">
+          <div className="mb-2 sm:mb-4">
+            <div className="flex justify-between text-sm sm:mb-2">
               <span className="text-gray-600">Progress to {nextTier.name}</span>
               <span className="font-semibold">{progress.toFixed(0)}%</span>
             </div>
@@ -47,19 +47,19 @@ export default function TierTracker({ user }) {
             </div>
           </div>
           <div className="space-y-3">
-            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <div className="flex justify-between items-center p-1 sm:p-3 bg-gray-50 rounded-lg">
               <div>
                 <div className="text-sm text-gray-600">Stays</div>
-                <div className="font-semibold">
+                <div className="font-semibold text-sm">
                   {user.totalStays} / {nextTier.stays}
                 </div>
               </div>
               <ChevronRight className="text-gray-400" size={20} />
             </div>
-            <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+            <div className="flex justify-between items-center p-1 sm:p-3 bg-gray-50 rounded-lg">
               <div>
                 <div className="text-sm text-gray-600">Spend</div>
-                <div className="font-semibold">
+                <div className="font-semibold text-sm">
                   ${user.totalSpend} / ${nextTier.spend}
                 </div>
               </div>

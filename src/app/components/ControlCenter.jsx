@@ -76,34 +76,34 @@ export default function ControlCenter({ user }) {
         <h2 className="text-xl font-semibold">Control Center</h2>
       </div>
 
-      <div className="mt-3 p-4 bg-gray-50 rounded-lg">
+      <div className="mt-2 sm:mt-3 p-2 sm:p-4 bg-gray-50 rounded-lg">
         <div className="text-sm font-semibold text-gray-900 mb-2">
           Stay History
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <div className="text-xs text-gray-600">Total Stays</div>
-            <div className="text-2xl font-bold text-serendib-primary">
+            <div className="sm:text-2xl font-bold text-serendib-primary">
               {user.totalStays}
             </div>
           </div>
           <div>
             <div className="text-xs text-gray-600">Member Since</div>
-            <div className="text-sm font-semibold">
+            <div className="text-xs sm:text-sm font-semibold">
               {new Date(user.createdAt).toLocaleDateString()}
             </div>
           </div>
         </div>
       </div>
       <div>
-        <h3 className="font-semibold text-gray-900 mb-3">Explore</h3>
+        <h3 className="font-semibold text-gray-900 my-3">Explore</h3>
         <div className="flex  gap-2">
           {exploreOptions.map((option, idx) => (
             <button
               onClick={() => window.open(option.url, "_blank")}
               // href={option.url}
               key={idx}
-              className="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-serendib-primary hover:bg-serendib-secondary text-white"
+              className="px-3 py-1 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all bg-serendib-primary hover:bg-serendib-secondary text-white"
             >
               {option.label}
             </button>
@@ -174,7 +174,8 @@ export default function ControlCenter({ user }) {
       </div>
 
       {/* Mobile Infinite Carousel */}
-      <div className="lg:hidden relative mt-6 px-2 sm:px-4 overflow-hidden">
+      <div className="lg:hidden relative mt-5  overflow-hidden">
+        <h3 className=" font-semibold my-2 text-center">Explore Offers</h3>
         <div
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${index * 100}%)` }}
@@ -197,7 +198,7 @@ export default function ControlCenter({ user }) {
                   {offer.description}
                 </p>
                 <Link href={offer.url}>
-                  <button className="bg-gray-200 hover:bg-gray-300 border border-gray-300 shadow-md rounded-lg p-2 transition-all duration-300">
+                  <button className="bg-gray-200 hover:bg-gray-300 border border-gray-300 shadow-md rounded-lg px-2 transition-all duration-300">
                     Explore
                   </button>
                 </Link>
@@ -207,18 +208,18 @@ export default function ControlCenter({ user }) {
         </div>
 
         {/* Arrows (Accommodation-style) */}
-        <div className="absolute inset-y-0 left-2 right-2 bottom-0 flex justify-between items-center p-5">
+        <div className="absolute inset-y-0 left-0 right-0 bottom-0 flex justify-between items-center p-4">
           <button
             onClick={prevSlide}
             className="p-1 sm:p-2 rounded-full bg-gray-100 shadow hover:bg-gray-200"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={15} />
           </button>
           <button
             onClick={nextSlide}
             className="p-1 sm:p-2 rounded-full bg-gray-100 shadow hover:bg-gray-200"
           >
-            <ArrowRight size={20} />
+            <ArrowRight size={15} />
           </button>
         </div>
       </div>

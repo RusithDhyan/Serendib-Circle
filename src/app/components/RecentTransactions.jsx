@@ -35,9 +35,9 @@ export default function RecentTransactions({ transactions }) {
       </div>
       {transactions.length === 0 ? (
         <div className="text-center py-8 text-gray-500">
-          <History size={48} className="mx-auto mb-4 opacity-50" />
+          <History size={25} className="mx-auto mb-2 sm:mb-4 opacity-50" />
           <p>No transactions yet</p>
-          <p className="text-sm mt-2">
+          <p className="text-xs sm:text-sm mt-2">
             Your earning and redemption history will appear here
           </p>
         </div>
