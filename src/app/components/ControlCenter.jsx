@@ -1,9 +1,12 @@
 "use client";
-import { Settings } from "lucide-react";
+import { ArrowLeft, ArrowRight, Gift, Settings, Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useData } from "../context/DataContext";
+import { useEffect, useState } from "react";
 
 export default function ControlCenter({ user }) {
+  // const { offers } = useData();
   const exploreOptions = [
     {
       label: "Experience",
@@ -17,46 +20,54 @@ export default function ControlCenter({ user }) {
 
   const offers = [
     {
+      id: 1,
       title: "50% Off Spa",
       description: "Relax and enjoy our spa services",
       image: "/all-images/offer/spa.jpeg",
       url: "https://serendibhotels.mw/offers",
     },
     {
+      id: 2,
       title: "Free Breakfast",
       description: "Get a complimentary breakfast for 2",
       image: "/all-images/offer/breakfast.jpeg",
       url: "https://serendibhotels.mw/offers",
     },
     {
+      id: 3,
       title: "Room Upgrade",
       description: "Upgrade to a deluxe room for free",
       image: "/all-images/offer/room.jpg",
       url: "https://serendibhotels.mw/offers",
     },
     {
+      id: 4,
       title: "Room Upgrade",
       description: "Upgrade to a deluxe room for free",
       image: "/all-images/offer/room.jpg",
       url: "https://serendibhotels.mw/offers",
     },
-    // Add more...
   ];
 
-  const scrollCarousel = (direction) => {
-    const container = document.getElementById("offersCarousel");
-    const scrollAmount = 220; // adjust based on tile width + gap
-    if (direction === "left") {
-      container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-    } else {
-      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
-  };
+  const [index, setIndex] = useState(0);
 
-  const handleOfferClick = (offer) => {
-    console.log("Clicked offer:", offer);
-    // Navigate or show modal
-  };
+  // Create an extended list to simulate infinite scrolling
+  const extendedList = Array.from({ length: 10 }, () => offers).flat();
+  const middleIndex = Math.floor(extendedList.length / 2);
+
+  useEffect(() => {
+    setIndex(middleIndex);
+  }, [middleIndex]);
+
+  useEffect(() => {
+    if (index > extendedList.length - 3) {
+      setIndex(middleIndex);
+    }
+  }, [index, middleIndex, extendedList.length]);
+
+  const nextSlide = () => setIndex((prev) => prev + 1);
+  const prevSlide = () =>
+    setIndex((prev) => (prev - 1 + extendedList.length) % extendedList.length);
 
   return (
     <div className="card">
@@ -88,45 +99,46 @@ export default function ControlCenter({ user }) {
         <h3 className="font-semibold text-gray-900 mb-3">Explore</h3>
         <div className="flex  gap-2">
           {exploreOptions.map((option, idx) => (
-            <Link
-              href={option.url}
+            <button
+              onClick={() => window.open(option.url, "_blank")}
+              // href={option.url}
               key={idx}
               className="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-serendib-primary hover:bg-serendib-secondary text-white"
             >
               {option.label}
-            </Link>
+            </button>
           ))}
         </div>
       </div>
-
-      {/* ===== Explore Offers Carousel ===== */}
-      <div className="mt-3">
+      {/* Carousel Container */}
+      <div className="hidden lg:block mt-3">
         <h3 className="text-lg font-semibold">Explore Offers</h3>
 
         {offers.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
-            <Gift size={48} className="mx-auto mb-4 opacity-50" />
+          <div className="text-center py-12 text-gray-500 border border-gray-200 rounded-lg">
+            <Tag size={48} className="mx-auto mb-4 opacity-50" />
             <p>No offers found</p>
           </div>
         ) : (
-          <div className="relative">
+          <div className="relative overflow-hidden">
             {/* Left Arrow */}
             <button
               className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow hover:bg-gray-100"
-              onClick={() => scrollCarousel("left")}
+              onClick={prevSlide}
             >
-              &#8592;
+              <ArrowLeft size={15} />
             </button>
 
             {/* Carousel Container */}
             <div
               id="offersCarousel"
-              className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${index * 70}%)` }}
             >
-              {offers.map((offer, idx) => (
+              {extendedList.map((offer, idx) => (
                 <div
                   key={idx}
-                  className="min-w-[300px] flex-shrink-0 bg-white rounded-xl shadow p-4  transition"
+                  className="w-[50%] sm:w-[300px] flex-shrink-0 bg-white rounded-xl shadow p-4  transition"
                   onClick={() => handleOfferClick(offer)}
                 >
                   <Image
@@ -152,13 +164,63 @@ export default function ControlCenter({ user }) {
 
             {/* Right Arrow */}
             <button
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow hover:bg-gray-100"
-              onClick={() => scrollCarousel("right")}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
+              onClick={nextSlide}
             >
-              &#8594;
+              <ArrowRight size={15} />
             </button>
           </div>
         )}
+      </div>
+
+      {/* Mobile Infinite Carousel */}
+      <div className="lg:hidden relative mt-6 px-2 sm:px-4 overflow-hidden">
+        <div
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${index * 100}%)` }}
+        >
+          {extendedList.map((offer, i) => (
+            <div
+              key={i}
+              className="w-full flex-shrink-0 bg-white relative h-60 overflow-hidden rounded-md"
+            >
+              <Image
+                src={offer.image}
+                alt={offer.title}
+                fill
+                className="object-cover px-2"
+              />
+
+              <div className="absolute bottom-0 left-0 right-0 bg-white/50 backdrop-blur-sm flex flex-col items-center p-2 mx-2">
+                <h1 className="text-lg font-semibold mb-1">{offer.title}</h1>
+                <p className="text-gray-600 mb-2 text-sm">
+                  {offer.description}
+                </p>
+                <Link href={offer.url}>
+                  <button className="bg-gray-200 hover:bg-gray-300 border border-gray-300 shadow-md rounded-lg p-2 transition-all duration-300">
+                    Explore
+                  </button>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Arrows (Accommodation-style) */}
+        <div className="absolute inset-y-0 left-2 right-2 bottom-0 flex justify-between items-center p-5">
+          <button
+            onClick={prevSlide}
+            className="p-1 sm:p-2 rounded-full bg-gray-100 shadow hover:bg-gray-200"
+          >
+            <ArrowLeft size={20} />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="p-1 sm:p-2 rounded-full bg-gray-100 shadow hover:bg-gray-200"
+          >
+            <ArrowRight size={20} />
+          </button>
+        </div>
       </div>
     </div>
   );

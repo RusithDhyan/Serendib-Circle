@@ -171,7 +171,7 @@ export default function RedemptionCenter({ user, onRedeem }) {
 
                   {/* Button label */}
                   <div className="flex items-center justify-between px-2">
-                    <span className="relative z-10 text-sm flex-1">Redeem</span>
+                    <span className="relative z-10 text-xs sm:text-sm flex-1">Redeem</span>
                     <p className="relative text-xs">{percentage.toFixed(1)}%</p>
                   </div>
                 </button>
