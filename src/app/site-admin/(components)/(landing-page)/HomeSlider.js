@@ -8,26 +8,24 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
         <div className="container mx-auto px-6 2xl:py-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <Image
-                src="/all-images/logo/Serendib.png"
-                alt="logo"
-                width={1000}
-                height={100}
-                className="w-30 2xl:w-40 h-auto object-cover"
-              />
-            </div>
-
+              <div className="flex items-center">
+                  <Image src="/all-images/logo/Serendib.png" 
+                  alt="logo"
+                  width={1000}
+                  height={100}
+                  className="w-30 2xl:w-40 h-auto object-cover"/>
+              </div>
+            
             <div className="flex items-center gap-4">
               <Link
                 href="/auth/signin"
-                className="px-6 py-2.5 text-gray-700 font-semibold hover:text-yellow-600 transition-colors"
+                className="sm:px-6 py-2.5 text-gray-700 font-semibold hover:text-yellow-600 transition-colors"
               >
                 Sign In
               </Link>
               <Link
                 href="/auth/register"
-                className="px-6 py-2.5 bg-[#dfb98d] text-white font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
+                className="px-2 sm:px-6 py-1 sm:py-2.5 bg-[#dfb98d] text-white font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
               >
                 Get Started
               </Link>
@@ -39,12 +37,12 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center items-center pt-32 pb-20 px-6 text-center">
         <div className="space-y-8">
-          <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold leading-tight">
             Welcome to
             <span className="block text-[#dfb98d]">Serendib Circle</span>
           </h1>
 
-          <p className="text-xl text-gray-600 leading-relaxed">
+          <p className="sm:text-xl text-gray-600 leading-relaxed">
             Join our exclusive loyalty program and earn points with every stay.
             Redeem for free nights, upgrades, and unforgettable experiences.
           </p>
@@ -65,13 +63,13 @@ export default function LandingPage() {
           </div>
 
           {/* Stats */}
-          <div className="flex justify-center gap-8 pt-8">
+          <div className="flex justify-center gap-8 sm:pt-8">
             <div>
-              <div className="text-3xl font-bold text-blue-600">10K+</div>
+              <div className="text-xl sm:text-3xl font-bold text-blue-600">10K+</div>
               <div className="text-sm text-gray-600">Active Members</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-purple-600">50M+</div>
+              <div className="text-xl sm:text-3xl font-bold text-purple-600">50M+</div>
               <div className="text-sm text-gray-600">Points Earned</div>
             </div>
           </div>
@@ -79,13 +77,13 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-6 bg-white">
+      <section className="py-10 sm:py-20 px-6 bg-white">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
+          <div className="text-center mb-8 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-2 sm:mb-4">
               Why Join Serendib Circle?
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="sm:text-xl text-gray-600">
               Unlock exclusive benefits and rewards
             </p>
           </div>
@@ -108,7 +106,7 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold mb-3">Earn Points</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-3">Earn Points</h3>
               <p className="text-gray-600 text-center">
                 Get 10 points per dollar spent. Tier members earn up to 2x bonus
                 points on every purchase.
@@ -132,7 +130,7 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold mb-3">Tier Benefits</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-3">Tier Benefits</h3>
               <p className="text-gray-600 text-center">
                 Progress through 4 exclusive tiers and unlock premium perks,
                 upgrades, and VIP treatment.
@@ -156,7 +154,7 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold mb-3">Redeem Rewards</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-3">Redeem Rewards</h3>
               <p className="text-gray-600 text-center">
                 Use your points for free nights, dining vouchers, spa
                 experiences, and exclusive offers.
@@ -167,9 +165,9 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-[#dfb98d]">
+      <section className="py-10 sm:py-20 px-6 bg-[#dfb98d]">
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Start Earning?
           </h2>
           <p className="text-xl text-white mb-8 max-w-2xl mx-auto">
@@ -188,20 +186,20 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="py-2 px-6 bg-gray-100">
         <div className="container mx-auto text-center">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <div className="flex items-center">
-              <Image
-                src="/all-images/logo/Serendib.png"
-                alt="logo"
-                width={1000}
-                height={100}
-                className="w-15 h-auto object-cover"
-              />
-            </div>
-            <span className="text-2xl font-bold">Serendib Circle</span>
+          <div className="flex items-center justify-center gap-3 mb-2">
+              <div className="flex items-center">
+                  <Image src="/all-images/logo/Serendib.png" 
+                  alt="logo"
+                  width={1000}
+                  height={100}
+                  className="w-20 h-auto object-cover"/>
+              </div>
+            {/* <span className="text-2xl font-bold">
+              Serendib Circle
+            </span> */}
           </div>
-          <p className="text-sm">
-            © 2026 Serendib Circle, All rights reserved.
+          <p className="text-xs sm:text-sm">
+            © 2026 Serendib Circle. All rights reserved.
           </p>
         </div>
       </footer>
