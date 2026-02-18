@@ -117,7 +117,10 @@ export default function Register() {
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
           {/* Full Name */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -129,7 +132,7 @@ export default function Register() {
               value={formData.name}
               onChange={handleChange}
               placeholder="John Doe"
-              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-serendib-primary"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-serendib-primary"
               required
             />
           </div>
@@ -145,7 +148,7 @@ export default function Register() {
               value={formData.email}
               onChange={handleChange}
               placeholder="john@example.com"
-              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-serendib-primary"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-serendib-primary"
               required
             />
           </div>
@@ -163,7 +166,7 @@ export default function Register() {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className="w-full px-4 py-3 border rounded-lg pr-12 focus:ring-2 focus:ring-serendib-primary"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg pr-12 focus:ring-2 focus:ring-serendib-primary"
                 required
               />
 
@@ -192,7 +195,7 @@ export default function Register() {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className="w-full px-4 py-3 border rounded-lg pr-12 focus:ring-2 focus:ring-serendib-primary"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg pr-12 focus:ring-2 focus:ring-serendib-primary"
                 required
               />
 
@@ -210,7 +213,7 @@ export default function Register() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-serendib-primary hover:bg-serendib-secondary text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
+            className="md:col-span-2 w-full bg-serendib-primary hover:bg-serendib-secondary text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
           >
             {isLoading ? "Creating Account..." : "Create Account"}
           </button>

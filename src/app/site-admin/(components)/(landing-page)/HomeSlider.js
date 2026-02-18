@@ -8,14 +8,16 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
         <div className="container mx-auto px-6 2xl:py-2">
           <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                  <Image src="/all-images/logo/Serendib.png" 
-                  alt="logo"
-                  width={1000}
-                  height={100}
-                  className="w-30 2xl:w-40 h-auto object-cover"/>
-              </div>
-            
+            <div className="flex items-center">
+              <Image
+                src="/all-images/logo/Serendib.png"
+                alt="logo"
+                width={1000}
+                height={100}
+                className="w-30 2xl:w-40 h-auto object-cover"
+              />
+            </div>
+
             <div className="flex items-center gap-4">
               <Link
                 href="/auth/signin"
@@ -65,11 +67,15 @@ export default function LandingPage() {
           {/* Stats */}
           <div className="flex justify-center gap-8 sm:pt-8">
             <div>
-              <div className="text-xl sm:text-3xl font-bold text-blue-600">10K+</div>
+              <div className="text-xl sm:text-3xl font-bold text-blue-600">
+                10K+
+              </div>
               <div className="text-sm text-gray-600">Active Members</div>
             </div>
             <div>
-              <div className="text-xl sm:text-3xl font-bold text-purple-600">50M+</div>
+              <div className="text-xl sm:text-3xl font-bold text-purple-600">
+                50M+
+              </div>
               <div className="text-sm text-gray-600">Points Earned</div>
             </div>
           </div>
@@ -106,7 +112,9 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-3">Earn Points</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-3">
+                Earn Points
+              </h3>
               <p className="text-gray-600 text-center">
                 Get 10 points per dollar spent. Tier members earn up to 2x bonus
                 points on every purchase.
@@ -130,7 +138,9 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-3">Tier Benefits</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-3">
+                Tier Benefits
+              </h3>
               <p className="text-gray-600 text-center">
                 Progress through 4 exclusive tiers and unlock premium perks,
                 upgrades, and VIP treatment.
@@ -154,7 +164,9 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-3">Redeem Rewards</h3>
+              <h3 className="text-xl sm:text-2xl font-bold mb-3">
+                Redeem Rewards
+              </h3>
               <p className="text-gray-600 text-center">
                 Use your points for free nights, dining vouchers, spa
                 experiences, and exclusive offers.
@@ -187,16 +199,15 @@ export default function LandingPage() {
       <footer className="py-2 px-6 bg-gray-100">
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-2">
-              <div className="flex items-center">
-                  <Image src="/all-images/logo/Serendib.png" 
-                  alt="logo"
-                  width={1000}
-                  height={100}
-                  className="w-20 h-auto object-cover"/>
-              </div>
-            {/* <span className="text-2xl font-bold">
-              Serendib Circle
-            </span> */}
+            <div className="flex items-center">
+              <Image
+                src="/all-images/logo/Serendib.png"
+                alt="logo"
+                width={1000}
+                height={100}
+                className="w-20 h-auto object-cover"
+              />
+            </div>
           </div>
           <p className="text-xs sm:text-sm">
             © 2026 Serendib Circle. All rights reserved.
