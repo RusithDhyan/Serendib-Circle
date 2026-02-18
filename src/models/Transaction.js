@@ -8,10 +8,14 @@ const transactionSchema = new mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    hotel: {
+      type: String,
+      enum: ['waters_edge', 'bamboo_boutique_hotel', 'kambiri_beach_resort', 'blue_waters'],
+      required: true,
+    },
     type: {
       type: String,
-      enum: ['earn', 'dining', 'stay', 'experience', 'redeem'],
-      required: true,
+      enum: ['earn','redeem']
     },
     amount: {
       type: Number,

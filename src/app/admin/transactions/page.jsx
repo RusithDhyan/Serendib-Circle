@@ -8,6 +8,7 @@ import {
   TrendingDown,
   Hotel,
   Calendar,
+  Home,
 } from "lucide-react";
 import { format } from "date-fns";
 import { generateChecksum } from "@/lib/fetchData";
@@ -60,7 +61,7 @@ export default function AdminTransactions() {
       case "redeem":
         return TrendingDown;
       default:
-        return TrendingUp;
+        return Hotel;
     }
   };
 
@@ -79,7 +80,7 @@ export default function AdminTransactions() {
   const totalPoints = transactions.reduce((sum, t) => sum + (t.points || 0), 0);
   const totalAmount = transactions.reduce((sum, t) => sum + (t.amount || 0), 0);
   const earnTransactions = transactions.filter(
-    (t) => t.type === "dining" || t.type === "experience" || t.type === "stay"
+    (t) => t.type === "stay" || t.type === "dining" || t.type === "experience"
   ).length;
   const redeemTransactions = transactions.filter(
     (t) => t.type === "redeem"
@@ -169,9 +170,7 @@ export default function AdminTransactions() {
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-serendib-primary focus:border-transparent appearance-none"
             >
               <option value="">All Transaction Types</option>
-              <option value="dining">Dining</option>
-              <option value="experience">Experience</option>
-              <option value="stay">Hotel Stay</option>
+              <option value="earn">Purchase</option>
               <option value="redeem">Redemption</option>
             </select>
           </div>
@@ -204,23 +203,26 @@ export default function AdminTransactions() {
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-center py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Date & Time
                   </th>
-                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-center py-2 2xl:py-4 px-6 font-semibold text-gray-700">
+                    Hotel
+                  </th>
+                  <th className="text-center py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Type
                   </th>
-                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-center py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Description
                   </th>
-                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-center py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Amount
                   </th>
-                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
+                  <th className="text-center py-2 2xl:py-4 px-6 font-semibold text-gray-700">
                     Points
                   </th>
-                  <th className="text-left py-2 2xl:py-4 px-6 font-semibold text-gray-700">
-                    Loyalty No.
+                  <th className="text-center 2xl:py-4 px-6 font-semibold text-gray-700">
+                    User ID
                   </th>
                 </tr>
               </thead>
@@ -234,7 +236,7 @@ export default function AdminTransactions() {
                       key={transaction._id}
                       className="border-t hover:bg-gray-50"
                     >
-                      <td className="py-2 2xl:py-4 px-6">
+                      <td className="py-2 2xl:py-4 text-center">
                         <div className="text-sm font-semibold text-gray-900">
                           {format(
                             new Date(transaction.createdAt),
@@ -245,7 +247,12 @@ export default function AdminTransactions() {
                           {format(new Date(transaction.createdAt), "h:mm a")}
                         </div>
                       </td>
-                      <td className="py-2 2xl:py-4 px-6">
+                      <td className="py-2 2xl:py-4 text-center">
+                        <div className="text-sm text-gray-500 font-bold capitalize">
+                          {transaction.hotel}
+                        </div>
+                      </td>
+                      <td className="py-2 2xl:py-4 text-center">
                         <div
                           className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${colorClass}`}
                         >
@@ -255,17 +262,17 @@ export default function AdminTransactions() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-2 2xl:py-4 px-6">
+                      <td className="py-2 2xl:py-4 text-center">
                         <div className="text-sm text-gray-900">
                           {transaction.description}
                         </div>
                       </td>
-                      <td className="py-2 2xl:py-4 px-6">
+                      <td className="py-2 2xl:py-4 text-center">
                         <div className="text-sm font-semibold text-gray-900">
                           ${transaction.amount?.toFixed(2) || "0.00"}
                         </div>
                       </td>
-                      <td className="py-2 2xl:py-4 px-6">
+                      <td className="py-2 2xl:py-4 text-center">
                         <div
                           className={`text-sm font-bold ${
                             transaction.points > 0
@@ -277,7 +284,7 @@ export default function AdminTransactions() {
                           {transaction.points?.toLocaleString() || 0}
                         </div>
                       </td>
-                      <td className="py-2 2xl:py-4 px-6">
+                      <td className="py-2 2xl:py-4 text-center">
                         <div className="text-xs text-gray-500 font-mono">
                           {/* {transaction.userId?.substring(0, 8)}... */}
                           {transaction.loyaltyNumber}

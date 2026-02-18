@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
-import { checkAdminAuth } from '@/lib/adminAuth';
-import { connectDB } from '@/lib/mongodb';
-import Transaction from '@/models/Transaction';
-import User from '@/models/User';
-import crypto from 'crypto';
+import { NextResponse } from "next/server";
+import { checkAdminAuth } from "@/lib/adminAuth";
+import { connectDB } from "@/lib/mongodb";
+import Transaction from "@/models/Transaction";
+import User from "@/models/User";
+import crypto from "crypto";
 
 const ALLOWED_ORIGINS = [
   "https://serendibhotels.mw",
@@ -31,51 +31,51 @@ export async function OPTIONS(req) {
 }
 
 export async function GET(req) {
+  const t = req.nextUrl.searchParams.get("t");
+  const cs = req.nextUrl.searchParams.get("cs");
 
-    const t = req.nextUrl.searchParams.get("t");
-    const cs = req.nextUrl.searchParams.get("cs");
-    
-    if (!t || !cs) {
-      let res = NextResponse.json(
-        { success: false, error: "Missing parameters" },
-        { status: 400 }
-      );
-      return setCorsHeaders(res, origin);
-    }
-  
-    // --- 2. Validate timestamp ---
-    if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
-      let res = NextResponse.json(
-        { success: false, error: "Expired request" },
-        { status: 401 }
-      );
-      return setCorsHeaders(res, origin);
-    }
-  
-    const serverChecksum = crypto
-      .createHash("sha256")
-      .update(t + process.env.API_KEY)
-      .digest("hex");
-  
-  
-    if (serverChecksum !== cs) {
-      let res = NextResponse.json(
-        { success: false, error: "Invalid checksum" },
-        { status: 401 }
-      );
-      return setCorsHeaders(res, origin);
-    }
+  if (!t || !cs) {
+    let res = NextResponse.json(
+      { success: false, error: "Missing parameters" },
+      { status: 400 }
+    );
+    return setCorsHeaders(res, origin);
+  }
+
+  // --- 2. Validate timestamp ---
+  if (Math.abs(Date.now() - parseInt(t)) > EXPIRY_LIMIT) {
+    let res = NextResponse.json(
+      { success: false, error: "Expired request" },
+      { status: 401 }
+    );
+    return setCorsHeaders(res, origin);
+  }
+
+  const serverChecksum = crypto
+    .createHash("sha256")
+    .update(t + process.env.API_KEY)
+    .digest("hex");
+
+  if (serverChecksum !== cs) {
+    let res = NextResponse.json(
+      { success: false, error: "Invalid checksum" },
+      { status: 401 }
+    );
+    return setCorsHeaders(res, origin);
+  }
   try {
     const authCheck = await checkAdminAuth();
     if (authCheck.error) {
-      return NextResponse.json({ error: authCheck.error }, { status: authCheck.status });
+      return NextResponse.json(
+        { error: authCheck.error },
+        { status: authCheck.status }
+      );
     }
 
     const { searchParams } = new URL(req.url);
-    const userId = searchParams.get('userId');
-    const type = searchParams.get('type');
-    const limit = parseInt(searchParams.get('limit')) || 100;
-
+    const userId = searchParams.get("userId");
+    const type = searchParams.get("type");
+    const limit = parseInt(searchParams.get("limit")) || 100;
     await connectDB();
 
     let query = {};
@@ -139,8 +139,11 @@ export async function GET(req) {
 
     return NextResponse.json(transactions);
   } catch (error) {
-    console.error('Error fetching transactions:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error("Error fetching transactions:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -148,15 +151,18 @@ export async function POST(req) {
   try {
     const authCheck = await checkAdminAuth();
     if (authCheck.error) {
-      return NextResponse.json({ error: authCheck.error }, { status: authCheck.status });
+      return NextResponse.json(
+        { error: authCheck.error },
+        { status: authCheck.status }
+      );
     }
 
     const body = await req.json();
-    const { userId, type, amount, description } = body;
+    const { userId, amount, description, hotel } = body;
 
-    if (!userId || !type || !amount) {
+    if (!userId || !amount || !hotel) {
       return NextResponse.json(
-        { error: 'userId, type, and amount are required' },
+        { error: "userId, type, hotel and amount are required" },
         { status: 400 }
       );
     }
@@ -165,41 +171,52 @@ export async function POST(req) {
 
     const user = await User.findById(userId);
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     let points = 0;
 
-    if (type === 'earn' || type === 'stay' || type === 'dining' || type === 'experience') {
+    if (
+      hotel === "waters_edge" ||
+      hotel === "bamboo_boutique_hotel" ||
+      hotel === "kambiri_beach_resort" ||
+      hotel === "blue_waters"
+    ) {
       points = user.addSpend(amount);
-      
-      if (type === 'stay') {
-        user.totalStays += 1;
+      user.totalStays += 1;
         user.updateTier();
-      }
-      
+
+      // if (hotel === "stay") {
+      //   user.totalStays += 1;
+      //   user.updateTier();
+      // }
+
       await user.save();
     }
 
     const transaction = await Transaction.create({
       userId: user._id,
-      type,
+      hotel,
       amount,
       points,
-      description: description || `Admin added ${type} transaction`,
+      type:"earn",
+      description: description || `Admin added ${hotel} transaction`,
     });
 
-    return NextResponse.json({ 
-      transaction, 
+    return NextResponse.json({
+      transaction,
       user: {
         points: user.points,
         tier: user.tier,
         totalSpend: user.totalSpend,
-        totalStays: user.totalStays
-      }
+        totalStays: user.totalStays,
+      },
     });
   } catch (error) {
-    console.error('Error creating transaction:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error("Error creating transaction:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

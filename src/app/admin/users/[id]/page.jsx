@@ -20,7 +20,7 @@ export default function UserDetail() {
   const [loading, setLoading] = useState(true);
   const [showAddTransaction, setShowAddTransaction] = useState(false);
   const [transactionForm, setTransactionForm] = useState({
-    type: "earn",
+    hotel: "waters_edge",
     amount: "",
     description: "",
   });
@@ -58,7 +58,11 @@ export default function UserDetail() {
       if (response.ok) {
         alert("Transaction added successfully!");
         setShowAddTransaction(false);
-        setTransactionForm({ type: "earn", amount: "", description: "" });
+        setTransactionForm({
+          hotel: "waters_edge",
+          amount: "",
+          description: "",
+        });
         fetchUserData();
       } else {
         alert("Failed to add transaction");
@@ -190,9 +194,11 @@ export default function UserDetail() {
           <form onSubmit={handleAddTransaction} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold mb-2">Type</label>
+                <label className="block text-sm font-semibold mb-2">
+                  Select Hotel
+                </label>
                 <select
-                  value={transactionForm.type}
+                  value={transactionForm.hotel}
                   onChange={(e) =>
                     setTransactionForm({
                       ...transactionForm,
@@ -202,10 +208,14 @@ export default function UserDetail() {
                   className="w-full px-4 py-2 border rounded-lg"
                   required
                 >
-                  <option value="earn">Purchase</option>
-                  <option value="dining">Dining</option>
-                  <option value="experience">Experience</option>
-                  <option value="stay">Hotel Stay</option>
+                  <option value="waters_edge">Water's Edge</option>
+                  <option value="bamboo_boutique_hotel">
+                    Bamboo Boutique Hotel
+                  </option>
+                  <option value="kambiri_beach_resort">
+                    Kambiri Beach Resort
+                  </option>
+                  <option value="blue_waters">Blue Waters</option>
                 </select>
               </div>
               <div>
